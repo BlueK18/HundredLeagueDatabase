@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    個人賞｜ハンドレッドリーグ データベース
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+</head>
+
+<body>
+
+  <nav class="site-nav">
+
+    <a
+      href="index.html"
+      class="site-brand"
+    >
+      🏆 ハンドレッドリーグ データベース
+    </a>
+
+    <div class="site-nav-links">
+      <a href="index.html#teamRanking">
+        チーム順位
+      </a>
+
+      <a href="players.html">
+        選手ランキング
+      </a>
+
+      <a href="awards.html">
+        個人賞
+      </a>
+    </div>
+
+    <div class="site-search">
+
+      <input
+        id="siteSearchInput"
+        type="search"
+        placeholder="選手名を検索"
+        autocomplete="off"
+      >
+
+      <div
+        id="siteSearchResults"
+        class="site-search-results"
+      ></div>
+
+    </div>
+
+  </nav>
+
+
+  <header>
+
+    <h1>
+      🏆 個人賞
+    </h1>
+
+    <p id="awardsSeasonTitle">
+      2025 レギュラーシーズン
+    </p>
+
+  </header>
+
+
+  <main class="awards-page">
+
+    <section class="awards-controls">
+
+      <select id="yearSelect">
+
+        <option value="2024">
+          2024
+        </option>
+
+        <option
+          value="2025"
+          selected
+        >
+          2025
+        </option>
+
+      </select>
+
+
+      <div id="leagueControl">
+
+        <select id="leagueSelect">
+
+          <option value="A">
+            Aリーグ
+          </option>
+
+          <option value="B">
+            Bリーグ
+          </option>
+
+        </select>
+
+      </div>
+
+    </section>
+
+
+    <section>
+
+      <div id="awardsArea">
+        読み込み中...
+      </div>
+
+    </section>
+
+
+    <p class="back-link-area">
+
+      <a href="index.html">
+        ← 順位表へ戻る
+      </a>
+
+    </p>
+
+  </main>
+
+
+  <script src="js/common.js"></script>
+  <script src="js/awards.js"></script>
+
+</body>
+
+</html>

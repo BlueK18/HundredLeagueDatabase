@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    選手詳細｜ハンドレッドリーグ データベース
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+</head>
+
+<body>
+
+  <nav class="site-nav">
+
+    <a
+      href="index.html"
+      class="site-brand"
+    >
+      🏆 ハンドレッドリーグ データベース
+    </a>
+
+    <div class="site-nav-links">
+
+      <a href="index.html#teamRanking">
+        チーム順位
+      </a>
+
+      <a href="players.html">
+        選手ランキング
+      </a>
+
+      <a href="awards.html">
+        個人賞
+      </a>
+
+    </div>
+
+    <div class="site-search">
+
+      <input
+        id="siteSearchInput"
+        type="search"
+        placeholder="選手名を検索"
+        autocomplete="off"
+      >
+
+      <div
+        id="siteSearchResults"
+        class="site-search-results"
+      ></div>
+
+    </div>
+
+  </nav>
+
+
+  <header>
+
+    <h1 id="playerTitle">
+      読み込み中...
+    </h1>
+
+  </header>
+
+
+  <div class="favorite-bar">
+
+    <button
+      id="favoriteButton"
+      class="favorite-button"
+      type="button"
+    >
+      ☆ お気に入りに追加
+    </button>
+
+  </div>
+
+
+  <main class="player-detail-page">
+
+    <section id="playerInfo">
+      読み込み中...
+    </section>
+
+
+    <section class="player-awards-section">
+
+      <h2>
+        🏆 受賞歴
+      </h2>
+
+      <div id="playerAwards">
+        読み込み中...
+      </div>
+
+    </section>
+
+
+    <section class="player-matches-section">
+
+      <h2>
+        試合履歴
+      </h2>
+
+      <div id="playerMatches">
+        読み込み中...
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <div
+    id="matchDetailModal"
+    class="match-detail-modal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="match-detail-overlay"
+      data-close-match-modal
+    ></div>
+
+    <div
+      class="match-detail-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="matchDetailTitle"
+    >
+
+      <button
+        type="button"
+        class="match-detail-close"
+        data-close-match-modal
+        aria-label="閉じる"
+      >
+        ×
+      </button>
+
+      <h2 id="matchDetailTitle">
+        対局詳細
+      </h2>
+
+      <div id="matchDetailBody">
+        読み込み中...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script src="js/common.js"></script>
+  <script src="js/player.js"></script>
+
+</body>
+
+</html>

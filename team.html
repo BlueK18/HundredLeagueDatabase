@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>チーム詳細｜ハンドレッドリーグ データベース</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html" class="site-brand">
+          🏆 ハンドレッドリーグ データベース
+        </a>
+      
+        <div class="site-nav-links">
+          <a href="index.html#teamRanking">チーム順位</a>
+          <a href="players.html">選手ランキング</a>
+          <a href="awards.html">個人賞</a>
+        </div>
+      
+        <div class="site-search">
+          <input
+            id="siteSearchInput"
+            type="search"
+            placeholder="選手名を検索"
+            autocomplete="off"
+          >
+      
+          <div
+            id="siteSearchResults"
+            class="site-search-results"
+          ></div>
+        </div>
+      </nav>
+  <header>
+    <h1 id="teamTitle">読み込み中...</h1>
+  </header>
+
+  <main>
+
+    <section id="teamInfo">
+      読み込み中...
+    </section>
+
+    <section class="team-players-section">
+      <h2>所属選手</h2>
+      <div id="teamPlayers">読み込み中...</div>
+    </section>
+
+    <section class="team-matches-section">
+      <h2>試合履歴</h2>
+      <div id="teamMatches">読み込み中...</div>
+    </section>
+
+  </main>
+
+  <script src="js/team.js"></script>
+
+</body>
+</html>
+<script src="js/common.js"></script>
+<script src="js/team.js"></script>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ハンドレッドリーグ データベース</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html" class="site-brand">
+          🏆 ハンドレッドリーグ データベース
+        </a>
+      
+        <div class="site-nav-links">
+          <a href="index.html#teamRanking">チーム順位</a>
+          <a href="players.html">選手ランキング</a>
+          <a href="awards.html">個人賞</a>
+        </div>
+      
+        <div class="site-search">
+          <input
+            id="siteSearchInput"
+            type="search"
+            placeholder="選手名を検索"
+            autocomplete="off"
+          >
+      
+          <div
+            id="siteSearchResults"
+            class="site-search-results"
+          ></div>
+        </div>
+      </nav>
+    <header>
+
+        <h1>🏆 ハンドレッドリーグ データベース</h1>
+
+        <p>公式データベース</p>
+
+    </header>
+
+    
+    <main>
+        <section class="favorites-section">
+            <h2>⭐ お気に入り選手</h2>
+            <div id="favoritePlayersArea">
+              お気に入り選手はいません
+            </div>
+          </section>
+        <section class="home-navigation">
+            <a class="home-menu-card" href="#teamRanking">
+              <span class="home-menu-icon">📊</span>
+              <strong>チーム順位</strong>
+              <small>リーグ・ステージ別順位表</small>
+            </a>
+          
+            <a class="home-menu-card" href="players.html">
+              <span class="home-menu-icon">👤</span>
+              <strong>選手ランキング</strong>
+              <small>ポイント・個人成績一覧</small>
+            </a>
+          
+            <a class="home-menu-card" href="awards.html">
+              <span class="home-menu-icon">🏆</span>
+              <strong>個人賞</strong>
+              <small>各部門TOP3</small>
+            </a>
+          
+          </section>
+          <select id="yearSelect">
+            <option value="2024">2024</option>
+            <option value="2025" selected>2025</option>
+          </select>
+        
+          <div id="leagueControl">
+            <select id="leagueSelect">
+              <option value="A">Aリーグ</option>
+              <option value="B">Bリーグ</option>
+            </select>
+          </div>
+        
+          <select id="stageSelect">
+            <option value="レギュラー">レギュラー</option>
+            <option value="Semi-Final">セミファイナル</option>
+            <option value="Final">ファイナル</option>
+          </select>
+        </section>
+      
+        <section class="ranking" id="teamRanking">
+          <h2>🏆 チーム順位</h2>
+          <div id="teamTable">読み込み中...</div>
+        </section>
+      </main>
+
+
+      <script src="js/app.js"></script>
+</body>
+</html>
+<script src="js/common.js"></script>
+<script src="js/app.js"></script>
