@@ -302,62 +302,127 @@ const CATEGORY_ORDER = [
   "最高得点賞",
   "トップ率賞"
 ];
+/* ========================================
+   リーグ表記の統一
+======================================== */
+
+function normalizeAwardLeague(value) {
+  const text =
+    String(value || "").trim();
+
+  if (
+    text === "単一リーグ" ||
+    text === "2023リーグ" ||
+    text === "2024リーグ" ||
+    text === "ハンドレッドリーグ" ||
+    text === "2023" ||
+    text === "2024"
+  ) {
+    return "単一リーグ";
+  }
+
+  if (text.startsWith("A")) {
+    return "A";
+  }
+
+  if (text.startsWith("B")) {
+    return "B";
+  }
+
+  return text;
+}
 
 
-/* 個人賞を表示 */
+/* ========================================
+   年度に応じたリーグ切替
+======================================== */
+
+function updateLeagueControl() {
+  const selectedYear =
+    normalizeYear(yearSelect.value);
+
+  const isSingleLeagueYear =
+    selectedYear === "2023" ||
+    selectedYear === "2024";
+
+  if (isSingleLeagueYear) {
+    leagueSelect.innerHTML = `
+      <option value="単一リーグ">
+        単一リーグ
+      </option>
+    `;
+
+    leagueSelect.value =
+      "単一リーグ";
+
+    leagueControl.style.display =
+      "none";
+
+    return;
+  }
+
+  leagueSelect.innerHTML = `
+    <option value="A">
+      Aリーグ
+    </option>
+
+    <option value="B">
+      Bリーグ
+    </option>
+  `;
+
+  leagueSelect.value = "A";
+
+  leagueControl.style.display = "";
+}
+
+
+/* ========================================
+   個人賞を表示
+======================================== */
+
 function renderAwards() {
-    const selectedYear =
-      normalizeYear(yearSelect.value);
-  
-    const selectedLeague =
-      selectedYear === "2024"
-        ? "単一リーグ"
-        : normalizeLeague(leagueSelect.value);
-  
-    if (awardsSeasonTitle) {
-      awardsSeasonTitle.textContent =
-        `${selectedYear} レギュラーシーズン`;
-    }
-  
-  
-    /* CSV側のリーグ表記を統一 */
-    function normalizeAwardLeague(value) {
-      const text = String(value || "").trim();
-  
-      if (
-        text === "単一リーグ" ||
-        text === "2024リーグ" ||
-        text === "ハンドレッドリーグ" ||
-        text === "2024"
-      ) {
-        return "単一リーグ";
-      }
-  
-      if (text.startsWith("A")) {
-        return "A";
-      }
-  
-      if (text.startsWith("B")) {
-        return "B";
-      }
-  
-      return text;
-    }
-  
-  
-    const filtered = awardsData.filter(row => {
+  const selectedYear =
+    normalizeYear(yearSelect.value);
+
+  const isSingleLeagueYear =
+    selectedYear === "2023" ||
+    selectedYear === "2024";
+
+  const selectedLeague =
+    isSingleLeagueYear
+      ? "単一リーグ"
+      : normalizeAwardLeague(
+          leagueSelect.value
+        );
+
+  if (awardsSeasonTitle) {
+    awardsSeasonTitle.textContent =
+      `${selectedYear} レギュラーシーズン`;
+  }
+
+  const filtered =
+    awardsData.filter(row => {
       const rowYear =
-        normalizeYear(row["年度"]);
-  
+        normalizeYear(
+          row["年度"]
+        );
+
       const rowLeague =
-        normalizeAwardLeague(row["リーグ"]);
-  
+        normalizeAwardLeague(
+          row["リーグ"]
+        );
+
       const rank =
-        normalizeRank(row["順位"]);
-  
+        normalizeRank(
+          row["順位"]
+        );
+
       const player =
-        String(row["選手名"] || "").trim();
-  
+        String(
+          row["選手名"] || ""
+        ).trim();
+
       return (
         rowYear === selectedYear &&
         rowLeague === selectedLeague &&
@@ -367,143 +432,133 @@ function renderAwards() {
         )
       );
     });
-  
-  
-    console.log("個人賞の選択条件:", {
-      year: selectedYear,
-      league: selectedLeague
-    });
-  
-    console.log(
-      "該当した個人賞データ:",
-      filtered
-    );
-  
-  
-    if (filtered.length === 0) {
-      awardsArea.innerHTML = `
-        <p class="no-data-message">
-          該当する個人賞データがありません。
-        </p>
-      `;
-  
-      return;
-    }
-  
-  
-    const categories =
-      CATEGORY_ORDER.filter(category =>
-        filtered.some(row =>
-          String(
-            row["部門"] || ""
-          ).trim() === category
-        )
-      );
-  
-  
+
+  if (filtered.length === 0) {
     awardsArea.innerHTML = `
-      <div class="awards-grid">
-  
-        ${categories.map(category => {
-          const categoryRows = filtered
+      <p class="no-data-message">
+        該当する個人賞データがありません。
+      </p>
+    `;
+
+    return;
+  }
+
+  const categories =
+    CATEGORY_ORDER.filter(category =>
+      filtered.some(row =>
+        String(
+          row["部門"] || ""
+        ).trim() === category
+      )
+    );
+
+  awardsArea.innerHTML = `
+    <div class="awards-grid">
+
+      ${categories.map(category => {
+        const categoryRows =
+          filtered
             .filter(row =>
               String(
                 row["部門"] || ""
               ).trim() === category
             )
             .sort((a, b) =>
-              normalizeRank(a["順位"]) -
-              normalizeRank(b["順位"])
+              normalizeRank(
+                a["順位"]
+              ) -
+              normalizeRank(
+                b["順位"]
+              )
             );
-  
-  
-          const noWinner =
-            categoryRows.some(row =>
-              String(
-                row["選手名"] || ""
-              ).trim() === "該当者なし"
-            );
-  
-  
-          return `
-            <article class="award-category-card">
-  
-              <div class="award-category-header">
-  
-                <span class="award-category-icon">
-                  ${getAwardIcon(category)}
-                </span>
-  
-                <h2>
-                  ${escapeHtml(
-                    getDisplayCategory(category)
-                  )}
-                </h2>
-  
-              </div>
-  
-  
-              <div class="award-ranking-list">
-  
-                ${
-                  noWinner
-                    ? `
-                      <div class="award-no-winner">
-                        🏅 該当者なし
-                      </div>
-                    `
-                    : categoryRows.map(row => `
-                      <a
-                        class="award-player-row ${getRankClass(
+
+        const noWinner =
+          categoryRows.some(row =>
+            String(
+              row["選手名"] || ""
+            ).trim() ===
+              "該当者なし"
+          );
+
+        return `
+          <article class="award-category-card">
+
+            <div class="award-category-header">
+
+              <span class="award-category-icon">
+                ${getAwardIcon(category)}
+              </span>
+
+              <h2>
+                ${escapeHtml(
+                  getDisplayCategory(
+                    category
+                  )
+                )}
+              </h2>
+
+            </div>
+
+            <div class="award-ranking-list">
+
+              ${
+                noWinner
+                  ? `
+                    <div class="award-no-winner">
+                      🏅 該当者なし
+                    </div>
+                  `
+                  : categoryRows.map(row => `
+                    <a
+                      class="award-player-row ${getRankClass(
+                        row["順位"]
+                      )}"
+                      href="${createPlayerUrl(row)}"
+                    >
+
+                      <div class="award-medal">
+                        ${getMedal(
                           row["順位"]
-                        )}"
-                        href="${createPlayerUrl(row)}"
-                      >
-  
-                        <div class="award-medal">
-                          ${getMedal(row["順位"])}
-                        </div>
-  
-                        <div class="award-player-info">
-  
-                          <strong>
-                            ${escapeHtml(
-                              row["選手名"]
-                            )}
-                          </strong>
-  
-                          <span>
-                            ${escapeHtml(
-                              row["チーム名"]
-                            )}
-                          </span>
-  
-                        </div>
-  
-                        <div class="award-value">
-                          ${formatAwardValue(row)}
-                        </div>
-  
-                      </a>
-                    `).join("")
-                }
-  
-              </div>
-  
-  
-              <div class="award-condition">
-                ${getAwardCondition(category)}
-              </div>
-  
-            </article>
-          `;
-        }).join("")}
-  
-      </div>
-    `;
-  }
+                        )}
+                      </div>
 
+                      <div class="award-player-info">
 
+                        <strong>
+                          ${escapeHtml(
+                            row["選手名"]
+                          )}
+                        </strong>
+
+                        <span>
+                          ${escapeHtml(
+                            row["チーム名"]
+                          )}
+                        </span>
+
+                      </div>
+
+                      <div class="award-value">
+                        ${formatAwardValue(row)}
+                      </div>
+
+                    </a>
+                  `).join("")
+              }
+
+            </div>
+
+            <div class="award-condition">
+              ${getAwardCondition(category)}
+            </div>
+
+          </article>
+        `;
+      }).join("")}
+
+    </div>
+  `;
+}
 /* CSV読込 */
 async function loadAwards() {
   try {
@@ -541,45 +596,27 @@ async function loadAwards() {
 }
 
 
-/* 年度に応じてリーグ表示を切替 */
-function updateLeagueControl() {
-    if (yearSelect.value === "2024") {
-  
-      leagueControl.style.display = "none";
-  
-      leagueSelect.innerHTML = `
-        <option value="単一リーグ">
-          単一リーグ
-        </option>
-      `;
-  
-      leagueSelect.value = "単一リーグ";
-  
-    } else {
-  
-      leagueControl.style.display = "";
-  
-      leagueSelect.innerHTML = `
-        <option value="A">Aリーグ</option>
-        <option value="B">Bリーグ</option>
-      `;
-  
-      leagueSelect.value = "A";
-    }
-  
+/* ========================================
+   プルダウン切替
+======================================== */
+
+yearSelect.addEventListener(
+  "change",
+  () => {
+    updateLeagueControl();
     renderAwards();
   }
-  
-  
-  /* プルダウン切替 */
-  yearSelect.addEventListener("change", updateLeagueControl);
-  
-  leagueSelect.addEventListener(
-    "change",
-    renderAwards
-  );
-  
-  
-  /* 初期表示 */
-  updateLeagueControl();
-  loadAwards();
+);
+
+leagueSelect.addEventListener(
+  "change",
+  renderAwards
+);
+
+
+/* ========================================
+   初期表示
+======================================== */
+
+updateLeagueControl();
+loadAwards();

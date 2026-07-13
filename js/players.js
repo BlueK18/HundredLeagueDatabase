@@ -56,13 +56,24 @@ function formatPlayerPoint(value) {
 
 /* 選手一覧を表示 */
 function renderPlayers() {
-  const selectedYear = normalizeYear(yearSelect.value);
-  const selectedLeague = HLDB.normalizeLeague(
-    leagueSelect.value
-  );
-  const selectedStage = HLDB.normalizeStage(
-    stageSelect.value
-  );
+  const selectedYear =
+    normalizeYear(yearSelect.value);
+
+  const isSingleLeagueYear =
+    selectedYear === "2023" ||
+    selectedYear === "2024";
+
+  const selectedLeague =
+    isSingleLeagueYear
+      ? HLDB.normalizeLeague("単一リーグ")
+      : HLDB.normalizeLeague(
+          leagueSelect.value
+        );
+
+  const selectedStage =
+    HLDB.normalizeStage(
+      stageSelect.value
+    );
 
   const filtered = playersData
     .filter(row => {
@@ -190,26 +201,38 @@ function renderPlayers() {
 
 /* 年度に合わせてリーグ選択肢を変更 */
 function updateLeagueOptions() {
-    const selectedYear = yearSelect.value;
-  
-    if (selectedYear === "2024") {
-      leagueSelect.innerHTML = `
-        <option value="単一リーグ">
-          2024リーグ
-        </option>
-      `;
-  
-      leagueSelect.value = "単一リーグ";
-      return;
-    }
-  
+  const selectedYear =
+    normalizeYear(yearSelect.value);
+
+  const isSingleLeagueYear =
+    selectedYear === "2023" ||
+    selectedYear === "2024";
+
+  if (isSingleLeagueYear) {
     leagueSelect.innerHTML = `
-      <option value="A">Aリーグ</option>
-      <option value="B">Bリーグ</option>
+      <option value="単一リーグ">
+        単一リーグ
+      </option>
     `;
-  
-    leagueSelect.value = "A";
+
+    leagueSelect.value =
+      "単一リーグ";
+
+    return;
   }
+
+  leagueSelect.innerHTML = `
+    <option value="A">
+      Aリーグ
+    </option>
+
+    <option value="B">
+      Bリーグ
+    </option>
+  `;
+
+  leagueSelect.value = "A";
+}
   
   
   /* CSVを読み込む */

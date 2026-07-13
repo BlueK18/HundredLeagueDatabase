@@ -107,8 +107,10 @@ function normalizeLeagueValue(value) {
 
   if (
     text === "単一リーグ" ||
+    text === "2023リーグ" ||
     text === "2024リーグ" ||
     text === "ハンドレッドリーグ" ||
+    text === "2023" ||
     text === "2024"
   ) {
     return "単一リーグ";
@@ -178,8 +180,12 @@ function renderTeams() {
   const selectedYear =
     normalizeYearValue(yearSelect.value);
 
+    const isSingleLeagueYear =
+    selectedYear === "2023" ||
+    selectedYear === "2024";
+  
   const selectedLeague =
-    selectedYear === "2024"
+    isSingleLeagueYear
       ? "単一リーグ"
       : normalizeLeagueValue(
           leagueSelect.value
@@ -353,7 +359,10 @@ function updateLeagueControl() {
     return;
   }
 
-  if (yearSelect.value === "2024") {
+  if (
+    yearSelect.value === "2023" ||
+    yearSelect.value === "2024"
+  ) {
     leagueSelect.innerHTML = `
       <option value="単一リーグ">
         単一リーグ
