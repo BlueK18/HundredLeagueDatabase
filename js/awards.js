@@ -1,5 +1,3 @@
-const AWARDS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=869325336&single=true&output=csv";
 
   const awardsArea =
   document.getElementById("awardsArea");
@@ -568,19 +566,8 @@ async function loadAwards() {
       </p>
     `;
 
-    const response = await fetch(AWARDS_CSV_URL, {
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `CSVの取得に失敗しました：${response.status}`
-      );
-    }
-
-    const text = await response.text();
-
-    awardsData = parseCsv(text);
+    awardsData =
+  await HLDB.loadData("awards");
 
     renderAwards();
 

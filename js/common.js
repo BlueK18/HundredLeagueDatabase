@@ -11,17 +11,10 @@ window.HLDB = window.HLDB || {};
 ======================================== */
 
 HLDB.DATA_URLS = {
-  teams:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1681226504&single=true&output=csv",
-
-  matches:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1561387699&single=true&output=csv",
-
-  players:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1337045347&single=true&output=csv",
-
-  awards:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=869325336&single=true&output=csv"
+  teams: "data/teams.csv",
+  players: "data/players.csv",
+  matches: "data/matches.csv",
+  awards: "data/awards.csv"
 };
 
 
@@ -116,8 +109,33 @@ HLDB.fetchCsv = async function (url) {
 };
 
 
-HLDB.loadData = async function (dataName) {
-  const url = HLDB.DATA_URLS[dataName];
+/* ========================================
+   CSVデータキャッシュ
+======================================== */
+
+HLDB.DATA_CACHE_TIME =
+  10 * 60 * 1000; // 10分
+
+
+HLDB.memoryDataCache =
+  HLDB.memoryDataCache || {};
+
+
+/*
+  データを読み込む
+
+  通常：
+  10分以内のキャッシュがあれば再利用
+
+  強制更新：
+  HLDB.loadData("players", true)
+*/
+HLDB.loadData = async function (
+  dataName,
+  forceRefresh = false
+) {
+  const url =
+    HLDB.DATA_URLS[dataName];
 
   if (!url) {
     throw new Error(
@@ -125,7 +143,213 @@ HLDB.loadData = async function (dataName) {
     );
   }
 
-  return HLDB.fetchCsv(url);
+  const cacheKey =
+    `hldbDataCache_${dataName}`;
+
+  const cacheTimeKey =
+    `hldbDataCacheTime_${dataName}`;
+
+  const now =
+    Date.now();
+
+
+  /*
+    ① 同じページ内のメモリキャッシュ
+  */
+  const memoryCache =
+    HLDB.memoryDataCache[dataName];
+
+  if (
+    !forceRefresh &&
+    memoryCache &&
+    now - memoryCache.savedAt <
+      HLDB.DATA_CACHE_TIME
+  ) {
+    console.log(
+      `${dataName}: メモリキャッシュを使用`
+    );
+
+    return memoryCache.data;
+  }
+
+
+  /*
+    ② ブラウザ保存済みキャッシュ
+  */
+  if (!forceRefresh) {
+    try {
+      const savedAt =
+        Number(
+          localStorage.getItem(
+            cacheTimeKey
+          )
+        );
+
+      const cachedText =
+        localStorage.getItem(
+          cacheKey
+        );
+
+      const cacheIsValid =
+        cachedText &&
+        Number.isFinite(savedAt) &&
+        now - savedAt <
+          HLDB.DATA_CACHE_TIME;
+
+      if (cacheIsValid) {
+        const cachedData =
+          JSON.parse(cachedText);
+
+        HLDB.memoryDataCache[
+          dataName
+        ] = {
+          data: cachedData,
+          savedAt
+        };
+
+        console.log(
+          `${dataName}: ブラウザキャッシュを使用`
+        );
+
+        return cachedData;
+      }
+
+    } catch (error) {
+      console.warn(
+        `${dataName}: キャッシュ読込失敗`,
+        error
+      );
+    }
+  }
+
+
+  /*
+    ③ Google Sheetsから最新データ取得
+  */
+  try {
+    console.log(
+      `${dataName}: CSVを取得`
+    );
+
+    const freshData =
+      await HLDB.fetchCsv(url);
+
+    HLDB.memoryDataCache[
+      dataName
+    ] = {
+      data: freshData,
+      savedAt: now
+    };
+
+
+    /*
+      データ量が大きすぎる場合は、
+      localStorage保存だけ失敗することがあります。
+
+      その場合でもCSV取得結果はそのまま使えます。
+    */
+    try {
+      localStorage.setItem(
+        cacheKey,
+        JSON.stringify(freshData)
+      );
+
+      localStorage.setItem(
+        cacheTimeKey,
+        String(now)
+      );
+
+    } catch (storageError) {
+      console.warn(
+        `${dataName}: キャッシュ保存を省略しました`,
+        storageError
+      );
+    }
+
+    return freshData;
+
+  } catch (fetchError) {
+    console.error(
+      `${dataName}: CSV取得失敗`,
+      fetchError
+    );
+
+
+    /*
+      ④ 通信失敗時は期限切れキャッシュを使う
+  */
+    try {
+      const oldCacheText =
+        localStorage.getItem(
+          cacheKey
+        );
+
+      if (oldCacheText) {
+        const oldData =
+          JSON.parse(oldCacheText);
+
+        console.warn(
+          `${dataName}: 古いキャッシュを代用`
+        );
+
+        return oldData;
+      }
+
+    } catch (cacheError) {
+      console.error(
+        `${dataName}: 古いキャッシュも使用不可`,
+        cacheError
+      );
+    }
+
+    throw fetchError;
+  }
+};
+
+
+/*
+  保存済みキャッシュを削除する
+*/
+HLDB.clearDataCache = function (
+  dataName = ""
+) {
+  if (dataName) {
+    localStorage.removeItem(
+      `hldbDataCache_${dataName}`
+    );
+
+    localStorage.removeItem(
+      `hldbDataCacheTime_${dataName}`
+    );
+
+    delete HLDB.memoryDataCache[
+      dataName
+    ];
+
+    console.log(
+      `${dataName}: キャッシュ削除`
+    );
+
+    return;
+  }
+
+  Object.keys(
+    HLDB.DATA_URLS
+  ).forEach(name => {
+    localStorage.removeItem(
+      `hldbDataCache_${name}`
+    );
+
+    localStorage.removeItem(
+      `hldbDataCacheTime_${name}`
+    );
+  });
+
+  HLDB.memoryDataCache = {};
+
+  console.log(
+    "すべてのデータキャッシュを削除"
+  );
 };
 
 

@@ -1,5 +1,3 @@
-const TEAMS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1681226504&single=true&output=csv";
 
 
 /* ========================================
@@ -419,25 +417,8 @@ async function loadTeams() {
       `;
     }
 
-    const response =
-      await fetch(
-        TEAMS_CSV_URL,
-        {
-          cache: "no-store"
-        }
-      );
-
-    if (!response.ok) {
-      throw new Error(
-        `Teams CSVの取得に失敗しました：${response.status}`
-      );
-    }
-
-    const text =
-      await response.text();
-
     teamsData =
-      parseCsv(text);
+  await HLDB.loadData("teams");
 
     console.log(
       "Teamsデータ件数:",

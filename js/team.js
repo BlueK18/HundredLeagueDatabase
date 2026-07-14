@@ -1,11 +1,11 @@
 const TEAMS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1681226504&single=true&output=csv";
+  "data/teams.csv";
 
 const MATCHES_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1561387699&single=true&output=csv";
+  "data/matches.csv";
 
 const PLAYERS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1337045347&single=true&output=csv";
+  "data/players.csv";
 
 const params = new URLSearchParams(window.location.search);
 
@@ -179,30 +179,14 @@ function formatPlacement(value) {
 async function loadTeamDetail() {
   try {
     const [
-      teamsResponse,
-      matchesResponse,
-      playersResponse
-    ] = await Promise.all([
-      fetch(TEAMS_CSV_URL),
-      fetch(MATCHES_CSV_URL),
-      fetch(PLAYERS_CSV_URL)
-    ]);
-
-    if (
-      !teamsResponse.ok ||
-      !matchesResponse.ok ||
-      !playersResponse.ok
-    ) {
-      throw new Error("CSVデータの取得に失敗しました。");
-    }
-
-    const teamsText = await teamsResponse.text();
-    const matchesText = await matchesResponse.text();
-    const playersText = await playersResponse.text();
-
-    const teamsData = parseCsv(teamsText);
-    const matchesData = parseCsv(matchesText);
-    const playersData = parseCsv(playersText);
+  teamsData,
+  matchesData,
+  playersData
+] = await Promise.all([
+  HLDB.loadData("teams"),
+  HLDB.loadData("matches"),
+  HLDB.loadData("players")
+]);
 
     const selectedTeam = teamsData.find(row =>
       row["チーム"] === teamName &&
