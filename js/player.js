@@ -898,41 +898,57 @@ function renderPlayerInfo() {
 
             <section class="placing-section">
 
-              <h2>着順分布</h2>
+  <h2>着順分布</h2>
 
-              <div class="placing-grid">
+  <div class="placing-grid">
 
-                <div>
-                  <span>🥇 1着</span>
-                  <strong>
-                    ${stats.firstCount}
-                  </strong>
-                </div>
+    <div>
+      <span class="placement-label">
+        <span class="placement-medal">🥇</span>
+        1着
+      </span>
 
-                <div>
-                  <span>🥈 2着</span>
-                  <strong>
-                    ${stats.secondCount}
-                  </strong>
-                </div>
+      <strong>
+        ${stats.firstCount}
+      </strong>
+    </div>
 
-                <div>
-                  <span>🥉 3着</span>
-                  <strong>
-                    ${stats.thirdCount}
-                  </strong>
-                </div>
+    <div>
+      <span class="placement-label">
+        <span class="placement-medal">🥈</span>
+        2着
+      </span>
 
-                <div>
-                  <span>4着</span>
-                  <strong>
-                    ${stats.fourthCount}
-                  </strong>
-                </div>
+      <strong>
+        ${stats.secondCount}
+      </strong>
+    </div>
 
-              </div>
+    <div>
+      <span class="placement-label">
+        <span class="placement-medal">🥉</span>
+        3着
+      </span>
 
-            </section>
+      <strong>
+        ${stats.thirdCount}
+      </strong>
+    </div>
+
+    <div>
+      <span class="placement-label">
+        <span class="placement-medal"></span>
+        4着
+      </span>
+
+      <strong>
+        ${stats.fourthCount}
+      </strong>
+    </div>
+
+  </div>
+
+</section>
           `
       }
 

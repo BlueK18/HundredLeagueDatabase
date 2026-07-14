@@ -1192,3 +1192,105 @@ body.modal-open{
   text-align: center;
   white-space: nowrap;
 }
+/* ========================================
+   選手詳細ページ：本文の横幅を整える
+======================================== */
+
+.player-page {
+    width: min(1400px, calc(100% - 48px));
+    margin: 0 auto;
+  }
+  
+  .player-page > section,
+  .player-page > div {
+    width: 100%;
+  }
+  /* ==========================================
+   選手詳細ページレイアウト
+========================================== */
+
+.player-detail-page {
+    width: min(1400px, calc(100% - 48px));
+    margin: 40px auto;
+}
+.player-detail-page section {
+    margin-bottom: 60px;
+}
+/* 着順分布の位置を揃える */
+.placement-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  .placement-icon {
+    display: inline-block;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  /* 着順分布の文字位置をそろえる */
+.placement-label {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .placement-medal {
+    display: inline-block;
+    width: 1.5em;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .placing-grid > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 170px;
+    margin-bottom: 6px;
+}
+
+.placing-grid strong {
+    min-width: 24px;
+    text-align: right;
+}
+/* ========================================
+   HOME：年度・リーグ・ステージ選択
+======================================== */
+
+.ranking-controls {
+    width: min(1100px, calc(100% - 48px));
+    margin: 40px auto 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .ranking-controls select {
+    min-width: 170px;
+  }
+  
+  .ranking-controls #leagueControl {
+    display: contents;
+  }
+  
+  @media (max-width: 768px) {
+    .ranking-controls {
+      width: calc(100% - 32px);
+      gap: 12px;
+    }
+  
+    .ranking-controls select {
+      width: 100%;
+      min-width: 0;
+    }
+  
+    .ranking-controls #leagueControl {
+      display: block;
+      width: 100%;
+    }
+  
+    .ranking-controls #leagueControl select {
+      width: 100%;
+    }
+  }
