@@ -13,6 +13,7 @@ const AWARDS_CSV_URL =
 const params = new URLSearchParams(window.location.search);
 
 const playerName = params.get("player") || "";
+let displayPlayerName = playerName;
 const urlYear = params.get("year") || "";
 const urlLeague = params.get("league") || "";
 
@@ -36,6 +37,10 @@ const favoriteButton =
 let playersData = [];
 let matchesData = [];
 let awardsData = [];
+
+let playerAliasData = [];
+let currentPlayerId = "";
+let currentPlayerAliasNames = [];
 
 let activeYear = "";
 let activeLeague = "";
@@ -385,9 +390,13 @@ function getLeagueForYear(year) {
 
 function getSelectedMatches() {
   return matchesData.filter(row => {
-    const playerMatches =
-      String(row["選手名"] || "").trim() ===
-      playerName;
+    const matchPlayerName =
+    String(row["選手名"] || "").trim();
+  
+  const playerMatches =
+    currentPlayerAliasNames.includes(
+      matchPlayerName
+    );
 
     const yearMatches =
       activeYear === "ALL" ||
@@ -784,8 +793,8 @@ function renderPlayerInfo() {
           displayLeagueName(activeLeague)
         )}`;
 
-  playerTitle.textContent =
-    playerName || "選手詳細";
+        playerTitle.textContent =
+        displayPlayerName || "選手詳細";
 
   playerInfo.innerHTML = `
     <div class="player-detail">
@@ -1074,11 +1083,13 @@ function attachFilterEvents() {
             row["年度"]
           ) === activeYear;
   
-        return (
-          awardPlayer === playerName &&
-          awardPlayer !== "該当者なし" &&
-          yearMatches
-        );
+          return (
+            currentPlayerAliasNames.includes(
+              awardPlayer
+            ) &&
+            awardPlayer !== "該当者なし" &&
+            yearMatches
+          );
       })
       .sort((a, b) => {
         const yearDiff =
@@ -1718,54 +1729,73 @@ async function loadPlayerDetail() {
         return;
       }
   
-      const [
-        playersResponse,
-        matchesResponse,
-        awardsResponse
+      [
+        playersData,
+        matchesData,
+        awardsData,
+        playerAliasData
       ] = await Promise.all([
-        fetch(
-          PLAYERS_CSV_URL,
-          { cache: "no-store" }
-        ),
-  
-        fetch(
-          MATCHES_CSV_URL,
-          { cache: "no-store" }
-        ),
-  
-        fetch(
-          AWARDS_CSV_URL,
-          { cache: "no-store" }
-        )
+        HLDB.loadData("players"),
+        HLDB.loadData("matches"),
+        HLDB.loadData("awards"),
+        HLDB.loadData("playerAlias")
       ]);
-  
+      
+      
+      /*
+        URLで指定された参加名から、
+        統合後の選手IDを取得
+      */
+      currentPlayerId =
+        HLDB.getPlayerIdFromAlias(
+          playerName,
+          playerAliasData
+        );
+      
+      
+      /*
+        PlayerAliasに登録されていない選手は、
+        従来どおり本人の名前だけを使用
+      */
+      if (currentPlayerId) {
+        currentPlayerAliasNames =
+          HLDB.getPlayerAliasNames(
+            currentPlayerId,
+            playerAliasData
+          );
+      } else {
+        currentPlayerAliasNames = [
+          String(playerName).trim()
+        ];
+      }
+      
+      
+      /*
+        念のためURLで開いた名前も検索対象へ含める
+      */
       if (
-        !playersResponse.ok ||
-        !matchesResponse.ok ||
-        !awardsResponse.ok
+        playerName &&
+        !currentPlayerAliasNames.includes(
+          String(playerName).trim()
+        )
       ) {
-        throw new Error(
-          "CSVデータの取得に失敗しました。"
+        currentPlayerAliasNames.push(
+          String(playerName).trim()
         );
       }
-  
-      const playersText =
-        await playersResponse.text();
-  
-      const matchesText =
-        await matchesResponse.text();
-  
-      const awardsText =
-        await awardsResponse.text();
-  
-      playersData =
-        parseCsv(playersText);
-  
-      matchesData =
-        parseCsv(matchesText);
-  
-      awardsData =
-        parseCsv(awardsText);
+      
+      console.log(
+        "選手統合情報:",
+        {
+          playerName,
+          currentPlayerId,
+          currentPlayerAliasNames
+        }
+      );
+      displayPlayerName =
+  currentPlayerAliasNames[
+    currentPlayerAliasNames.length - 1
+  ] || playerName;
   
       const years =
         getPlayerYears();

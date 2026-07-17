@@ -14,7 +14,8 @@ HLDB.DATA_URLS = {
   teams: "data/teams.csv",
   players: "data/players.csv",
   matches: "data/matches.csv",
-  awards: "data/awards.csv"
+  awards: "data/awards.csv",
+  playerAlias: "data/playerAlias.csv"
 };
 
 
@@ -304,6 +305,78 @@ HLDB.loadData = async function (
 
     throw fetchError;
   }
+};
+/* ========================================
+   選手Alias関連
+======================================== */
+
+/* 検索名を比較用に整える */
+HLDB.normalizePlayerAliasName = function (value) {
+  return String(value ?? "")
+    .normalize("NFKC")
+    .replace(/\s+/g, "")
+    .trim()
+    .toLowerCase();
+};
+
+
+/* 参加名から選手IDを取得 */
+HLDB.getPlayerIdFromAlias = function (
+  playerName,
+  playerAliasData
+) {
+  const normalizedName =
+    HLDB.normalizePlayerAliasName(playerName);
+
+  if (!normalizedName) {
+    return "";
+  }
+
+  const matchedAlias =
+    playerAliasData.find(row => {
+      return (
+        HLDB.normalizePlayerAliasName(
+          row["検索名"]
+        ) === normalizedName
+      );
+    });
+
+  return String(
+    matchedAlias?.["選手ID"] ?? ""
+  ).trim();
+};
+
+
+/* 選手IDから全参加名を取得 */
+HLDB.getPlayerAliasNames = function (
+  playerId,
+  playerAliasData
+) {
+  const normalizedId =
+    String(playerId ?? "").trim();
+
+  if (!normalizedId) {
+    return [];
+  }
+
+  return [
+    ...new Set(
+      playerAliasData
+        .filter(row => {
+          return (
+            String(
+              row["選手ID"] ?? ""
+            ).trim() === normalizedId
+          );
+        })
+        .map(row => {
+          return String(
+            row["検索名"] ?? ""
+          ).trim();
+        })
+        .filter(Boolean)
+    )
+  ];
 };
 
 
