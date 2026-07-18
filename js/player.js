@@ -546,19 +546,27 @@ function getRegularPlayerRecord() {
     return null;
   }
 
-  return playersData.find(row =>
-    String(row["選手名"] || "").trim() ===
-      playerName &&
-    normalizeYear(row["年度"]) ===
-      activeYear &&
-    (
-      !activeLeague ||
-      normalizeLeague(row["リーグ"]) ===
-        activeLeague
-    ) &&
-    normalizeStage(row["ステージ"]) ===
-      "レギュラー"
-  ) || null;
+  return playersData.find(row => {
+    const rowPlayerId =
+      String(
+        row["選手ID"] || ""
+      ).trim();
+
+    return (
+      rowPlayerId === currentPlayerId &&
+      normalizeYear(row["年度"]) ===
+        activeYear &&
+      (
+        !activeLeague ||
+        normalizeLeague(
+          row["リーグ"]
+        ) === activeLeague
+      ) &&
+      normalizeStage(
+        row["ステージ"]
+      ) === "レギュラー"
+    );
+  }) || null;
 }
 
 
