@@ -448,7 +448,7 @@ async function loadTeams() {
    お気に入り
 ======================================== */
 
-function getFavoritePlayerNames() {
+function getFavoritePlayers() {
   try {
     const saved = JSON.parse(
       localStorage.getItem(
@@ -461,12 +461,61 @@ function getFavoritePlayerNames() {
         if (
           typeof item === "string"
         ) {
-          return item;
+          return {
+            id: "",
+            name: item
+          };
         }
 
-        return item?.name || "";
+        return {
+          id: String(
+            item?.id || ""
+          ).trim(),
+
+          name: String(
+            item?.name || ""
+          ).trim()
+        };
       })
-      .filter(Boolean);
+      .filter(item =>
+        item.id || item.name
+      );
+
+  } catch {
+    return [];
+  }
+}function getFavoritePlayers() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(
+        "hldbFavoritePlayers"
+      ) || "[]"
+    );
+
+    return saved
+      .map(item => {
+        if (
+          typeof item === "string"
+        ) {
+          return {
+            id: "",
+            name: item
+          };
+        }
+
+        return {
+          id: String(
+            item?.id || ""
+          ).trim(),
+
+          name: String(
+            item?.name || ""
+          ).trim()
+        };
+      })
+      .filter(item =>
+        item.id || item.name
+      );
 
   } catch {
     return [];
@@ -476,14 +525,36 @@ function getFavoritePlayerNames() {
 
 function getLatestPlayerRecord(
   allPlayers,
-  name
+  favorite
 ) {
+  const favoriteId =
+    String(
+      favorite?.id || ""
+    ).trim();
+
+  const favoriteName =
+    String(
+      favorite?.name || ""
+    ).trim();
+
   const candidates =
-    allPlayers.filter(row =>
-      String(
-        row["選手名"] || ""
-      ).trim() === name
-    );
+    allPlayers.filter(row => {
+      const rowId =
+        String(
+          row["選手ID"] || ""
+        ).trim();
+
+      const rowName =
+        String(
+          row["選手名"] || ""
+        ).trim();
+
+      if (favoriteId) {
+        return rowId === favoriteId;
+      }
+
+      return rowName === favoriteName;
+    });
 
   if (
     candidates.length === 0
@@ -561,12 +632,12 @@ async function renderFavoritePlayers() {
     return;
   }
 
-  const favoriteNames =
-    getFavoritePlayerNames();
+  const favorites =
+  getFavoritePlayers();
 
   if (
-    favoriteNames.length === 0
-  ) {
+    favorites.length === 0
+  ){
     area.innerHTML = `
       <p class="no-data-message">
         お気に入り選手はいません
@@ -589,12 +660,12 @@ async function renderFavoritePlayers() {
       );
 
     const cards =
-      favoriteNames.map(name => {
-        const player =
-          getLatestPlayerRecord(
-            allPlayers,
-            name
-          );
+    favorites.map(favorite => {
+      const player =
+      getLatestPlayerRecord(
+        allPlayers,
+        favorite
+      );
 
         if (!player) {
           return `
@@ -605,7 +676,7 @@ async function renderFavoritePlayers() {
 
               <div>
                 <strong>
-                  ${HLDB.escapeHtml(name)}
+                ${HLDB.escapeHtml(favorite.name)}
                 </strong>
 
                 <small>
@@ -618,8 +689,8 @@ async function renderFavoritePlayers() {
 
         const playerUrl =
           HLDB.createPlayerUrl({
-            player:
-              player["選手名"],
+            id:
+              player["選手ID"],
             year:
               player["年度"],
             league:

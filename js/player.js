@@ -12,6 +12,7 @@ const AWARDS_CSV_URL =
 
 const params = new URLSearchParams(window.location.search);
 
+const playerId = params.get("id") || "";
 const playerName = params.get("player") || "";
 let displayPlayerName = playerName;
 const urlYear = params.get("year") || "";
@@ -322,8 +323,8 @@ function escapeHtml(value) {
 function getPlayerYears() {
   const years = matchesData
     .filter(row =>
-      String(row["選手名"] || "").trim() ===
-      playerName
+      String(row["選手ID"] || "").trim() ===
+      currentPlayerId
     )
     .map(row =>
       normalizeYear(row["年度"])
@@ -356,8 +357,8 @@ function getLeagueForYear(year) {
     Playersのレギュラー行から探します。
   */
   const regularPlayer = playersData.find(row =>
-    String(row["選手名"] || "").trim() ===
-      playerName &&
+    String(row["選手ID"] || "").trim() ===
+      currentPlayerId &&
     normalizeYear(row["年度"]) === year &&
     normalizeStage(row["ステージ"]) ===
       "レギュラー"
@@ -373,8 +374,8 @@ function getLeagueForYear(year) {
     PlayersになければMatchesから探します。
   */
   const match = matchesData.find(row =>
-    String(row["選手名"] || "").trim() ===
-      playerName &&
+    String(row["選手ID"] || "").trim() ===
+      currentPlayerId &&
     normalizeYear(row["年度"]) === year
   );
 
@@ -390,13 +391,9 @@ function getLeagueForYear(year) {
 
 function getSelectedMatches() {
   return matchesData.filter(row => {
-    const matchPlayerName =
-    String(row["選手名"] || "").trim();
-  
-  const playerMatches =
-    currentPlayerAliasNames.includes(
-      matchPlayerName
-    );
+    const playerMatches =
+  String(row["選手ID"] || "").trim() ===
+  currentPlayerId;
 
     const yearMatches =
       activeYear === "ALL" ||
@@ -1071,26 +1068,29 @@ function attachFilterEvents() {
     }
   
     const awards = awardsData
-      .filter(row => {
-        const awardPlayer =
-          String(
-            row["選手名"] || ""
-          ).trim();
-  
-        const yearMatches =
-          activeYear === "ALL" ||
-          normalizeYear(
-            row["年度"]
-          ) === activeYear;
-  
-          return (
-            currentPlayerAliasNames.includes(
-              awardPlayer
-            ) &&
-            awardPlayer !== "該当者なし" &&
-            yearMatches
-          );
-      })
+  .filter(row => {
+    const awardPlayerId =
+      String(
+        row["選手ID"] || ""
+      ).trim();
+
+    const awardPlayer =
+      String(
+        row["選手名"] || ""
+      ).trim();
+
+    const yearMatches =
+      activeYear === "ALL" ||
+      normalizeYear(
+        row["年度"]
+      ) === activeYear;
+
+    return (
+      awardPlayerId === currentPlayerId &&
+      awardPlayer !== "該当者なし" &&
+      yearMatches
+    );
+  })
       .sort((a, b) => {
         const yearDiff =
           Number(
@@ -1704,7 +1704,7 @@ function attachFilterEvents() {
 
 async function loadPlayerDetail() {
     try {
-      if (!playerName) {
+      if (!playerId && !playerName) {
         playerInfo.innerHTML = `
           <p class="no-data-message">
             選手が指定されていません。
@@ -1743,14 +1743,18 @@ async function loadPlayerDetail() {
       
       
       /*
-        URLで指定された参加名から、
-        統合後の選手IDを取得
-      */
-      currentPlayerId =
-        HLDB.getPlayerIdFromAlias(
-          playerName,
-          playerAliasData
-        );
+  URLでID指定されている場合はそのまま使用。
+  旧URL(player=)の場合はAliasからIDを取得。
+*/
+if (playerId) {
+  currentPlayerId = playerId;
+} else {
+  currentPlayerId =
+    HLDB.getPlayerIdFromAlias(
+      playerName,
+      playerAliasData
+    );
+}
       
       
       /*
@@ -1792,10 +1796,26 @@ async function loadPlayerDetail() {
           currentPlayerAliasNames
         }
       );
-      displayPlayerName =
+      const currentPlayerRecords =
+  playersData
+    .filter(row =>
+      String(row["選手ID"] || "").trim() ===
+        currentPlayerId
+    )
+    .sort((a, b) =>
+      Number(normalizeYear(b["年度"])) -
+      Number(normalizeYear(a["年度"]))
+    );
+
+const currentPlayer =
+  currentPlayerRecords[0];
+
+displayPlayerName =
+  currentPlayer?.["選手名"] ||
   currentPlayerAliasNames[
     currentPlayerAliasNames.length - 1
-  ] || playerName;
+  ] ||
+  playerName;
   
       const years =
         getPlayerYears();
@@ -1876,7 +1896,7 @@ async function loadPlayerDetail() {
    お気に入り
 ======================================== */
 
-function getFavoritePlayerNames() {
+function getFavoritePlayers() {
   try {
     const saved = JSON.parse(
       localStorage.getItem(
@@ -1886,13 +1906,37 @@ function getFavoritePlayerNames() {
 
     return saved
       .map(item => {
+        /*
+          旧形式：
+          "サヴェ松田"
+        */
         if (typeof item === "string") {
-          return item;
+          return {
+            id: "",
+            name: item
+          };
         }
 
-        return item?.name || "";
+        /*
+          新形式：
+          {
+            id: "P0086",
+            name: "サヴェ松田"
+          }
+        */
+        return {
+          id: String(
+            item?.id || ""
+          ).trim(),
+
+          name: String(
+            item?.name || ""
+          ).trim()
+        };
       })
-      .filter(Boolean);
+      .filter(item =>
+        item.id || item.name
+      );
 
   } catch {
     return [];
@@ -1900,33 +1944,70 @@ function getFavoritePlayerNames() {
 }
 
 
-function saveFavoritePlayerNames(names) {
-  const uniqueNames =
-    [...new Set(names)];
+function saveFavoritePlayers(players) {
+  const uniquePlayers = [];
+
+  players.forEach(player => {
+    const id =
+      String(
+        player?.id || ""
+      ).trim();
+
+    const name =
+      String(
+        player?.name || ""
+      ).trim();
+
+    const alreadyExists =
+      uniquePlayers.some(item =>
+        id
+          ? item.id === id
+          : item.name === name
+      );
+
+    if (
+      !alreadyExists &&
+      (id || name)
+    ) {
+      uniquePlayers.push({
+        id,
+        name
+      });
+    }
+  });
 
   localStorage.setItem(
     "hldbFavoritePlayers",
-    JSON.stringify(uniqueNames)
+    JSON.stringify(uniquePlayers)
   );
 }
 
 
-function isFavoritePlayer(name) {
-  return getFavoritePlayerNames()
-    .includes(name);
+function isFavoritePlayer() {
+  return getFavoritePlayers()
+    .some(item => {
+      if (currentPlayerId) {
+        return item.id === currentPlayerId;
+      }
+
+      return (
+        item.name === displayPlayerName ||
+        item.name === playerName
+      );
+    });
 }
 
 
 function updateFavoriteButton() {
   if (
     !favoriteButton ||
-    !playerName
+    (!currentPlayerId && !displayPlayerName)
   ) {
     return;
   }
 
   const isFavorite =
-    isFavoritePlayer(playerName);
+    isFavoritePlayer();
 
   favoriteButton.textContent =
     isFavorite
@@ -1941,21 +2022,40 @@ function updateFavoriteButton() {
 
 
 function toggleFavoritePlayer() {
-  if (!playerName) {
+  if (
+    !currentPlayerId &&
+    !displayPlayerName
+  ) {
     return;
   }
 
   const favorites =
-    getFavoritePlayerNames();
+    getFavoritePlayers();
+
+  const isFavorite =
+    isFavoritePlayer();
 
   const updatedFavorites =
-    isFavoritePlayer(playerName)
-      ? favorites.filter(
-          name => name !== playerName
-        )
-      : [...favorites, playerName];
+    isFavorite
+      ? favorites.filter(item => {
+          if (currentPlayerId) {
+            return item.id !== currentPlayerId;
+          }
 
-  saveFavoritePlayerNames(
+          return (
+            item.name !== displayPlayerName &&
+            item.name !== playerName
+          );
+        })
+      : [
+          ...favorites,
+          {
+            id: currentPlayerId,
+            name: displayPlayerName
+          }
+        ];
+
+  saveFavoritePlayers(
     updatedFavorites
   );
 

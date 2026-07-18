@@ -282,7 +282,7 @@ function formatAwardValue(row) {
 /* 選手ページURL */
 function createPlayerUrl(row) {
   const query = new URLSearchParams({
-    player: row["選手名"] || "",
+    id: row["選手ID"] || "",
     year: normalizeYear(row["年度"]),
     league: row["リーグ"] || "",
     stage: "レギュラー"

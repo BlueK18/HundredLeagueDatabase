@@ -641,13 +641,13 @@ HLDB.escapeHtml = function (value) {
 ======================================== */
 
 HLDB.createPlayerUrl = function ({
-  player,
+  id,
   year,
   league,
   stage
 }) {
   const query = new URLSearchParams({
-    player: player || "",
+    id: id || "",
     year: year || "",
     league: league || "",
     stage: stage || ""
@@ -790,7 +790,7 @@ HLDB.initializePlayerSearch = async function () {
       resultsArea.innerHTML = matches
         .map(player => {
           const playerUrl = HLDB.createPlayerUrl({
-            player: player["選手名"],
+            id: player["選手ID"],
             year: player["年度"],
             league: player["リーグ"],
             stage: player["ステージ"]

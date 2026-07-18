@@ -129,7 +129,7 @@ function renderPlayers() {
 
           ${filtered.map(player => {
             const playerUrl = HLDB.createPlayerUrl({
-              player: player["選手名"],
+              id: player["選手ID"],
               year: player["年度"],
               league: player["リーグ"],
               stage: player["ステージ"]
