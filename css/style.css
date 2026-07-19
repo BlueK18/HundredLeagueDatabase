@@ -1374,3 +1374,98 @@ body.modal-open{
     }
   
   }
+  /* ========================================
+   選手ランキング：スマホ専用
+   チーム順位と同じくらいコンパクトにする
+======================================== */
+@media (max-width: 768px) {
+
+    .players-page {
+      width: 100%;
+      max-width: 100%;
+      padding: 18px 4px 40px;
+      overflow: hidden;
+    }
+  
+    .players-ranking-section {
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .players-ranking-section h2 {
+      margin-bottom: 18px;
+      font-size: 28px;
+      line-height: 1.25;
+    }
+  
+    .players-table-wrapper {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-radius: 0;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    .players-ranking-table {
+      width: 760px;
+      min-width: 760px;
+      table-layout: fixed;
+      margin: 0;
+    }
+  
+    .players-ranking-table th,
+    .players-ranking-table td {
+      height: 58px;
+      padding: 9px 6px;
+      font-size: 13px;
+      line-height: 1.25;
+      white-space: nowrap;
+      text-align: center;
+    }
+  
+    /* 順位 */
+    .players-ranking-table th:nth-child(1),
+    .players-ranking-table td:nth-child(1) {
+      width: 66px;
+      min-width: 66px;
+    }
+  
+    /* 選手名 */
+    .players-ranking-table th:nth-child(2),
+    .players-ranking-table td:nth-child(2) {
+      width: 190px;
+      min-width: 190px;
+      padding-left: 10px;
+      text-align: left;
+    }
+  
+    /* チーム */
+    .players-ranking-table th:nth-child(3),
+    .players-ranking-table td:nth-child(3) {
+      width: 170px;
+      min-width: 170px;
+      padding-left: 8px;
+      text-align: left;
+    }
+  
+    /* 4列目以降 */
+    .players-ranking-table th:nth-child(n+4),
+    .players-ranking-table td:nth-child(n+4) {
+      width: 84px;
+    }
+  
+    .players-rank-cell {
+      font-size: 13px;
+    }
+  
+    .player-ranking-link {
+      font-size: 13px;
+    }
+  
+    .players-name-cell,
+    .players-ranking-table td:nth-child(3) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
