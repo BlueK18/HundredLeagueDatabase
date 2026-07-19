@@ -1469,3 +1469,39 @@ body.modal-open{
       text-overflow: ellipsis;
     }
   }
+  /* ========================================
+   HOMEメニューカード：スマホ専用
+   横幅はそのまま・高さだけコンパクトに
+======================================== */
+@media (max-width: 768px) {
+
+    .home-navigation {
+      width: 100%;
+      max-width: 100%;
+      margin: 24px auto 10px;
+      padding: 0 16px;
+      gap: 14px;
+    }
+  
+    .home-menu-card {
+      min-height: 170px;
+      padding: 20px 16px;
+      border-radius: 20px;
+    }
+  
+    .home-menu-icon {
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+  
+    .home-menu-card strong {
+      margin-bottom: 6px;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+  
+    .home-menu-card small {
+      font-size: 15px;
+      line-height: 1.35;
+    }
+  }
