@@ -1520,3 +1520,76 @@ body.modal-open{
     }
   
   }
+  /* ========================================
+   スマホ共通：下部固定ナビ
+======================================== */
+
+.bottom-nav {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+  
+    body {
+      padding-bottom: 88px;
+    }
+  
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5000;
+  
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+  
+      min-height: 72px;
+      padding:
+        7px
+        4px
+        max(7px, env(safe-area-inset-bottom));
+  
+      background: rgba(12, 12, 12, 0.96);
+      border-top: 1px solid #3a3a3a;
+  
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+  
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
+    }
+  
+    .bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+  
+      min-width: 0;
+      padding: 5px 2px;
+  
+      color: #a9a9a9;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  
+    .bottom-nav-icon {
+      display: block;
+      font-size: 23px;
+      line-height: 1;
+    }
+  
+    .bottom-nav-label {
+      display: block;
+      font-size: 11px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+  
+    .bottom-nav-item:hover,
+    .bottom-nav-item:focus-visible,
+    .bottom-nav-item.is-active {
+      color: #d4af37;
+    }
+  }
