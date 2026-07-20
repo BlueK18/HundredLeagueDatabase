@@ -390,7 +390,9 @@ function getLeagueForYear(year) {
 ======================================== */
 
 function getSelectedMatches() {
-  return matchesData.filter(row => {
+
+  return matchesData
+    .filter(row => {
     const playerMatches =
   String(row["選手ID"] || "").trim() ===
   currentPlayerId;
@@ -411,14 +413,25 @@ function getSelectedMatches() {
       normalizeStage(row["ステージ"]) ===
         activeStage;
 
-    return (
-      playerMatches &&
-      yearMatches &&
-      leagueMatches &&
-      stageMatches
-    );
-  });
-}
+        return (
+          playerMatches &&
+          yearMatches &&
+          leagueMatches &&
+          stageMatches
+        );
+      })
+      .sort((a, b) => {
+        const dateA = new Date(
+          String(a["日付"]).replace(/\//g, "-")
+        );
+    
+        const dateB = new Date(
+          String(b["日付"]).replace(/\//g, "-")
+        );
+    
+        return dateB - dateA;
+      });
+    }
 
 
 /* ========================================
@@ -785,11 +798,56 @@ function renderPlayerInfo() {
       ? "全ステージ通算"
       : displayStageName(activeStage);
 
-  const teamDisplay =
-    stats.teamNames.length > 0
-      ? stats.teamNames.join(" / ")
-      : regularPlayer?.["チーム名"] ||
-        "―";
+      const teamDisplay =
+      stats.teamNames.length > 0
+        ? stats.teamNames.join(" / ")
+        : regularPlayer?.["チーム名"] ||
+          "―";
+    
+          const teamLinkName =
+          stats.teamNames[0] ||
+          regularPlayer?.["チーム名"] ||
+          "";
+        
+        const teamLinkMatch =
+          selectedMatches.find(match =>
+            String(
+              match["チーム名"] || ""
+            ).trim() === teamLinkName
+          ) ||
+          selectedMatches[0] ||
+          null;
+        
+        const teamLinkYear =
+          normalizeYear(
+            teamLinkMatch?.["年度"] ||
+            regularPlayer?.["年度"] ||
+            ""
+          );
+        
+        const teamLinkLeague =
+          teamLinkMatch?.["リーグ"] ||
+          regularPlayer?.["リーグ"] ||
+          "";
+        
+        const teamLinkStage =
+          teamLinkMatch?.["ステージ"] ||
+          regularPlayer?.["ステージ"] ||
+          "Regular";
+        
+        const teamDetailUrl =
+          teamLinkName && teamLinkYear
+            ? `team.html?team=${encodeURIComponent(
+                teamLinkName
+              )}&year=${encodeURIComponent(
+                teamLinkYear
+              )}&league=${encodeURIComponent(
+                teamLinkLeague
+              )}&stage=${encodeURIComponent(
+                teamLinkStage
+              )}`
+            : "";
+
 
   const periodDisplay =
     activeYear === "ALL"
@@ -814,9 +872,30 @@ function renderPlayerInfo() {
           ${escapeHtml(selectedStageName)}
         </p>
 
-        <h2>
-          ${escapeHtml(teamDisplay)}
-        </h2>
+        ${
+          teamDetailUrl
+            ? `
+              <a
+                class="player-team-link"
+                href="${teamDetailUrl}"
+              >
+                <span class="player-team-link-label">
+                  所属チーム
+                </span>
+        
+                <strong>
+                  ${escapeHtml(teamDisplay)}
+                </strong>
+        
+                <i data-lucide="arrow-right"></i>
+              </a>
+            `
+            : `
+              <h2>
+                ${escapeHtml(teamDisplay)}
+              </h2>
+            `
+        }
 
       </div>
 
@@ -978,6 +1057,9 @@ function renderPlayerInfo() {
 
     </div>
   `;
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 
   attachFilterEvents();
 }
@@ -1644,6 +1726,9 @@ function attachFilterEvents() {
     document.body.classList.add(
       "modal-open"
     );
+    if (window.lucide) {
+      lucide.createIcons();
+    }
   }
   
   
@@ -1780,7 +1865,6 @@ if (playerId) {
           String(playerName).trim()
         ];
       }
-      
       
       /*
         念のためURLで開いた名前も検索対象へ含める

@@ -93,10 +93,27 @@ function renderPlayers() {
       );
     });
 
-  rankingTitle.textContent =
-    `${selectedYear}年 `
-    + `${HLDB.displayLeagueName(selectedLeague)} `
-    + `${HLDB.displayStageName(selectedStage)}`;
+    const leagueDisplay =
+  HLDB.displayLeagueName(selectedLeague);
+
+const hideSingleLeague =
+  leagueDisplay === "単一リーグ";
+
+rankingTitle.innerHTML = `
+  <span class="ranking-title-line">
+    <span>${selectedYear}年</span>
+
+    ${
+      hideSingleLeague
+        ? ""
+        : `<span>${leagueDisplay}</span>`
+    }
+  </span>
+
+  <span class="ranking-title-stage">
+    ${HLDB.displayStageName(selectedStage)}
+  </span>
+`;
 
   if (filtered.length === 0) {
     playersArea.innerHTML = `
@@ -209,6 +226,10 @@ function updateLeagueOptions() {
     selectedYear === "2024";
 
   if (isSingleLeagueYear) {
+
+    // リーグ選択を非表示
+    leagueControl.style.display = "none";
+
     leagueSelect.innerHTML = `
       <option value="単一リーグ">
         単一リーグ
@@ -220,6 +241,9 @@ function updateLeagueOptions() {
 
     return;
   }
+
+  // 通常年度は表示
+  leagueControl.style.display = "block";
 
   leagueSelect.innerHTML = `
     <option value="A">
@@ -245,6 +269,10 @@ async function loadPlayers() {
     `;
 
     playersData = await HLDB.loadData("players");
+    console.log(
+      "Playersの列名:",
+      Object.keys(playersData[0] || {})
+    );
 
     // 年度を自動生成（最新年度が先頭）
     HLDB.populateYearSelect(

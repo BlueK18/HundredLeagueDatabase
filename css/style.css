@@ -274,10 +274,27 @@ tr:hover{
 }
 
 .awards-controls{
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    margin-bottom:35px;
+    width:min(700px,100%);
+    margin:0 auto 35px;
+
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(160px,.55fr);
+    gap:14px;
+}
+
+.awards-controls select{
+    width:100%;
+    min-width:0;
+    margin:0;
+}
+
+.awards-controls #leagueControl{
+    width:100%;
+    min-width:0;
+}
+
+.awards-controls #leagueControl select{
+    width:100%;
 }
 
 .awards-grid{
@@ -406,7 +423,9 @@ tr:hover{
 
 @media(max-width:600px){
     .awards-controls{
-        flex-direction:column;
+        width:100%;
+        grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+        gap:10px;
     }
 
     .awards-grid{
@@ -429,10 +448,32 @@ tr:hover{
 }
 
 .players-controls{
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    margin-bottom:35px;
+    width:min(900px,100%);
+    margin:0 auto 35px;
+
+    display:grid;
+    grid-template-columns:
+        minmax(120px,.8fr)
+        minmax(160px,1fr)
+        minmax(220px,1.3fr);
+    gap:14px;
+
+    align-items:end;
+}
+
+.players-controls select{
+    width:100%;
+    min-width:0;
+    margin:0;
+}
+
+.players-controls #leagueControl{
+    width:100%;
+    min-width:0;
+}
+
+.players-controls #leagueControl select{
+    width:100%;
 }
 
 .players-ranking-section h2{
@@ -519,7 +560,16 @@ tr:hover{
 
 @media(max-width:700px){
     .players-controls{
-        flex-direction:column;
+        width:100%;
+
+        grid-template-columns:
+            minmax(0,.8fr)
+            minmax(0,1.2fr);
+        gap:10px;
+    }
+
+    .players-controls > .filter-field:last-child{
+        grid-column:1 / -1;
     }
 
     .players-page{
@@ -990,6 +1040,35 @@ html{
 .match-detail-modal.is-open{
     display:flex;
 }
+.match-detail-modal.is-open .match-detail-overlay{
+    animation:matchOverlayFade .2s ease-out;
+}
+
+.match-detail-modal.is-open .match-detail-dialog{
+    animation:matchDialogOpen .22s ease-out;
+}
+
+@keyframes matchOverlayFade{
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+}
+
+@keyframes matchDialogOpen{
+    from{
+        opacity:0;
+        transform:translateY(12px) scale(.97);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
 
 .match-detail-overlay{
     position:absolute;
@@ -1016,22 +1095,38 @@ html{
     color:#d4af37;
 }
 
-.match-detail-close{
+.match-modal-close{
     position:absolute;
     top:12px;
     right:14px;
     width:38px;
     height:38px;
+    padding:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
     border:0;
     border-radius:50%;
     background:#292929;
     color:#fff;
-    font-size:25px;
-    line-height:1;
+
     cursor:pointer;
 }
 
-.match-detail-close:hover{
+.match-modal-close svg{
+    width:20px;
+    height:20px;
+    stroke-width:2.5;
+}
+
+.match-modal-close:hover{
+    background:#3a3a3a;
+    color:#d4af37;
+}
+
+.match-modal-close:hover{
     background:#3a3a3a;
 }
 
@@ -1225,39 +1320,56 @@ body.modal-open{
 .ranking-controls {
     width: min(1100px, calc(100% - 48px));
     margin: 40px auto 60px;
-    display: flex;
-    justify-content: center;
+  
+    display: grid;
+    grid-template-columns:
+      minmax(140px, 0.8fr)
+      minmax(180px, 1fr)
+      minmax(240px, 1.4fr);
+    gap: 16px;
+  
     align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
   }
   
-  .ranking-controls select {
-    min-width: 170px;
+  /* 年度・ステージ */
+  .ranking-controls > select {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
   }
   
+  /* リーグ */
   .ranking-controls #leagueControl {
-    display: contents;
+    display: block;
+    width: 100%;
+    min-width: 0;
   }
+  
+  .ranking-controls #leagueControl select {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+  
+  
+  /* ========================================
+     スマホ表示
+  ======================================== */
   
   @media (max-width: 768px) {
     .ranking-controls {
       width: calc(100% - 32px);
-      gap: 12px;
+      margin: 16px auto 28px;
+  
+      grid-template-columns:
+        minmax(0, 0.8fr)
+        minmax(0, 1.2fr);
+      gap: 10px;
     }
   
-    .ranking-controls select {
-      width: 100%;
-      min-width: 0;
-    }
-  
-    .ranking-controls #leagueControl {
-      display: block;
-      width: 100%;
-    }
-  
-    .ranking-controls #leagueControl select {
-      width: 100%;
+    /* ステージは下段いっぱい */
+    .ranking-controls #stageSelect {
+      grid-column: 1 / -1;
     }
   }
   /* ========================================
@@ -1831,4 +1943,187 @@ body.modal-open{
   
     white-space:nowrap;
   }
+  /* ========================================
+   共通フィルター・セレクト
+======================================== */
+
+select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 44px 0 14px;
+  
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    border-radius: 12px;
+  
+    background-color: #181818;
+    color: #ffffff;
+  
+    font-size: 15px;
+    font-weight: 600;
+  
+    cursor: pointer;
+    outline: none;
+  
+    appearance: none;
+    -webkit-appearance: none;
+  
+    background-image:
+      linear-gradient(45deg, transparent 50%, #d4af37 50%),
+      linear-gradient(135deg, #d4af37 50%, transparent 50%);
+    background-position:
+      calc(100% - 19px) 50%,
+      calc(100% - 13px) 50%;
+    background-size:
+      6px 6px,
+      6px 6px;
+    background-repeat: no-repeat;
+  
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      background-color 0.2s;
+  }
+  
+  select:hover {
+    border-color: #d4af37;
+    background-color: #1e1e1e;
+  }
+  
+  select:focus {
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+  }
+  
+  select option {
+    background: #181818;
+    color: #ffffff;
+  }
+  /* ========================================
+   共通フィルターパネル
+======================================== */
+
+.filter-panel {
+    margin: 16px 4px 24px;
+    padding: 14px;
+  
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: 16px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        rgba(212, 175, 55, 0.07),
+        rgba(255, 255, 255, 0.015)
+      ),
+      #151515;
+  
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+  
+  .filter-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  
+    margin-bottom: 12px;
+  
+    color: #d4af37;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  
+  .filter-panel-title svg {
+    width: 17px;
+    height: 17px;
+  }
+  
+  .filter-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+    gap: 10px;
+  
+    margin-bottom: 10px;
+  }
+  
+  .filter-field {
+    min-width: 0;
+  }
+  
+  .filter-field label {
+    display: block;
+    margin: 0 0 5px 2px;
+  
+    color: #a9a9a9;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .filter-field select {
+    width: 100%;
+    margin: 0;
+  }
+  /* ========================================
+   選手ランキング見出し
+======================================== */
+
+#rankingTitle {
+    text-align: center;
+  }
+  
+  .ranking-title-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  
+    white-space: nowrap;
+  }
+  
+  .ranking-title-stage {
+    display: block;
+    margin-top: 3px;
+  
+    text-align: center;
+  }
+  .player-team-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:12px;
+    padding:14px 16px;
+    border:1px solid #4f431d;
+    border-radius:14px;
+    background:#1d1b14;
+    color:#fff;
+    text-decoration:none;
+    transition:.2s ease;
+}
+
+.player-team-link-label{
+    color:#9f9f9f;
+    font-size:12px;
+}
+
+.player-team-link strong{
+    flex:1;
+    min-width:0;
+    overflow:hidden;
+    color:#d4af37;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.player-team-link svg{
+    width:19px;
+    height:19px;
+    flex-shrink:0;
+}
+
+.player-team-link:hover{
+    border-color:#d4af37;
+    background:#272313;
+    transform:translateY(-1px);
+}
   
