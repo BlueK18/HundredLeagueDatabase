@@ -44,20 +44,43 @@
 
     <section class="players-controls">
 
-      <select id="yearSelect"></select>
-      
-        <div id="leagueControl">
-          <select id="leagueSelect">
-            <option value="A">Aリーグ</option>
-            <option value="B">Bリーグ</option>
-          </select>
+      <section class="players-controls filter-panel">
+
+        <div class="filter-panel-title">
+          <i data-lucide="sliders-horizontal"></i>
+          <span>表示条件</span>
         </div>
       
-        <select id="stageSelect">
-          <option value="レギュラー">レギュラー</option>
-          <option value="Semi-Final">セミファイナル</option>
-          <option value="Final">ファイナル</option>
-        </select>
+        <div class="filter-row">
+      
+          <div class="filter-field">
+            <label for="yearSelect">年度</label>
+            <select id="yearSelect"></select>
+          </div>
+      
+          <div
+            id="leagueControl"
+            class="filter-field"
+          >
+            <label for="leagueSelect">リーグ</label>
+      
+            <select id="leagueSelect">
+              <option value="A">Aリーグ</option>
+              <option value="B">Bリーグ</option>
+            </select>
+          </div>
+      
+        </div>
+      
+        <div class="filter-field">
+          <label for="stageSelect">ステージ</label>
+      
+          <select id="stageSelect">
+            <option value="レギュラー">レギュラー</option>
+            <option value="Semi-Final">セミファイナル</option>
+            <option value="Final">ファイナル</option>
+          </select>
+        </div>
       
       </section>
 
