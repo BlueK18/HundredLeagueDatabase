@@ -424,6 +424,47 @@ function renderAwards() {
             <div class="award-condition">
               ${getAwardCondition(category)}
             </div>
+    <a
+  class="award-ranking-card"
+  href="award-ranking.html?year=${encodeURIComponent(
+    selectedYear
+  )}&league=${encodeURIComponent(
+    selectedLeague
+  )}&category=${encodeURIComponent(
+    category
+  )}"
+>
+
+  <div class="award-ranking-card-left">
+
+    <span class="award-ranking-icon">
+  <i data-lucide="arrow-right-circle"></i>
+</span>
+
+    <div>
+
+      ${
+  getDisplayCategory(category).includes("最高得点")
+    ? `
+      <div>
+        <strong>ランキングを見る</strong>
+        <small>TOP10表示</small>
+      </div>
+    `
+    : `
+      <div>
+        <strong>📈 全ランキングを見る</strong>
+      </div>
+    `
+}
+
+    </div>
+
+  </div>
+
+  <i data-lucide="chevron-right"></i>
+
+</a>
 
           </article>
         `;
@@ -431,6 +472,9 @@ function renderAwards() {
 
     </div>
   `;
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 }
 /* CSV読込 */
 async function loadAwards() {
@@ -440,6 +484,9 @@ async function loadAwards() {
         読み込み中...
       </p>
     `;
+    if (window.lucide) {
+      lucide.createIcons();
+    }
 
     awardsData =
       await HLDB.loadData("awards");

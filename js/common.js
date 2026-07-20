@@ -946,51 +946,95 @@ function createBottomNavigation() {
   bottomNav.setAttribute("aria-label", "メインナビゲーション");
 
   bottomNav.innerHTML = `
-    <a
-      href="index.html"
-      class="bottom-nav-item"
-      data-page="home"
-    >
-      <span class="bottom-nav-icon">🏠</span>
-      <span class="bottom-nav-label">HOME</span>
-    </a>
+  <a
+    href="index.html"
+    class="bottom-nav-item"
+    data-page="home"
+  >
+    <i
+      data-lucide="house"
+      class="bottom-nav-icon"
+      aria-hidden="true"
+    ></i>
 
-    <a
-      href="index.html#teamRanking"
-      class="bottom-nav-item"
-      data-page="team"
-    >
-      <span class="bottom-nav-icon">📊</span>
-      <span class="bottom-nav-label">チーム</span>
-    </a>
+    <span class="bottom-nav-label">
+      HOME
+    </span>
+  </a>
 
-    <a
-      href="players.html"
-      class="bottom-nav-item"
-      data-page="players"
-    >
-      <span class="bottom-nav-icon">👤</span>
-      <span class="bottom-nav-label">選手</span>
-    </a>
+  <a
+    href="index.html#teamRanking"
+    class="bottom-nav-item"
+    data-page="team"
+  >
+    <i
+      data-lucide="users"
+      class="bottom-nav-icon"
+      aria-hidden="true"
+    ></i>
 
-    <a
-      href="awards.html"
-      class="bottom-nav-item"
-      data-page="awards"
-    >
-      <span class="bottom-nav-icon">🏆</span>
-      <span class="bottom-nav-label">個人賞</span>
-    </a>
+    <span class="bottom-nav-label">
+      チーム
+    </span>
+  </a>
 
-    <a
-      href="news.html"
-      class="bottom-nav-item"
-      data-page="news"
-    >
-      <span class="bottom-nav-icon">📢</span>
-      <span class="bottom-nav-label">お知らせ</span>
-    </a>
-  `;
+  <a
+    href="players.html"
+    class="bottom-nav-item"
+    data-page="players"
+  >
+    <i
+      data-lucide="user-search"
+      class="bottom-nav-icon"
+      aria-hidden="true"
+    ></i>
+
+    <span class="bottom-nav-label">
+      選手検索
+    </span>
+  </a>
+
+  <a
+    href="awards.html"
+    class="bottom-nav-item"
+    data-page="awards"
+  >
+    <i
+      data-lucide="trophy"
+      class="bottom-nav-icon"
+      aria-hidden="true"
+    ></i>
+
+    <span class="bottom-nav-label">
+      個人賞
+    </span>
+  </a>
+
+  <a
+    href="news.html"
+    class="bottom-nav-item"
+    data-page="news"
+  >
+    <i
+      data-lucide="megaphone"
+      class="bottom-nav-icon"
+      aria-hidden="true"
+    ></i>
+
+    <span class="bottom-nav-label">
+      お知らせ
+    </span>
+  </a>
+`;
+document.body.appendChild(bottomNav);
+
+if (window.lucide) {
+  window.lucide.createIcons({
+    attrs: {
+      "stroke-width": 2
+    }
+  });
+}
 
   document.body.appendChild(bottomNav);
 

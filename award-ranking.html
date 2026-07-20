@@ -10,9 +10,9 @@
   >
 
   <title>
-    個人賞｜ハンドレッドリーグ データベース
+    個人賞ランキング｜ハンドレッドリーグ データベース
   </title>
- 
+
   <link
     rel="stylesheet"
     href="css/style.css"
@@ -31,6 +31,7 @@
     </a>
 
     <div class="site-nav-links">
+
       <a href="index.html#teamRanking">
         チーム順位
       </a>
@@ -42,6 +43,7 @@
       <a href="awards.html">
         個人賞
       </a>
+
     </div>
 
     <div class="site-search">
@@ -62,59 +64,36 @@
 
   </nav>
 
-
   <header>
 
-    <h1>
-      🏆 個人賞
+    <h1 id="awardRankingTitle">
+      個人賞ランキング
     </h1>
 
-    <p id="awardsSeasonTitle">
-      2025 レギュラーシーズン
+    <p id="awardRankingSeason">
+      読み込み中...
     </p>
 
   </header>
 
-
-  <main class="awards-page">
-
-    <section class="awards-controls">
-
-      <select id="yearSelect"></select>
-
-
-      <div id="leagueControl">
-
-        <select id="leagueSelect">
-
-          <option value="A">
-            Aリーグ
-          </option>
-
-          <option value="B">
-            Bリーグ
-          </option>
-
-        </select>
-
-      </div>
-
-    </section>
-
+  <main class="award-ranking-page">
 
     <section>
 
-      <div id="awardsArea">
-        読み込み中...
+      <div id="awardRankingArea">
+
+        <p class="no-data-message">
+          読み込み中...
+        </p>
+
       </div>
 
     </section>
 
-
     <p class="back-link-area">
 
-      <a href="index.html">
-        ← 順位表へ戻る
+      <a href="awards.html">
+        ← 個人賞へ戻る
       </a>
 
     </p>
@@ -123,8 +102,8 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/common.js?v=3"></script>
-  <script src="js/awards.js"></script>
-  
+  <script src="js/award-ranking.js"></script>
+
 </body>
 
 </html>

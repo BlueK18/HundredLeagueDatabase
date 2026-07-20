@@ -55,7 +55,7 @@ async function loadTeamDetail() {
       return;
     }
 
-    renderTeamInfo(selectedTeam);
+    renderTeamInfo(selectedTeam, teamsData);
     renderTeamPlayers(playersData);
     renderTeamMatches(matchesData);
 
@@ -80,14 +80,105 @@ async function loadTeamDetail() {
    チーム情報
 ========================= */
 
-function renderTeamInfo(team) {
-  const point = HLDB.formatDecimal(team["ポイント"]);
+function renderTeamInfo(team, teamsData) {
+  const point = HLDB.toNumber(team["ポイント"]) ?? 0;
+  const rank = Number(team["順位"]);
 
-  const pointDiff = team["ポイント差"]
-    ? HLDB.formatDecimal(team["ポイント差"])
-    : "―";
+  const normalizedYear =
+    HLDB.normalizeYear(team["年度"]);
 
-  teamTitle.textContent = team["チーム"] || teamName;
+  const normalizedLeague =
+    HLDB.normalizeLeague(team["リーグ"]);
+
+  const normalizedStage =
+    HLDB.normalizeStage(team["ステージ"]);
+    const isPastSingleLeague =
+    normalizedLeague === "単一リーグ" &&
+    (
+      normalizedYear === "2023" ||
+      normalizedYear === "2024"
+    );
+
+  /*
+    同じ年度・リーグ・ステージのチームだけ取得
+  */
+  const stageTeams = teamsData
+    .filter(row =>
+      HLDB.normalizeYear(row["年度"]) === normalizedYear &&
+      HLDB.normalizeLeague(row["リーグ"]) === normalizedLeague &&
+      HLDB.normalizeStage(row["ステージ"]) === normalizedStage
+    )
+    .sort(
+      (a, b) =>
+        Number(a["順位"]) - Number(b["順位"])
+    );
+
+  /*
+    1つ上のチームとの差
+  */
+  let upperDiffText = "首位";
+
+  if (rank > 1) {
+    const upperTeam = stageTeams.find(
+      row => Number(row["順位"]) === rank - 1
+    );
+
+    const upperPoint =
+      HLDB.toNumber(upperTeam?.["ポイント"]);
+
+    if (upperPoint !== null) {
+      const upperDiff =
+        Math.abs(upperPoint - point);
+
+      upperDiffText =
+        `${HLDB.formatDecimal(upperDiff)} pt`;
+    } else {
+      upperDiffText = "―";
+    }
+  }
+
+  /*
+    進出ボーダー順位
+  */
+  let borderRank = null;
+
+  if (normalizedStage === "レギュラー") {
+    borderRank = 6;
+  } else if (normalizedStage === "Semi-Final") {
+    borderRank = 4;
+  }
+
+  /*
+    ボーダーとの差
+  */
+  let borderDiffText = "対象外";
+
+  if (borderRank !== null) {
+    const comparisonRank =
+      rank <= borderRank
+        ? borderRank + 1
+        : borderRank;
+
+    const comparisonTeam = stageTeams.find(
+      row => Number(row["順位"]) === comparisonRank
+    );
+
+    const comparisonPoint =
+      HLDB.toNumber(comparisonTeam?.["ポイント"]);
+
+    if (comparisonPoint !== null) {
+      const borderDiff =
+        Math.abs(point - comparisonPoint);
+
+      borderDiffText =
+        `${HLDB.formatDecimal(borderDiff)} pt`;
+    } else {
+      borderDiffText = "―";
+    }
+  }
+
+  teamTitle.textContent =
+    team["チーム"] || teamName;
 
   teamInfo.innerHTML = `
     <div class="team-detail">
@@ -97,7 +188,9 @@ function renderTeamInfo(team) {
         ${HLDB.normalizeLeague(team["リーグ"])}リーグ
       </p>
 
-      <p>${HLDB.displayStageName(team["ステージ"])}</p>
+      <p>
+        ${HLDB.displayStageName(team["ステージ"])}
+      </p>
 
       <div class="team-stats">
 
@@ -108,7 +201,7 @@ function renderTeamInfo(team) {
 
         <div>
           <span>ポイント</span>
-          <strong>${point} pt</strong>
+          <strong>${HLDB.formatDecimal(point)} pt</strong>
         </div>
 
         <div>
@@ -116,20 +209,29 @@ function renderTeamInfo(team) {
           <strong>${team["試合数"]}</strong>
         </div>
 
-        <div>
+        <div class="placement-stat">
           <span>着順分布</span>
           <strong>${team["着順分布"]}</strong>
         </div>
 
         <div>
-          <span>ポイント差</span>
-          <strong>${pointDiff}</strong>
+          <span>上位まで</span>
+          <strong>${upperDiffText}</strong>
         </div>
+
+                ${isPastSingleLeague ? "" : `
+          <div>
+            <span>ボーダーまで</span>
+            <strong>${borderDiffText}</strong>
+          </div>
+        `}
 
       </div>
 
       <p>
-        <a href="index.html">← 順位表へ戻る</a>
+        <a href="index.html">
+          ← 順位表へ戻る
+        </a>
       </p>
 
     </div>

@@ -242,13 +242,13 @@ function renderTeams() {
     <table>
       <thead>
         <tr>
-          <th>順位</th>
-          <th>チーム</th>
-          <th>試合数</th>
-          <th>ポイント</th>
-          <th>着順分布</th>
-          <th>ポイント差</th>
-        </tr>
+  <th>順位</th>
+  <th>チーム</th>
+  <th>ポイント</th>
+  <th>試合数</th>
+  <th>着順分布</th>
+  <th>ポイント差</th>
+</tr>
       </thead>
 
       <tbody>
@@ -295,25 +295,25 @@ function renderTeams() {
               </td>
 
               <td>
-                <a
-                  class="team-link"
-                  href="${teamUrl}"
-                >
-                  ${HLDB.escapeHtml(
-                    row["チーム"] || "―"
-                  )}
-                </a>
-              </td>
+  <a
+    class="team-link"
+    href="${teamUrl}"
+  >
+    ${HLDB.escapeHtml(
+      row["チーム"] || "―"
+    )}
+  </a>
+</td>
 
-              <td>
-                ${HLDB.escapeHtml(
-                  row["試合数"] || "―"
-                )}
-              </td>
+<td>
+  ${pointDisplay}
+</td>
 
-              <td>
-                ${pointDisplay}
-              </td>
+<td>
+  ${HLDB.escapeHtml(
+    row["試合数"] || "―"
+  )}
+</td>
 
               <td>
                 ${HLDB.escapeHtml(
