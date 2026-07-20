@@ -1026,6 +1026,8 @@ function createBottomNavigation() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", createBottomNavigation);
+} else {
   createBottomNavigation();
-});
+}
