@@ -52,7 +52,7 @@ else
 
   echo ""
   echo "GitHubへ送信しました。"
-  echo "Netlifyの公開サイトも自動更新されます。"
+  echo "GitHub Pagesへ反映中です。通常30秒〜数分で更新されます。"
 fi
 
 echo ""
