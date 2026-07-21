@@ -1049,12 +1049,6 @@ function renderPlayerInfo() {
         regularPlayer
       )}
 
-      <p class="back-link-area">
-        <a href="javascript:history.back()">
-          ← 前のページへ戻る
-        </a>
-      </p>
-
     </div>
   `;
   if (window.lucide) {
@@ -1158,29 +1152,29 @@ function attachFilterEvents() {
     }
   
     const awards = awardsData
-  .filter(row => {
-    const awardPlayerId =
-      String(
-        row["選手ID"] || ""
-      ).trim();
-
-    const awardPlayer =
-      String(
-        row["選手名"] || ""
-      ).trim();
-
-    const yearMatches =
-      activeYear === "ALL" ||
-      normalizeYear(
-        row["年度"]
-      ) === activeYear;
-
-    return (
-      awardPlayerId === currentPlayerId &&
-      awardPlayer !== "該当者なし" &&
-      yearMatches
-    );
-  })
+      .filter(row => {
+        const awardPlayerId =
+          String(
+            row["選手ID"] || ""
+          ).trim();
+  
+        const awardPlayer =
+          String(
+            row["選手名"] || ""
+          ).trim();
+  
+        const yearMatches =
+          activeYear === "ALL" ||
+          normalizeYear(
+            row["年度"]
+          ) === activeYear;
+  
+        return (
+          awardPlayerId === currentPlayerId &&
+          awardPlayer !== "該当者なし" &&
+          yearMatches
+        );
+      })
       .sort((a, b) => {
         const yearDiff =
           Number(
@@ -1217,54 +1211,108 @@ function attachFilterEvents() {
     playerAwards.innerHTML = `
       <div class="player-awards-list">
   
-        ${awards.map(award => `
-          <article class="player-award-card">
+        ${awards.map(award => {
+          const awardYear =
+            normalizeYear(
+              award["年度"]
+            );
   
-            <div class="player-award-icon">
-              ${getAwardIcon(
-                String(
-                  award["部門"] || ""
-                )
-              )}
-            </div>
+          const originalLeague =
+          String(
+            award["リーグ"] || ""
+          ).trim();
+        
+        const awardLeague =
+          originalLeague === "Aリーグ"
+            ? "A"
+            : originalLeague === "Bリーグ"
+              ? "B"
+              : originalLeague;
   
-            <div class="player-award-main">
+          /*
+            URLに使う元の部門名
+            例：ポイント賞
+          */
+          const awardCategory =
+            String(
+              award["部門"] || ""
+            ).trim();
   
-              <strong>
-                ${escapeHtml(
-                  getDisplayAwardName(
-                    String(
-                      award["部門"] || ""
-                    ).trim()
-                  )
+          /*
+            画面に表示する部門名
+            例：MVP
+          */
+          const displayAwardName =
+            getDisplayAwardName(
+              awardCategory
+            );
+  
+          const awardUrl =
+            `award-ranking.html?year=${encodeURIComponent(
+              awardYear
+            )}&league=${encodeURIComponent(
+              awardLeague
+            )}&category=${encodeURIComponent(
+              awardCategory
+            )}`;
+  
+          return `
+            <a
+              class="player-award-card"
+              href="${awardUrl}"
+              aria-label="${escapeHtml(
+                displayAwardName
+              )}のランキングを見る"
+            >
+  
+              <div class="player-award-icon">
+                ${getAwardIcon(
+                  awardCategory
                 )}
-              </strong>
+              </div>
   
-              <span>
-                ${escapeHtml(
-                  normalizeYear(
-                    award["年度"]
-                  )
-                )}年・${escapeHtml(
-                  displayLeagueName(
-                    award["リーグ"]
-                  )
+              <div class="player-award-main">
+  
+                <strong>
+                  ${escapeHtml(
+                    displayAwardName
+                  )}
+                </strong>
+  
+                <span>
+                  ${escapeHtml(
+                    awardYear
+                  )}年・${escapeHtml(
+                    displayLeagueName(
+                      award["リーグ"]
+                    )
+                  )}
+                </span>
+  
+              </div>
+  
+              <div class="player-award-rank">
+                ${formatRank(
+                  award["順位"]
                 )}
-              </span>
+              </div>
   
-            </div>
+              <i
+                class="player-award-arrow"
+                data-lucide="chevron-right"
+                aria-hidden="true"
+              ></i>
   
-            <div class="player-award-rank">
-              ${formatRank(
-                award["順位"]
-              )}
-            </div>
-  
-          </article>
-        `).join("")}
+            </a>
+          `;
+        }).join("")}
   
       </div>
     `;
+  
+    if (window.lucide) {
+      lucide.createIcons();
+    }
   }
   
   
@@ -1287,106 +1335,93 @@ function attachFilterEvents() {
     }
   
     playerMatches.innerHTML = `
-      <div class="matches-table-wrapper">
-  
-        <table>
-  
-          <thead>
-            <tr>
-              <th>年度</th>
-              <th>日付</th>
-              <th>チーム</th>
-              <th>着順</th>
-              <th>スコア</th>
-              <th>得点</th>
-              <th>ステージ</th>
-            </tr>
-          </thead>
-  
-          <tbody>
-  
-            ${selectedMatches.map(
-              (match, index) => `
-                <tr
-                  class="player-match-row"
-                  data-match-index="${index}"
-                  tabindex="0"
-                  role="button"
-                  aria-label="対局詳細を表示"
-                >
-  
-                  <td>
-                    ${escapeHtml(
-                      normalizeYear(
-                        match["年度"]
-                      ) || "―"
-                    )}
-                  </td>
-  
-                  <td>
-                    ${escapeHtml(
-                      match["日付"] || "―"
-                    )}
-                  </td>
-  
-                  <td>
-                    ${escapeHtml(
-                      match["チーム名"] || "―"
-                    )}
-                  </td>
-  
-                  <td>
-                    ${formatPlacement(
-                      match["着順"]
-                    )}
-                  </td>
-  
-                  <td>
-                    ${formatScore(
-                      match["スコア"]
-                    )}
-                  </td>
-  
-                  <td>
-                    ${
-                      toNumber(
+  <div class="matches-table-wrapper">
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>チーム</th>
+          <th>着順</th>
+          <th>スコア</th>
+          <th>得点</th>
+          <th>ステージ</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        ${selectedMatches.map(
+          (match, index) => `
+            <tr
+              class="player-match-row"
+              data-match-index="${index}"
+              tabindex="0"
+              role="button"
+              aria-label="対局詳細を表示"
+            >
+
+              <td class="match-date">
+                ${escapeHtml(
+                  match["日付"] || "―"
+                )}
+              </td>
+
+              <td class="match-team">
+                ${escapeHtml(
+                  match["チーム名"] || "―"
+                )}
+              </td>
+
+              <td>
+                ${formatPlacement(
+                  match["着順"]
+                )}
+              </td>
+
+              <td>
+                ${formatScore(
+                  match["スコア"]
+                )}
+              </td>
+
+              <td>
+                ${
+                  toNumber(
+                    match["得点"]
+                  ) !== null
+                    ? `${formatInteger(
                         match["得点"]
-                      ) !== null
-                        ? `${formatInteger(
-                            match["得点"]
-                          )}点`
-                        : "―"
-                    }
-                  </td>
-  
-                  <td>
-                    <span
-                      class="stage-badge ${getStageClass(
-                        match["ステージ"]
-                      )}"
-                    >
-                      ${escapeHtml(
-                        displayStageName(
-                          match["ステージ"]
-                        )
-                      )}
-                    </span>
-                  </td>
-  
-                </tr>
-              `
-            ).join("")}
-  
-          </tbody>
-  
-        </table>
-  
-      </div>
-  
-      <p class="match-row-guide">
-        ※試合をクリックすると、同卓した4選手の結果を確認できます。
-      </p>
-    `;
+                      )}点`
+                    : "―"
+                }
+              </td>
+
+              <td>
+                <span
+                  class="stage-badge ${getStageClass(
+                    match["ステージ"]
+                  )}"
+                >
+                  ${escapeHtml(
+                    displayStageName(
+                      match["ステージ"]
+                    )
+                  )}
+                </span>
+              </td>
+
+            </tr>
+          `
+        ).join("")}
+
+      </tbody>
+
+    </table>
+
+  </div>
+`;
   
     playerMatches
       .querySelectorAll(

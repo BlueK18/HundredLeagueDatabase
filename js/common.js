@@ -1075,3 +1075,202 @@ if (document.readyState === "loading") {
 } else {
   createBottomNavigation();
 }
+/* ========================================
+   スマホ：横スクロール案内を自動表示
+======================================== */
+
+let horizontalScrollHintShown = false;
+
+function setupHorizontalScrollHints(){
+
+    const isMobile =
+        window.matchMedia("(max-width: 768px)").matches;
+
+    if(!isMobile){
+        document
+            .querySelectorAll(".horizontal-scroll-hint")
+            .forEach(hint => hint.remove());
+
+        return;
+    }
+
+    if(horizontalScrollHintShown){
+        return;
+    }
+
+    const allElements =
+        document.querySelectorAll("body *");
+
+    allElements.forEach(element => {
+
+        const style =
+            window.getComputedStyle(element);
+
+        const canScrollHorizontally =
+            style.overflowX === "auto" ||
+            style.overflowX === "scroll";
+
+        const actuallyOverflows =
+            element.scrollWidth >
+            element.clientWidth + 5;
+
+        if(
+            !canScrollHorizontally ||
+            !actuallyOverflows
+        ){
+            return;
+        }
+
+        if(
+            element.dataset.scrollHintAttached === "true"
+        ){
+            return;
+        }
+
+        element.dataset.scrollHintAttached = "true";
+
+        const hint =
+            document.createElement("div");
+
+        hint.className =
+            "horizontal-scroll-hint";
+
+        hint.innerHTML = `
+            <span class="horizontal-scroll-hint-icon horizontal-scroll-hint-icon-left">
+                <i data-lucide="chevrons-left"></i>
+            </span>
+
+            <span class="horizontal-scroll-hint-text">
+                横にスワイプできます
+            </span>
+
+            <span class="horizontal-scroll-hint-icon horizontal-scroll-hint-icon-right">
+                <i data-lucide="chevrons-right"></i>
+            </span>
+        `;
+
+        element.parentNode.insertBefore(
+            hint,
+            element
+        );
+
+        if(window.lucide){
+            lucide.createIcons();
+        }
+
+        const removeHint = () => {
+
+            hint.classList.add(
+                "is-hidden"
+            );
+
+            setTimeout(() => {
+                hint.remove();
+            }, 350);
+        };
+
+        element.addEventListener(
+            "scroll",
+            removeHint,
+            {
+                once:true,
+                passive:true
+            }
+        );
+    });
+
+    horizontalScrollHintShown = true;
+}
+
+
+/* 通常の読み込み・更新 */
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        setTimeout(
+            setupHorizontalScrollHints,
+            300
+        );
+    }
+);
+
+
+/* ブラウザの戻る・進む */
+window.addEventListener(
+    "pageshow",
+    event => {
+
+        if(event.persisted){
+
+            document
+                .querySelectorAll(".horizontal-scroll-hint")
+                .forEach(hint => hint.remove());
+
+            horizontalScrollHintShown = true;
+
+            return;
+        }
+    }
+);
+
+
+/* 画面幅変更 */
+window.addEventListener(
+    "resize",
+    () => {
+
+        clearTimeout(
+            window.horizontalScrollHintTimer
+        );
+
+        window.horizontalScrollHintTimer =
+            setTimeout(() => {
+
+                if(
+                    window.matchMedia(
+                        "(max-width: 768px)"
+                    ).matches
+                ){
+                    setupHorizontalScrollHints();
+                }else{
+                    document
+                        .querySelectorAll(
+                            ".horizontal-scroll-hint"
+                        )
+                        .forEach(hint => hint.remove());
+                }
+
+            }, 250);
+    }
+);
+/* ========================================
+   共通：戻るボタン
+======================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const backButton =
+      document.getElementById(
+        "backButton"
+      );
+
+    if(!backButton){
+      return;
+    }
+
+    backButton.addEventListener(
+      "click",
+      event => {
+
+        event.preventDefault();
+
+        history.back();
+
+      }
+    );
+
+  }
+);
