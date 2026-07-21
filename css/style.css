@@ -486,9 +486,11 @@ tr:hover{
     border-radius:18px;
     border:1px solid #383838;
     box-shadow:0 12px 30px rgba(0,0,0,.28);
+    width:100%;
 }
 
 .players-ranking-table{
+    width:100%;
     min-width:900px;
     margin:0;
 }
