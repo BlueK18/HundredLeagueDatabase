@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>チーム情報｜ハンドレッドリーグ データベース</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="site-nav">
+        <a href="index.html" class="site-brand">
+          🏆 ハンドレッドリーグ データベース
+        </a>
+      
+        <div class="site-nav-links">
+          <a href="index.html#teamRanking">チーム順位</a>
+          <a href="players.html">選手ランキング</a>
+          <a href="awards.html">個人賞</a>
+        </div>
+      
+        <div class="site-search">
+          <input
+            id="siteSearchInput"
+            type="search"
+            placeholder="選手名を検索"
+            autocomplete="off"
+          >
+      
+          <div
+            id="siteSearchResults"
+            class="site-search-results"
+          ></div>
+        </div>
+      </nav>
+
+  <main>
+
+    <main class="main-content">
+        <section class="team-profile-header">
+          <p class="page-label">TEAM PROFILE</p>
+          <h1 id="teamName">チーム情報</h1>
+        </section>
+      
+        <section class="team-year-section">
+          <div id="yearTabs" class="team-year-tabs">
+            <!-- JSで年度タブを作成 -->
+          </div>
+          <a
+          id="currentTeamPageLink"
+          class="current-team-page-link"
+          href="#"
+        >
+          <i data-lucide="activity"></i>
+          現在のチーム詳細を見る
+        </a>
+      </section>
+      
+        <section class="team-summary-section">
+          <h2 id="summaryTitle">
+            <i data-lucide="trophy"></i>
+            通算成績
+          </h2>
+      
+          <div id="teamSummary" class="team-summary-grid">
+            <!-- JSで成績カードを表示 -->
+          </div>
+        </section>
+      
+        <section class="team-season-history-section">
+          <h2>
+            <i data-lucide="chart-column"></i>
+            年度別成績
+          </h2>
+      
+          <div class="table-scroll">
+            <table class="team-history-table">
+              <thead>
+                <tr>
+                  <th>年度</th>
+                  <th>リーグ</th>
+                  <th>順位</th>
+                  <th>試合数</th>
+                  <th>ポイント</th>
+                </tr>
+              </thead>
+      
+              <tbody id="teamHistoryBody">
+                <!-- JSで年度別成績を表示 -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      
+        <section class="team-player-section">
+          <h2 id="playerListTitle">
+            <i data-lucide="users"></i>
+            歴代選手一覧
+          </h2>
+      
+          <div class="table-scroll">
+            <table class="team-player-table">
+              <thead>
+                <tr>
+                  <th>選手名</th>
+                  <th>在籍年度</th>
+                  <th>試合数</th>
+                  <th>ポイント</th>
+                  <th>トップ</th>
+                  <th>トップ率</th>
+                  <th>ラス回避率</th>
+                  <th>最高得点</th>
+                </tr>
+              </thead>
+      
+              <tbody id="teamPlayerBody">
+                <!-- JSで選手一覧を表示 -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      
+        <p id="teamProfileMessage" class="status-message">
+          データを読み込んでいます…
+        </p>
+      
+        <a
+          href="#"
+          class="back-button"
+          id="backButton"
+        >
+          <i data-lucide="arrow-left"></i>
+          戻る
+        </a>
+      </main>
+
+</main>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/common.js?v=3"></script>
+  <script src="js/team-profile.js"></script>
+</body>
+</html>

@@ -2451,3 +2451,177 @@ select {
         max-width:130px;
     }
 }
+.team-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+  
+  .team-summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    padding: 20px 16px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    text-align: center;
+  }
+  
+  .summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.12);
+  }
+  
+  .summary-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: #d4af37;
+    stroke-width: 2;
+  }
+  
+  .summary-label {
+    margin-bottom: 6px;
+    font-size: 13px;
+    opacity: 0.72;
+  }
+  
+  .summary-value {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  
+  @media (max-width: 700px) {
+    .team-summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+  
+    .team-summary-card {
+      min-height: 125px;
+      padding: 16px 10px;
+    }
+  
+    .summary-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 9px;
+    }
+  
+    .summary-icon svg {
+      width: 21px;
+      height: 21px;
+    }
+  
+    .summary-value {
+      font-size: 20px;
+    }
+  }
+  .team-player-link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  
+  .team-player-link:hover {
+    color: #d4af37;
+    text-decoration: underline;
+  }
+  
+  .team-player-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+  }
+  
+  .team-player-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 7px;
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 999px;
+    background: rgba(212, 175, 55, 0.1);
+    color: #d4af37;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  
+  .team-player-badge svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .team-mvp-badge {
+    border-color: rgba(212, 175, 55, 0.65);
+    background: rgba(212, 175, 55, 0.16);
+  }
+  
+  .most-played-badge {
+    border-color: rgba(212, 175, 55, 0.4);
+  }
+  
+  .team-player-table td,
+  .team-player-table th {
+    vertical-align: middle;
+  }
+  
+  @media (max-width: 700px) {
+    .team-player-table {
+      min-width: 850px;
+    }
+  
+    .team-player-badge {
+      padding: 2px 6px;
+      font-size: 9px;
+    }
+  }
+  .team-player-link{
+    color:inherit;
+    text-decoration:none;
+    font-weight:700;
+    transition:.2s;
+  }
+  
+  .team-player-link:hover{
+    color:#d4af37;
+    text-decoration:underline;
+  }
+  .team-profile-link,
+.current-team-page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 11px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  border-radius: 12px;
+  color: #d4af37;
+  font-weight: 700;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.team-profile-link:hover,
+.current-team-page-link:hover {
+  background: rgba(212, 175, 55, 0.12);
+  transform: translateY(-1px);
+}
+
+.team-profile-link svg,
+.current-team-page-link svg {
+  width: 18px;
+  height: 18px;
+}

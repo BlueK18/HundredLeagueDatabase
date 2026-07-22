@@ -45,6 +45,33 @@
       読み込み中...
     </section>
 
+    <a
+  id="teamProfileLink"
+  class="team-profile-link"
+  href="#"
+>
+  <i data-lucide="database"></i>
+  総合チームデータを見る
+</a>
+
+<script>
+  {
+    const teamProfileLink =
+      document.getElementById("teamProfileLink");
+
+    const currentParams =
+      new URLSearchParams(window.location.search);
+
+    const currentTeamName =
+      currentParams.get("team");
+
+    if (teamProfileLink && currentTeamName) {
+      teamProfileLink.href =
+        `team-profile.html?team=${encodeURIComponent(currentTeamName)}`;
+    }
+  }
+</script>
+
     <section class="team-players-section">
       <h2>所属選手</h2>
       <div id="teamPlayers">読み込み中...</div>
