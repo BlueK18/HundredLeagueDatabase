@@ -301,6 +301,7 @@ function renderTeamPlayers(playersData) {
 ========================= */
 
 function renderTeamMatches(matchesData) {
+
   const selectedMatches = matchesData.filter(row =>
     row["年度"] === year &&
     row["チーム名"] === teamName &&
@@ -318,7 +319,8 @@ function renderTeamMatches(matchesData) {
   teamMatches.innerHTML = `
     <div class="matches-table-wrapper">
 
-      <table>
+      <table class="team-match-table">
+
         <thead>
           <tr>
             <th>日付</th>
@@ -329,46 +331,64 @@ function renderTeamMatches(matchesData) {
         </thead>
 
         <tbody>
+
           ${selectedMatches.map(match => `
-            <tr>
+
+            <tr
+              class="team-match-row"
+              data-url="${HLDB.createPlayerUrl({
+                id: match["選手ID"],
+                year,
+                league,
+                stage
+              })}"
+            >
 
               <td>
                 ${match["日付"] || "―"}
               </td>
 
-              <td>
-                <a
-  class="team-link"
-  href="${HLDB.createPlayerUrl({
-    id: match["選手ID"],
-    year,
-    league,
-    stage
-  })}"
->
-  ${match["選手名"] || "―"}
-</a>
+              <td class="team-player-name">
+                ${match["選手名"] || "―"}
               </td>
 
               <td>
-                ${HLDB.formatPlacement(match["着順"])}
+                ${
+                  match["着順"]
+                    ? `${parseInt(match["着順"],10)}着`
+                    : "―"
+                }
               </td>
 
               <td>
-                ${match["スコア"] !== ""
-                  ? `${HLDB.formatDecimal(match["スコア"])} pt`
-                  : "―"}
+                ${
+                  match["スコア"] !== ""
+                    ? `${HLDB.formatDecimal(match["スコア"])} pt`
+                    : "―"
+                }
               </td>
 
             </tr>
+
           `).join("")}
+
         </tbody>
 
       </table>
 
     </div>
   `;
-}
 
+  document.querySelectorAll(".team-match-row").forEach(row => {
+
+    row.style.cursor = "pointer";
+
+    row.addEventListener("click", () => {
+      location.href = row.dataset.url;
+    });
+
+  });
+
+}
 
 loadTeamDetail();

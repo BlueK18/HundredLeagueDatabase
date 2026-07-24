@@ -367,15 +367,20 @@ function renderTeamHistory(teamRows) {
         const year =
           row["年度"] || "－";
 
-        const league =
+          const league =
           HLDB.normalizeLeague(
             row["リーグ"]
-          ) || "－";
-
+          ) || "";
+        
+        const displayLeague =
+          league === "単一リーグ"
+            ? ""
+            : league;
+        
         const stage =
           HLDB.normalizeStage(
             row["ステージ"]
-          ) || "－";
+          ) || "";
 
         const rank =
           toNullableNumber(row["順位"]);
@@ -386,15 +391,14 @@ function renderTeamHistory(teamRows) {
         const points =
           toNumber(row["ポイント"]);
 
-        const leagueStage = [
-          league,
-          stage
-        ]
-          .filter(value =>
-            value &&
-            value !== "－"
-          )
-          .join(" / ");
+          const leagueStage = [
+            displayLeague
+              ? `${displayLeague}リーグ`
+              : "",
+            stage
+          ]
+          .filter(Boolean)
+          .join("<br>");
 
         return `
           <tr>
@@ -403,8 +407,8 @@ function renderTeamHistory(teamRows) {
             </td>
 
             <td>
-              ${escapeHtml(leagueStage || "－")}
-            </td>
+  ${leagueStage || "－"}
+</td>
 
             <td>
               ${
@@ -859,37 +863,27 @@ function formatPlayerYears(years) {
 }
 
 function createPlayerUrl(player) {
-  const playerParams =
-    new URLSearchParams();
 
-  playerParams.set(
-    "player",
-    player.name
-  );
-
-  if (player.latestYear) {
-    playerParams.set(
-      "year",
-      player.latestYear
-    );
+    const params = new URLSearchParams();
+  
+    params.set("player", player.name);
+  
+    if (selectedYear === "total") {
+      params.set("year", "total");
+    } else {
+      params.set("year", selectedYear);
+  
+      if (player.latestLeague) {
+        params.set("league", player.latestLeague);
+      }
+  
+      if (player.latestStage) {
+        params.set("stage", player.latestStage);
+      }
+    }
+  
+    return `player.html?${params.toString()}`;
   }
-
-  if (player.latestLeague) {
-    playerParams.set(
-      "league",
-      player.latestLeague
-    );
-  }
-
-  if (player.latestStage) {
-    playerParams.set(
-      "stage",
-      player.latestStage
-    );
-  }
-
-  return `player.html?${playerParams.toString()}`;
-}
 
 function toNumber(value) {
   if (

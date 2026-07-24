@@ -682,11 +682,12 @@ function renderRegularRanking(
       <section class="regular-ranking-section">
 
         <h2>
+          <i data-lucide="ranking"></i>
           レギュラーシーズン順位
         </h2>
 
-        <p class="no-data-message">
-          歴代通算には順位を設定していません。<br>
+        <p class="regular-ranking-empty">
+          歴代通算には順位を設定していません。
           年度を選択すると、その年度の順位を確認できます。
         </p>
 
@@ -698,26 +699,33 @@ function renderRegularRanking(
     <section class="regular-ranking-section">
 
       <h2>
+        <i data-lucide="ranking"></i>
         レギュラーシーズン順位
       </h2>
 
       ${
         regularPlayer
           ? `
-            <div class="regular-ranking-grid">
+            <div class="regular-ranking-list">
 
-              <div>
-                <span>ポイント順位</span>
-                <strong>
+              <div class="regular-ranking-row">
+                <span class="regular-ranking-label">
+                  ポイント
+                </span>
+
+                <strong class="regular-ranking-value">
                   ${formatRank(
                     regularPlayer["順位"]
                   )}
                 </strong>
               </div>
 
-              <div>
-                <span>最高得点順位</span>
-                <strong>
+              <div class="regular-ranking-row">
+                <span class="regular-ranking-label">
+                  最高得点
+                </span>
+
+                <strong class="regular-ranking-value">
                   ${formatRank(
                     regularPlayer[
                       "最高得点順位"
@@ -726,9 +734,12 @@ function renderRegularRanking(
                 </strong>
               </div>
 
-              <div>
-                <span>最多勝利順位</span>
-                <strong>
+              <div class="regular-ranking-row">
+                <span class="regular-ranking-label">
+                  最多勝利
+                </span>
+
+                <strong class="regular-ranking-value">
                   ${formatRank(
                     regularPlayer[
                       "最多勝利順位"
@@ -737,9 +748,12 @@ function renderRegularRanking(
                 </strong>
               </div>
 
-              <div>
-                <span>トップ率順位</span>
-                <strong>
+              <div class="regular-ranking-row">
+                <span class="regular-ranking-label">
+                  トップ率
+                </span>
+
+                <strong class="regular-ranking-value">
                   ${formatRank(
                     regularPlayer[
                       "トップ率順位"
@@ -748,9 +762,12 @@ function renderRegularRanking(
                 </strong>
               </div>
 
-              <div>
-                <span>ラス回避率順位</span>
-                <strong>
+              <div class="regular-ranking-row">
+                <span class="regular-ranking-label">
+                  ラス回避率
+                </span>
+
+                <strong class="regular-ranking-value">
                   ${formatRank(
                     regularPlayer[
                       "ラス回避率順位"
@@ -762,16 +779,16 @@ function renderRegularRanking(
             </div>
           `
           : `
-            <p class="no-data-message">
+            <p class="regular-ranking-empty">
               レギュラーシーズン順位がありません。
             </p>
           `
       }
 
-      <p class="player-ranking-note">
-        ※順位・各種ランキングは、
-        ${escapeHtml(activeYear)}年の
-        レギュラーシーズンのみを対象としています。
+      <p class="regular-ranking-note">
+        ※順位・各種ランキングは、${escapeHtml(
+          activeYear
+        )}年のレギュラーシーズンのみを対象としています。
       </p>
 
     </section>
@@ -991,51 +1008,62 @@ function renderPlayerInfo() {
 
             <section class="placing-section">
 
-  <h2>着順分布</h2>
+  <h2>
+    <i data-lucide="chart-no-axes-column"></i>
+    着順分布
+  </h2>
 
   <div class="placing-grid">
 
-    <div>
-      <span class="placement-label">
-        <span class="placement-medal">🥇</span>
+    <div class="placing-card placing-first">
+      
+
+      <span class="placement-name">
         1着
       </span>
 
       <strong>
         ${stats.firstCount}
+        <small>回</small>
       </strong>
     </div>
 
-    <div>
-      <span class="placement-label">
-        <span class="placement-medal">🥈</span>
+    <div class="placing-card placing-second">
+      
+
+      <span class="placement-name">
         2着
       </span>
 
       <strong>
         ${stats.secondCount}
+        <small>回</small>
       </strong>
     </div>
 
-    <div>
-      <span class="placement-label">
-        <span class="placement-medal">🥉</span>
+    <div class="placing-card placing-third">
+      
+
+      <span class="placement-name">
         3着
       </span>
 
       <strong>
         ${stats.thirdCount}
+        <small>回</small>
       </strong>
     </div>
 
-    <div>
-      <span class="placement-label">
-        <span class="placement-medal"></span>
+    <div class="placing-card placing-fourth">
+      
+
+      <span class="placement-name">
         4着
       </span>
 
       <strong>
         ${stats.fourthCount}
+        <small>回</small>
       </strong>
     </div>
 
@@ -1337,7 +1365,7 @@ function attachFilterEvents() {
     playerMatches.innerHTML = `
   <div class="matches-table-wrapper">
 
-    <table>
+    <table class="match-history-table">
 
       <thead>
         <tr>

@@ -2631,3 +2631,1088 @@ select {
     font-size:15px;
     letter-spacing:.08em;
 }
+.current-team-page-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    padding:6px 12px;
+    margin-top:10px;
+
+    font-size:13px;
+    font-weight:600;
+
+    border-radius:999px;
+
+    width:auto;
+    max-width:max-content;
+}.current-team-page-link svg{
+    width:15px;
+    height:15px;
+}
+.team-subtitle{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    margin-top:4px;
+    margin-bottom:18px;
+
+    font-size:14px;
+    font-weight:500;
+    color:#9a9a9a;
+
+    letter-spacing:.02em;
+    line-height:1.2;
+}
+/* =========================
+   総合チームデータ 上段をコンパクト化
+========================= */
+
+.team-profile-header {
+    padding: 18px 20px 14px !important;
+  }
+  
+  .team-profile-header h1 {
+    margin: 0 !important;
+    font-size: clamp(26px, 4vw, 38px) !important;
+    line-height: 1.15 !important;
+  }
+  
+  .team-profile-header .team-subtitle {
+    margin: 6px 0 14px !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
+    line-height: 1.2 !important;
+    color: #999 !important;
+    letter-spacing: 0.04em !important;
+  }
+  
+  .team-profile-header .team-year-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin: 0 0 10px !important;
+  }
+  
+  .team-profile-header .team-year-tabs button {
+    width: auto !important;
+    min-width: 76px !important;
+    height: auto !important;
+  
+    margin: 0 !important;
+    padding: 9px 18px !important;
+  
+    border-radius: 999px !important;
+  
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+  }
+  
+  .team-profile-header .current-team-page-link {
+    display: inline-flex !important;
+    width: auto !important;
+  
+    margin: 2px 0 0 !important;
+    padding: 6px 11px !important;
+  
+    font-size: 12px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .team-profile-header .current-team-page-link svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  
+  /* =========================
+     スマホ共通調整
+  ========================= */
+  
+  @media (max-width: 600px) {
+    .team-profile-header {
+      padding: 12px 14px 10px !important;
+    }
+  
+    .team-profile-header h1 {
+      font-size: 27px !important;
+    }
+  
+    .team-profile-header .team-subtitle {
+      margin: 5px 0 11px !important;
+      font-size: 11px !important;
+    }
+  
+    .team-profile-header .team-year-tabs {
+      gap: 6px !important;
+    }
+  
+    .team-profile-header .team-year-tabs button {
+      min-width: 66px !important;
+      padding: 8px 14px !important;
+      font-size: 14px !important;
+    }
+  
+    /* =========================
+       年度別成績テーブル
+    ========================= */
+  
+    .team-history-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+    }
+  
+    .team-history-table th,
+    .team-history-table td {
+      padding: 10px 4px;
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: center;
+      vertical-align: middle;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+  
+    .team-history-table th:nth-child(1),
+    .team-history-table td:nth-child(1) {
+      width: 16%;
+      white-space: nowrap;
+    }
+  
+    .team-history-table th:nth-child(2),
+    .team-history-table td:nth-child(2) {
+      width: 30%;
+    }
+  
+    .team-history-table th:nth-child(3),
+    .team-history-table td:nth-child(3) {
+      width: 12%;
+      white-space: nowrap;
+    }
+  
+    .team-history-table th:nth-child(4),
+    .team-history-table td:nth-child(4) {
+      width: 18%;
+      white-space: nowrap;
+    }
+  
+    .team-history-table th:nth-child(5),
+    .team-history-table td:nth-child(5) {
+      width: 24%;
+      white-space: nowrap;
+    }
+  
+    .team-history-table td:nth-child(2) {
+      font-size: 11px;
+      line-height: 1.45;
+    }
+  
+    /* =========================
+       歴代選手一覧
+    ========================= */
+  
+    .team-player-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+    }
+  
+    .team-player-table th,
+    .team-player-table td {
+      padding: 10px 4px;
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: center;
+      vertical-align: middle;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+  
+    /* 黄色ヘッダーを上の表と同じ高さにする */
+    .team-history-table thead th,
+    .team-player-table thead th {
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 10px 4px !important;
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+    }
+  
+    .team-player-table th:nth-child(1),
+    .team-player-table td:nth-child(1) {
+      width: 40%;
+    }
+  
+    .team-player-table th:nth-child(2),
+    .team-player-table td:nth-child(2) {
+      width: 38%;
+      white-space: normal;
+    }
+  
+    .team-player-table th:nth-child(3),
+    .team-player-table td:nth-child(3) {
+      width: 22%;
+      white-space: nowrap;
+    }
+  
+    .team-player-link {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  
+    .team-player-badges {
+      margin-top: 5px;
+    }
+  
+    .team-player-badge {
+      font-size: 9px;
+      padding: 2px 5px;
+      gap: 3px;
+    }
+  
+    .team-player-badge svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+  /* ========================================
+   歴代選手一覧：黄色ヘッダーを強制リセット
+======================================== */
+
+@media (max-width: 600px) {
+    .team-player-section .table-scroll {
+      margin: 0;
+    }
+  
+    .team-player-section .team-player-table thead {
+      display: table-header-group !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  
+    .team-player-section .team-player-table thead tr {
+      display: table-row !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  
+    .team-player-section .team-player-table thead th {
+      display: table-cell !important;
+  
+      height: auto !important;
+      min-height: 0 !important;
+  
+      padding: 10px 4px !important;
+      margin: 0 !important;
+  
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+      vertical-align: middle !important;
+    }
+  }
+  /* ========================================
+   歴代選手一覧：スマホは3列だけ表示
+======================================== */
+
+@media (max-width: 600px) {
+    /* 4列目以降を完全に非表示 */
+    .team-player-table th:nth-child(n + 4),
+    .team-player-table td:nth-child(n + 4) {
+      display: none !important;
+    }
+  
+    .team-player-table {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed !important;
+    }
+  
+    .team-player-table thead,
+    .team-player-table thead tr {
+      height: auto !important;
+    }
+  
+    .team-player-table thead th {
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 10px 4px !important;
+      line-height: 1.35 !important;
+      white-space: nowrap !important;
+    }
+  
+    .team-player-table th:nth-child(1),
+    .team-player-table td:nth-child(1) {
+      width: 40% !important;
+    }
+  
+    .team-player-table th:nth-child(2),
+    .team-player-table td:nth-child(2) {
+      width: 38% !important;
+    }
+  
+    .team-player-table th:nth-child(3),
+    .team-player-table td:nth-child(3) {
+      width: 22% !important;
+      white-space: nowrap !important;
+    }
+  }
+  /* ========================================
+   選手詳細：試合履歴（スマホ）
+======================================== */
+
+@media (max-width: 600px) {
+
+    .match-history-table {
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0;
+    }
+  
+    .match-history-table th,
+    .match-history-table td {
+      padding: 10px 4px;
+      font-size: 12px;
+      line-height: 1.35;
+      text-align: center;
+      vertical-align: middle;
+    }
+  
+    .match-history-table thead th {
+      padding: 10px 4px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  
+  }
+/* ========================================
+   選手詳細：試合履歴（スマホ）
+======================================== */
+
+@media (max-width:600px){
+
+    .match-history-table{
+        table-layout:fixed;
+        width:100%;
+        min-width:0;
+    }
+    
+    .match-history-table th,
+    .match-history-table td{
+        padding:10px 4px;
+        font-size:12px;
+        line-height:1.35;
+        text-align:center;
+        vertical-align:middle;
+    }
+    
+    .match-history-table th:nth-child(1),
+    .match-history-table td:nth-child(1){
+        width:20%;
+    }
+    
+    .match-history-table th:nth-child(2),
+    .match-history-table td:nth-child(2){
+        width:24%;
+    }
+    
+    .match-history-table th:nth-child(3),
+    .match-history-table td:nth-child(3){
+        width:10%;
+        white-space:nowrap;
+    }
+    
+    .match-history-table th:nth-child(4),
+    .match-history-table td:nth-child(4){
+        width:14%;
+        white-space:nowrap;
+    }
+    
+    .match-history-table th:nth-child(5),
+    .match-history-table td:nth-child(5){
+        width:16%;
+        white-space:nowrap;
+    }
+    
+    .match-history-table th:nth-child(6),
+    .match-history-table td:nth-child(6){
+        width:16%;
+    }
+    
+    }
+  /* =========================
+   選手詳細：着順分布
+========================= */
+
+.placing-section {
+    margin-top: 28px;
+  }
+  
+  .placing-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+  }
+  
+  .placing-section h2 svg {
+    width: 21px;
+    height: 21px;
+    color: #d9b52f;
+  }
+  
+  .placing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+  }
+  
+  .placing-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  
+    min-width: 0;
+    padding: 13px 14px;
+  
+    border: 1px solid #3a3a3a;
+    border-radius: 12px;
+    background: #1b1b1b;
+  }
+  
+  .placement-name {
+    color: #ccc;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  
+  .placing-card strong {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  
+    color: #fff;
+    font-size: 21px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  
+  .placing-card strong small {
+    color: #888;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  
+  /* 古い数字アイコンは非表示 */
+  .placement-rank {
+    display: none !important;
+  }
+  
+  @media (max-width: 600px) {
+    .placing-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+  
+    .placing-card {
+      padding: 11px 12px;
+    }
+  
+    .placement-name {
+      font-size: 12px;
+    }
+  
+    .placing-card strong {
+      font-size: 18px;
+    }
+  
+    .placing-card strong small {
+      font-size: 9px;
+    }
+  }
+  /* =========================
+   レギュラーシーズン順位
+========================= */
+
+.regular-ranking-section{
+    margin-top:32px;
+    padding:18px;
+
+    border:1px solid #343434;
+    border-radius:14px;
+    background:#171717;
+}
+
+.regular-ranking-section h2{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 0 16px;
+}
+
+.regular-ranking-list{
+    display:grid;
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.regular-ranking-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:16px;
+
+    font-size:15px;
+}
+
+.regular-ranking-label{
+    color:#cfcfcf;
+    white-space:nowrap;
+}
+
+.regular-ranking-value{
+    color:#fff;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.regular-ranking-note{
+    padding-top:12px;
+    border-top:1px solid #303030;
+
+    color:#9d9d9d;
+    font-size:12px;
+    line-height:1.6;
+
+    word-break:keep-all;
+    overflow-wrap:break-word;
+}
+
+@media (max-width:600px){
+
+.regular-ranking-section{
+    padding:14px;
+}
+
+.regular-ranking-row{
+    font-size:14px;
+}
+
+.regular-ranking-note{
+    font-size:11px;
+    line-height:1.6;
+
+    word-break:keep-all;
+    overflow-wrap:break-word;
+}
+
+}
+/* =========================
+   チーム詳細：試合履歴（スマホ）
+========================= */
+
+@media (max-width: 600px) {
+    .team-matches-section .matches-table-wrapper {
+      width: 100%;
+      overflow-x: hidden;
+    }
+  
+    .team-matches-section .team-match-table {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      table-layout: fixed !important;
+      border-collapse: collapse;
+    }
+  
+    .team-match-table th,
+    .team-match-table td {
+      padding: 7px 3px;
+      font-size: 12px;
+      line-height: 1.35;
+      vertical-align: middle;
+    }
+  
+    /* 日付 */
+    .team-match-table th:nth-child(1),
+    .team-match-table td:nth-child(1) {
+      width: 27%;
+      text-align: center;
+      white-space: nowrap;
+    }
+  
+    /* 選手名：最大全角7文字 */
+    .team-match-table th:nth-child(2),
+    .team-match-table td:nth-child(2) {
+      width: 35%;
+      text-align: center;
+      white-space: nowrap;
+    }
+  
+    /* 着順 */
+    .team-match-table th:nth-child(3),
+    .team-match-table td:nth-child(3) {
+      width: 14%;
+      text-align: center;
+      white-space: nowrap;
+    }
+  
+    /* スコア */
+    .team-match-table th:nth-child(4),
+    .team-match-table td:nth-child(4) {
+      width: 24%;
+      text-align: center;
+      white-space: nowrap;
+    }
+  
+    .team-match-table .team-link {
+      font-size: 12px;
+      line-height: 1.35;
+      white-space: nowrap;
+    }
+  }
+  .team-match-row{
+    cursor:pointer;
+    transition:.15s;
+}
+
+.team-match-row:hover{
+    background:#2b2b2b;
+}
+
+.team-match-row:active{
+    background:#333;
+}
+/* ========================================
+   下部ナビゲーション
+======================================== */
+
+.bottom-navigation {
+    position: fixed !important;
+    left: 50% !important;
+    bottom: 0 !important;
+    z-index: 9000 !important;
+  
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  
+    width: min(100%, 600px) !important;
+    min-height: 64px !important;
+  
+    padding:
+      7px
+      max(6px, env(safe-area-inset-right))
+      calc(7px + env(safe-area-inset-bottom))
+      max(6px, env(safe-area-inset-left)) !important;
+  
+    border-top: 1px solid #343434 !important;
+    background: rgba(15, 15, 15, 0.97) !important;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35) !important;
+  
+    transform: translateX(-50%) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  
+  .bottom-navigation-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  
+    min-width: 0 !important;
+    min-height: 50px !important;
+    margin: 0 !important;
+    padding: 4px 2px !important;
+  
+    border: 0 !important;
+    border-radius: 10px !important;
+    background: transparent !important;
+  
+    color: #929292 !important;
+    font-family: inherit !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    text-decoration: none !important;
+  
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    cursor: pointer !important;
+  }
+  
+  .bottom-navigation-item svg {
+    display: block !important;
+    width: 21px !important;
+    height: 21px !important;
+    flex: 0 0 auto !important;
+  }
+  
+  .bottom-navigation-item span {
+    display: block !important;
+    width: 100% !important;
+  
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .bottom-navigation-item:hover,
+  .bottom-navigation-item:focus-visible {
+    background: #242424 !important;
+    color: #fff !important;
+  }
+  
+  .bottom-navigation-item.is-active {
+    color: #d9b52f !important;
+  }
+  
+  .bottom-navigation-button {
+    width: 100% !important;
+  }
+  
+  
+  /* 下部ナビに本文が隠れないようにする */
+  body {
+    padding-bottom: calc(82px + env(safe-area-inset-bottom));
+  }
+  
+  
+  /* ========================================
+     選手検索モーダル
+  ======================================== */
+  
+  .player-search-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000 !important;
+  
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+  
+    padding: 18px !important;
+  }
+  
+  .player-search-modal.is-open {
+    display: flex !important;
+  }
+  
+  .player-search-modal-backdrop {
+    position: absolute !important;
+    inset: 0 !important;
+  
+    background: rgba(0, 0, 0, 0.76) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+  
+  .player-search-modal-panel {
+    position: relative !important;
+    z-index: 1 !important;
+  
+    display: flex !important;
+    flex-direction: column !important;
+  
+    width: min(100%, 520px) !important;
+    max-height: min(78vh, 650px) !important;
+    margin: 0 !important;
+  
+    overflow: hidden !important;
+  
+    border: 1px solid #444 !important;
+    border-radius: 18px !important;
+    background: #171717 !important;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65) !important;
+  }
+  
+  .player-search-modal-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  
+    padding: 16px 18px !important;
+    border-bottom: 1px solid #343434 !important;
+  }
+  
+  .player-search-modal-header h2 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+  
+    margin: 0 !important;
+  
+    color: #fff !important;
+    font-size: 19px !important;
+    line-height: 1.2 !important;
+  }
+  
+  .player-search-modal-header h2 svg {
+    width: 22px !important;
+    height: 22px !important;
+    color: #d9b52f !important;
+  }
+  
+  .player-search-modal-close {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+  
+    margin: 0 !important;
+    padding: 0 !important;
+  
+    border: 1px solid #444 !important;
+    border-radius: 50% !important;
+    background: #242424 !important;
+    color: #fff !important;
+  
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    cursor: pointer !important;
+  }
+  
+  .player-search-modal-close svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .player-search-modal-close:hover {
+    background: #333 !important;
+  }
+  
+  .player-search-modal-body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+  }
+  
+  .modal-player-search {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  .modal-player-search-icon {
+    position: absolute !important;
+    left: 14px !important;
+    z-index: 1 !important;
+  
+    width: 20px !important;
+    height: 20px !important;
+  
+    color: #999 !important;
+    pointer-events: none !important;
+  }
+  
+  #modalPlayerSearchInput {
+    display: block !important;
+  
+    width: 100% !important;
+    height: 48px !important;
+    margin: 0 !important;
+    padding: 0 14px 0 44px !important;
+  
+    border: 1px solid #484848 !important;
+    border-radius: 12px !important;
+    outline: none !important;
+  
+    background: #222 !important;
+    color: #fff !important;
+  
+    font-family: inherit !important;
+    font-size: 16px !important;
+    line-height: 1 !important;
+  
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+  
+  #modalPlayerSearchInput::placeholder {
+    color: #858585 !important;
+  }
+  
+  #modalPlayerSearchInput:focus {
+    border-color: #d9b52f !important;
+    box-shadow: 0 0 0 3px rgba(217, 181, 47, 0.14) !important;
+  }
+  
+  .modal-player-search-results {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 7px !important;
+  
+    min-height: 110px !important;
+    margin-top: 14px !important;
+  
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+  
+  .modal-player-search-guide,
+  .modal-player-search-empty {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  
+    min-height: 110px !important;
+    margin: 0 !important;
+    padding: 18px !important;
+  
+    color: #999 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    text-align: center !important;
+  }
+  
+  .modal-player-search-result {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 13px !important;
+  
+    border: 1px solid #353535 !important;
+    border-radius: 12px !important;
+    background: #202020 !important;
+  
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+  
+  .modal-player-search-result:hover,
+  .modal-player-search-result:focus-visible {
+    border-color: #d9b52f !important;
+    background: #292929 !important;
+    outline: none !important;
+  }
+  
+  .modal-player-search-main {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  
+    min-width: 0 !important;
+  }
+  
+  .modal-player-search-name {
+    overflow: hidden !important;
+  
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+  
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .modal-player-search-team {
+    overflow: hidden !important;
+  
+    color: #aaa !important;
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+  
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .modal-player-search-meta {
+    flex: 0 0 auto !important;
+  
+    color: #aaa !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    white-space: nowrap !important;
+  }
+  
+  .modal-player-search-result > svg {
+    width: 18px !important;
+    height: 18px !important;
+    flex: 0 0 auto !important;
+  
+    color: #d9b52f !important;
+  }
+  
+  body.player-search-modal-open {
+    overflow: hidden !important;
+  }
+  
+  
+  /* ========================================
+     スマホ調整
+  ======================================== */
+  
+  @media (max-width: 600px) {
+    .player-search-modal {
+      align-items: flex-end !important;
+      padding: 0 !important;
+    }
+  
+    .player-search-modal-panel {
+      width: 100% !important;
+      max-height: 82vh !important;
+  
+      border-right: 0 !important;
+      border-bottom: 0 !important;
+      border-left: 0 !important;
+      border-radius: 20px 20px 0 0 !important;
+    }
+  
+    .player-search-modal-header {
+      padding: 15px 16px !important;
+    }
+  
+    .player-search-modal-body {
+      padding:
+        14px
+        14px
+        calc(18px + env(safe-area-inset-bottom)) !important;
+    }
+  
+    .modal-player-search-result {
+      padding: 12px !important;
+    }
+  
+    .modal-player-search-meta {
+      display: none !important;
+    }
+  }
+  /* ========================================
+   下部ナビ・選手検索モーダルはスマホのみ
+======================================== */
+
+@media (min-width: 601px) {
+    .bottom-navigation {
+      display: none !important;
+    }
+  
+    .player-search-modal {
+      display: none !important;
+    }
+  
+    body {
+      padding-bottom: 0 !important;
+    }
+  }
