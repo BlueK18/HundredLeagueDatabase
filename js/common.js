@@ -1899,6 +1899,15 @@ HLDB.initializeHorizontalScrollHints =
 
     scrollContainers.forEach(
       container => {
+      
+        const historyTable =
+  container.querySelector(
+    "#teamHistoryTable, #teamHistoryBody"
+  );
+
+if (historyTable) {
+  return;
+}
         if (
           container.dataset
             .scrollHintInitialized ===

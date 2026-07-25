@@ -2864,25 +2864,37 @@ select {
   
     .team-player-table th:nth-child(1),
     .team-player-table td:nth-child(1) {
-      width: 40%;
-    }
+      width: 9em !important;
+      min-width: 9em !important;
+      max-width: 9em !important;
+  padding-left: 6px !important;
+  padding-right: 2px !important;
+  text-align: left !important;
+}
+
+.team-player-table th:nth-child(2),
+.team-player-table td:nth-child(2) {
+  width: 6.5em !important;
+  min-width: 6.5em !important;
+  padding-left: 2px !important;
+  padding-right: 4px !important;
+  text-align: left !important;
+}
+
+.team-player-table th:nth-child(3),
+.team-player-table td:nth-child(3) {
+  width: 5em !important;
+  min-width: 5em !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  white-space: nowrap !important;
+}
   
-    .team-player-table th:nth-child(2),
-    .team-player-table td:nth-child(2) {
-      width: 38%;
-      white-space: normal;
-    }
-  
-    .team-player-table th:nth-child(3),
-    .team-player-table td:nth-child(3) {
-      width: 22%;
-      white-space: nowrap;
-    }
-  
-    .team-player-link {
-      font-size: 12px;
-      line-height: 1.35;
-    }
+.team-player-link {
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 700;
+  }
   
     .team-player-badges {
       margin-top: 5px;
@@ -2939,20 +2951,28 @@ select {
     }
   }
   /* ========================================
-   歴代選手一覧：スマホは3列だけ表示
+   歴代選手一覧：スマホ横スクロール
 ======================================== */
 
 @media (max-width: 600px) {
-    /* 4列目以降を完全に非表示 */
-    .team-player-table th:nth-child(n + 4),
-    .team-player-table td:nth-child(n + 4) {
-      display: none !important;
+    .team-player-section .table-scroll {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto !important;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
     }
   
     .team-player-table {
-      width: 100% !important;
-      min-width: 0 !important;
-      table-layout: fixed !important;
+        width: auto !important;
+        min-width: max-content !important;
+        table-layout: auto !important;
+    }
+  
+    .team-player-table th,
+    .team-player-table td {
+      display: table-cell !important;
+      white-space: nowrap !important;
     }
   
     .team-player-table thead,
@@ -2963,26 +2983,27 @@ select {
     .team-player-table thead th {
       height: auto !important;
       min-height: 0 !important;
-      padding: 10px 4px !important;
+      padding: 10px 8px !important;
       line-height: 1.35 !important;
-      white-space: nowrap !important;
     }
-  
-    .team-player-table th:nth-child(1),
-    .team-player-table td:nth-child(1) {
-      width: 40% !important;
-    }
-  
-    .team-player-table th:nth-child(2),
-    .team-player-table td:nth-child(2) {
-      width: 38% !important;
-    }
-  
-    .team-player-table th:nth-child(3),
-    .team-player-table td:nth-child(3) {
-      width: 22% !important;
-      white-space: nowrap !important;
-    }
+    .team-player-table th,
+.team-player-table td {
+  padding: 8px 4px !important;
+}
+
+.team-player-table th:first-child,
+.team-player-table td:first-child {
+  padding-left: 6px !important;
+  padding-right: 2px !important;
+  text-align: left !important;
+}
+
+.team-player-table th:nth-child(2),
+.team-player-table td:nth-child(2) {
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  text-align: left !important;
+}
   }
   /* ========================================
    選手詳細：試合履歴（スマホ）
@@ -3749,3 +3770,87 @@ select {
   font-size:11px;
   color:#d0d0d0;
 }
+/* ========================================
+   チームプロフィール・選手一覧
+   スマホ横スクロール
+======================================== */
+
+@media (max-width: 768px) {
+    .main-content,
+    .team-player-section {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+  
+    .team-player-section {
+      overflow: hidden;
+    }
+  
+    .team-player-section .table-scroll {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: scroll !important;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      touch-action: auto;
+    }
+  
+    .team-player-section .team-player-table {
+        width: max-content !important;
+        min-width: 720px !important;
+        table-layout: auto !important;
+      }
+  
+      .team-player-section .team-player-table th,
+      .team-player-section .team-player-table td {
+        white-space: nowrap;
+        padding: 8px 4px;
+      }
+  }
+ 
+/* ========================================
+   スマホ：チームバッジ非表示
+======================================== */
+
+@media (max-width: 600px) {
+
+    .team-player-badges {
+      display: none !important;
+    }
+  
+  }
+  /* ========================================
+   スマホ：歴代選手一覧 左寄せ
+======================================== */
+
+@media (max-width: 600px) {
+
+    /* 選手名 */
+    .team-player-table td:first-child,
+    .team-player-table th:first-child {
+      text-align: left !important;
+      padding-left: 4px !important;
+    }
+  
+    /* 在籍年度 */
+    .team-player-table th:nth-child(2) {
+      text-align: left !important;
+      padding-left: 4px !important;
+    }
+  
+    .team-player-table td:nth-child(2) {
+      text-align: left !important;
+      padding-left: 4px !important;
+      color: #b8b8b8;
+    }
+  
+    /* チーム内1位の数字を金色 */
+.mobile-team-leader {
+    color: #ffd700 !important;
+    font-weight: 700 !important;
+  }
+  
+  }

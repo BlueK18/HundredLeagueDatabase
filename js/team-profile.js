@@ -7,6 +7,7 @@ const messageElement = document.getElementById("teamProfileMessage");
 let teamsData = [];
 let matchesData = [];
 let playersData = [];
+let playerAliasData = [];
 
 let selectedYear = "total";
 
@@ -46,16 +47,18 @@ async function init() {
 ========================= */
 
 async function loadData() {
-  [
-    teamsData,
-    matchesData,
-    playersData
-  ] = await Promise.all([
-    HLDB.loadData("teams"),
-    HLDB.loadData("matches"),
-    HLDB.loadData("players")
-  ]);
-}
+    [
+      teamsData,
+      matchesData,
+      playersData,
+      playerAliasData
+    ] = await Promise.all([
+      HLDB.loadData("teams"),
+      HLDB.loadData("matches"),
+      HLDB.loadData("players"),
+      HLDB.loadData("playerAlias")
+    ]);
+  }
 
 /* =========================
    年度タブ
@@ -190,11 +193,42 @@ function renderTeamSummary(
     0
   );
 
-  const totalPoints = teamRows.reduce(
-    (sum, row) =>
-      sum + toNumber(row["ポイント"]),
-    0
-  );
+  const totalPoints =
+  playersData
+    .filter(row => {
+      const rowTeamName =
+        String(
+          row["チーム名"] ??
+          row["チーム"] ??
+          ""
+        ).trim();
+
+      const rowYear =
+        String(
+          row["年度"] ??
+          ""
+        ).trim();
+
+      const sameTeam =
+        rowTeamName ===
+        String(teamName).trim();
+
+      const sameYear =
+        selectedYear === "total" ||
+        rowYear === String(selectedYear);
+
+      return sameTeam && sameYear;
+    })
+    .reduce(
+      (sum, row) =>
+        sum +
+        toNumber(
+          row["ポイント"] ??
+          row["合計ポイント"] ??
+          row["スコア"]
+        ),
+      0
+    );
 
   const ranks = teamRows
     .map(row => toNullableNumber(row["順位"]))
@@ -367,10 +401,15 @@ function renderTeamHistory(teamRows) {
         const year =
           row["年度"] || "－";
 
-        const league =
+          const league =
           HLDB.normalizeLeague(
             row["リーグ"]
-          ) || "－";
+          ) || "";
+        
+        const displayLeague =
+          league === "単一リーグ"
+            ? ""
+            : league;
 
         const stage =
           HLDB.normalizeStage(
@@ -386,10 +425,10 @@ function renderTeamHistory(teamRows) {
         const points =
           toNumber(row["ポイント"]);
 
-        const leagueStage = [
-          league,
-          stage
-        ]
+          const leagueStage = [
+            displayLeague,
+            stage
+          ]
           .filter(value =>
             value &&
             value !== "－"
@@ -502,13 +541,18 @@ function renderTeamPlayers() {
         row["名前"] ??
         ""
       ).trim();
+      const playerId =
+  HLDB.getPlayerIdFromAlias(
+    playerName,
+    playerAliasData
+  ) || playerName;
 
     if (!playerName) {
       return;
     }
 
-    if (!playerMap.has(playerName)) {
-      playerMap.set(playerName, {
+    if (!playerMap.has(playerId)) {
+        playerMap.set(playerId, {
         name: playerName,
         years: new Set(),
         matches: 0,
@@ -524,7 +568,7 @@ function renderTeamPlayers() {
     }
 
     const player =
-      playerMap.get(playerName);
+      playerMap.get(playerId);
 
     const year =
       String(row["年度"] || "").trim();
@@ -590,22 +634,23 @@ function renderTeamPlayers() {
     }
 
     if (
-      !player.latestYear ||
-      Number(year) >
-      Number(player.latestYear)
-    ) {
-      player.latestYear = year;
-
-      player.latestLeague =
-        HLDB.normalizeLeague(
-          row["リーグ"]
-        );
-
-      player.latestStage =
-        HLDB.normalizeStage(
-          row["ステージ"]
-        );
-    }
+        !player.latestYear ||
+        Number(year) >
+        Number(player.latestYear)
+      ) {
+        player.name = playerName;
+        player.latestYear = year;
+      
+        player.latestLeague =
+          HLDB.normalizeLeague(
+            row["リーグ"]
+          );
+      
+        player.latestStage =
+          HLDB.normalizeStage(
+            row["ステージ"]
+          );
+      }
   });
 
   const players =
@@ -658,22 +703,52 @@ function renderTeamPlayers() {
       )
     );
 
-  const highestMatches =
+    const highestMatches =
     Math.max(
       ...players.map(
         player => player.matches
       )
     );
-
+  
+  const highestTops =
+    Math.max(
+      ...players.map(
+        player => player.tops
+      )
+    );
+  
+  const highestTopRate =
+    Math.max(
+      ...players.map(
+        player => player.topRate
+      )
+    );
+  
+  const highestLastAvoidRate =
+    Math.max(
+      ...players.map(
+        player => player.lastAvoidRate
+      )
+    );
+  
   teamPlayerBody.innerHTML =
     players
       .map(player => {
         const isTeamMvp =
           player.points === highestPoints;
 
-        const isMostPlayed =
+          const isMostPlayed =
           player.matches === highestMatches;
-
+        
+        const isTopLeader =
+          player.tops === highestTops;
+        
+        const isTopRateLeader =
+          player.topRate === highestTopRate;
+        
+        const isLastAvoidLeader =
+          player.lastAvoidRate === highestLastAvoidRate;
+        
         const yearText =
           formatPlayerYears(player.years);
 
@@ -723,21 +798,21 @@ function renderTeamPlayers() {
               ${player.matches}試合
             </td>
 
-            <td>
-              ${formatPoint(player.points)}
-            </td>
+            <td class="${isTeamMvp ? "mobile-team-leader" : ""}">
+  ${formatPoint(player.points)}
+</td>
 
-            <td>
-              ${player.tops}勝
-            </td>
+<td class="${isTopLeader ? "mobile-team-leader" : ""}">
+  ${player.tops}勝
+</td>
 
-            <td>
-              ${formatPercent(player.topRate)}
-            </td>
+<td class="${isTopRateLeader ? "mobile-team-leader" : ""}">
+  ${formatPercent(player.topRate)}
+</td>
 
-            <td>
-              ${formatPercent(player.lastAvoidRate)}
-            </td>
+<td class="${isLastAvoidLeader ? "mobile-team-leader" : ""}">
+  ${formatPercent(player.lastAvoidRate)}
+</td>
 
             <td>
               ${
