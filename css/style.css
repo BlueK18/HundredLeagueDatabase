@@ -2599,32 +2599,54 @@ select {
     text-decoration:underline;
   }
   .team-profile-link,
-.current-team-page-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 14px 0;
-  padding: 11px 16px;
-  border: 1px solid rgba(212, 175, 55, 0.55);
-  border-radius: 12px;
-  color: #d4af37;
-  font-weight: 700;
-  text-decoration: none;
-  transition: 0.2s;
-}
-
-.team-profile-link:hover,
-.current-team-page-link:hover {
-  background: rgba(212, 175, 55, 0.12);
-  transform: translateY(-1px);
-}
-
-.team-profile-link svg,
-.current-team-page-link svg {
-  width: 18px;
-  height: 18px;
-}
+  .current-team-page-link{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:8px;
+  
+      width:min(90%,420px);
+      margin:24px auto;
+      padding:14px 20px;
+  
+      background:#1c1c1c;
+      border:1px solid rgba(217,182,56,.5);
+      border-radius:12px;
+  
+      color:#fff;
+      text-decoration:none;
+      font-size:15px;
+      font-weight:700;
+  
+      cursor:pointer;
+  
+      transition:
+          background .2s ease,
+          border-color .2s ease,
+          transform .2s ease;
+  }
+  
+  .team-profile-link:hover,
+  .current-team-page-link:hover{
+      background:#252525;
+      border-color:#d9b638;
+      transform:translateY(-2px);
+  }
+  
+  .team-profile-link svg,
+  .current-team-page-link svg{
+      width:20px;
+      height:20px;
+  
+      color:#d9b638;
+      stroke-width:2.4;
+  }
+  
+  .team-profile-link:hover svg,
+  .current-team-page-link:hover svg{
+      transform:scale(1.08);
+      transition:transform .2s ease;
+  }
 .team-subtitle{
     margin-top:8px;
     color:#bdbdbd;
@@ -3716,3 +3738,14 @@ select {
       padding-bottom: 0 !important;
     }
   }
+  .team-history-league,
+.team-history-stage{
+  display:block;
+  white-space:nowrap;
+}
+
+.team-history-stage{
+  margin-top:2px;
+  font-size:11px;
+  color:#d0d0d0;
+}
