@@ -18,15 +18,27 @@
 
 <body>
 
-  <main>
-    <h1>📢 お知らせ</h1>
+  <main class="news-page">
 
-    <p>
-      お知らせは準備中です。
-    </p>
+    <div class="page-header">
+      <h1>お知らせ</h1>
+    
+      <p class="page-description">
+        ハンドレッドリーグ データベースの更新情報や大会情報を掲載しています。
+      </p>
+    </div>
+    
+    <div
+      id="newsList"
+      class="news-list"
+    >
+      <p class="no-data-message">
+        お知らせを読み込み中...
+      </p>
+    </div>
     <a
   href="#"
-  class="back-button"
+  class="back-button js-back-button"
   id="backButton"
 >
   <i data-lucide="arrow-left"></i>
@@ -36,6 +48,7 @@
 </main>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/common.js?v=3"></script>
+<script src="js/news.js?v=1"></script>
   
 
 </body>

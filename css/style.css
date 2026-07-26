@@ -679,15 +679,30 @@ html{
 }
 
 .site-nav-links a{
-    color:#e8e8e8;
-    text-decoration:none;
-    font-size:14px;
-    font-weight:bold;
-    transition:.2s;
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:#e8e8e8;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+  transition:.2s;
 }
 
 .site-nav-links a:hover{
-    color:#d4af37;
+  color:#d4af37;
+}
+.site-nav-links a svg{
+  width:17px;
+  height:17px;
+  stroke-width:2;
+  flex-shrink:0;
+  transition:.2s;
+}
+
+.site-nav-links a:hover svg{
+  transform:translateY(-1px);
 }
 
 @media(max-width:700px){
@@ -3852,5 +3867,493 @@ select {
     color: #ffd700 !important;
     font-weight: 700 !important;
   }
-  
   }
+  /* 成績カード：最高順位の年度・リーグ・ステージ */
+.summary-detail {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: #b8b8b8;
+  white-space: nowrap;
+}
+/* ========================================
+   お知らせ未読表示
+======================================== */
+
+a[href*="news.html"] {
+  position: relative;
+}
+
+a[href*="news.html"].has-unread-news {
+  color: #e2bd34 !important;
+  font-weight: 700;
+  animation:
+    newsNavAttention 1.7s
+    ease-in-out infinite;
+}
+
+a[href*="news.html"].has-unread-news svg {
+  color: #e2bd34 !important;
+  stroke: currentColor;
+}
+
+.news-unread-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e2bd34;
+  box-shadow:
+    0 0 0 3px
+    rgba(226, 189, 52, 0.18);
+  pointer-events: none;
+}
+
+@keyframes newsNavAttention {
+  0%,
+  100% {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: translateY(-2px);
+    filter: brightness(1.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a[href*="news.html"].has-unread-news {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .news-unread-dot {
+    top: 5px;
+    right: calc(50% - 18px);
+  }
+
+  a[href*="news.html"].has-unread-news {
+    animation:
+      newsMobileAttention 1.7s
+      ease-in-out infinite;
+  }
+}
+
+@keyframes newsMobileAttention {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+/* ========================================
+   お知らせページ
+======================================== */
+
+.news-page {
+  width: min(
+    100% - 20px,
+    920px
+  );
+  margin: 0 auto;
+  padding:
+    48px 0
+    120px;
+}
+
+.news-page .page-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.news-page .page-header h1 {
+  margin: 0 0 12px;
+  font-size: clamp(
+    28px,
+    4vw,
+    40px
+  );
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.news-page .page-description {
+  margin: 0;
+  color: #a8a8a8;
+  font-size: 14px;
+  line-height: 1.8;
+  text-wrap: balance;
+}
+
+
+/* ========================================
+   お知らせ一覧
+======================================== */
+
+.news-list {
+  display: grid;
+  gap: 20px;
+}
+
+
+/* ========================================
+   お知らせカード
+======================================== */
+
+.news-card {
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  border-radius: 16px;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.news-card:hover {
+  border-color: #d4af37;
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, 0.28);
+}
+
+.news-card.is-important {
+  border-color:
+    rgba(212, 175, 55, 0.65);
+}
+
+.news-card.is-important::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #d4af37;
+}
+
+
+/* ========================================
+   カード上部
+======================================== */
+
+.news-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.news-category {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #d4af37;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.news-category svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.news-date {
+  flex-shrink: 0;
+  color: #888888;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* ========================================
+   重要バッジ
+======================================== */
+
+.news-important-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 9px;
+  color: #111111;
+  background: #d4af37;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+
+/* ========================================
+   タイトル・本文
+======================================== */
+
+.news-title {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: clamp(
+    20px,
+    3vw,
+    25px
+  );
+  line-height: 1.45;
+}
+
+.news-body {
+  color: #d0d0d0;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+
+/* ========================================
+   ボタン
+======================================== */
+
+.news-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.news-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 18px;
+  color: #111111;
+  background: #d4af37;
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.news-link-button:hover {
+  color: #111111;
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.news-link-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* ========================================
+   カテゴリ別アクセント
+======================================== */
+
+.news-category-update .news-category {
+  color: #d4af37;
+}
+
+.news-category-league .news-category {
+  color: #e0c15a;
+}
+
+.news-category-youtube .news-category {
+  color: #f0f0f0;
+}
+
+.news-category-note .news-category {
+  color: #c8c8c8;
+}
+
+.news-category-info .news-category {
+  color: #d4af37;
+}
+
+.news-category-warning .news-category {
+  color: #e8c34c;
+}
+
+
+/* ========================================
+   空表示・読み込み
+======================================== */
+
+.news-empty,
+.news-list .no-data-message,
+.news-list .loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 220px;
+  margin: 0;
+  padding: 32px;
+  color: #999999;
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.news-empty svg {
+  width: 30px;
+  height: 30px;
+  color: #d4af37;
+}
+
+
+/* ========================================
+   スマホ
+======================================== */
+
+@media (max-width: 600px) {
+  .news-page {
+    width: min(
+      100% - 24px,
+      920px
+    );
+    padding:
+      28px 0
+      110px;
+  }
+
+  .news-page .page-header {
+    margin-bottom: 24px;
+    text-align: left;
+  }
+
+  .news-page .page-description {
+    width: 100%;
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 1.7;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  .news-list {
+    gap: 14px;
+  }
+
+  .news-card {
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .news-card-header {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .news-category {
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .news-category svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .news-date {
+    font-size: 11px;
+  }
+
+  .news-title {
+    margin-bottom: 10px;
+    font-size: 19px;
+  }
+
+  .news-body {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .news-actions {
+    justify-content: stretch;
+    margin-top: 18px;
+  }
+
+  .news-link-button {
+    width: 100%;
+  }
+}
+/* ========================================
+   お知らせ未読通知
+======================================== */
+
+a[href*="news.html"].has-unread-news {
+  color: #d4af37 !important;
+}
+
+a[href*="news.html"].has-unread-news svg {
+  color: #d4af37 !important;
+  stroke: currentColor;
+  transform-origin: 50% 10%;
+  animation:
+    unreadNewsBell 2.8s
+    ease-in-out infinite;
+}
+
+
+/* ベルが揺れて、少し停止する */
+
+@keyframes unreadNewsBell {
+  0%,
+  10%,
+  45%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  15% {
+    transform: rotate(-14deg);
+  }
+
+  20% {
+    transform: rotate(14deg);
+  }
+
+  25% {
+    transform: rotate(-11deg);
+  }
+
+  30% {
+    transform: rotate(11deg);
+  }
+
+  35% {
+    transform: rotate(-6deg);
+  }
+
+  40% {
+    transform: rotate(6deg);
+  }
+}
+
+
+/* 動きを減らす設定の端末 */
+
+@media (prefers-reduced-motion: reduce) {
+  a[href*="news.html"].has-unread-news svg {
+    animation: none;
+  }
+}

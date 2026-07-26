@@ -1,62 +1,201 @@
 #!/bin/bash
 
-set -e
-
 PROJECT_DIR="/Users/blue-k18/Documents/website/assets/css/HundredLeagueDatabase"
 
-cd "$PROJECT_DIR"
+cd "$PROJECT_DIR" || {
+  echo ""
+  echo "❌ プロジェクトフォルダを開けませんでした。"
+  echo "$PROJECT_DIR"
+  echo ""
+  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  exit 1
+}
 
 echo "========================================"
 echo "ハンドレッドリーグ データ更新"
 echo "========================================"
 echo ""
 
-echo "1/5 teams.csv を更新中..."
-curl --http1.1 --fail --location --max-time 120 \
+
+download_csv() {
+  local number="$1"
+  local filename="$2"
+  local url="$3"
+  local output="$4"
+  local temp_file="${output}.tmp"
+
+  echo "$number $filename を更新中..."
+
+  if curl \
+    --http1.1 \
+    --fail \
+    --location \
+    --max-time 120 \
+    --silent \
+    --show-error \
+    "$url" \
+    --output "$temp_file"
+  then
+    if [ ! -s "$temp_file" ]; then
+      echo "❌ $filename の取得に失敗しました。"
+      echo "   ダウンロードしたファイルが空です。"
+      rm -f "$temp_file"
+      return 1
+    fi
+
+    mv "$temp_file" "$output"
+
+    echo "✅ $filename 完了"
+    echo ""
+
+    return 0
+  else
+    echo ""
+    echo "❌ $filename の更新に失敗しました。"
+    echo "   Googleスプレッドシートの公開設定や通信状態を確認してください。"
+    echo ""
+
+    rm -f "$temp_file"
+
+    return 1
+  fi
+}
+
+
+FAILED_FILES=()
+
+
+download_csv \
+  "1/6" \
+  "teams.csv" \
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1681226504&single=true&output=csv" \
-  --output data/teams.csv
+  "data/teams.csv" \
+  || FAILED_FILES+=("teams.csv")
 
-echo "2/5 players.csv を更新中..."
-curl --http1.1 --fail --location --max-time 120 \
+
+download_csv \
+  "2/6" \
+  "players.csv" \
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1337045347&single=true&output=csv" \
-  --output data/players.csv
+  "data/players.csv" \
+  || FAILED_FILES+=("players.csv")
 
-echo "3/5 matches.csv を更新中..."
-curl --http1.1 --fail --location --max-time 120 \
+
+download_csv \
+  "3/6" \
+  "matches.csv" \
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1561387699&single=true&output=csv" \
-  --output data/matches.csv
+  "data/matches.csv" \
+  || FAILED_FILES+=("matches.csv")
 
-echo "4/5 awards.csv を更新中..."
-curl --http1.1 --fail --location --max-time 120 \
+
+download_csv \
+  "4/6" \
+  "awards.csv" \
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=869325336&single=true&output=csv" \
-  --output data/awards.csv
+  "data/awards.csv" \
+  || FAILED_FILES+=("awards.csv")
 
-echo "5/5 playerAlias.csv を更新中..."
-curl --http1.1 --fail --location --max-time 120 \
+
+download_csv \
+  "5/6" \
+  "playerAlias.csv" \
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=614293799&single=true&output=csv" \
-  --output data/playerAlias.csv
+  "data/playerAlias.csv" \
+  || FAILED_FILES+=("playerAlias.csv")
 
-echo ""
-echo "CSV更新完了"
+
+download_csv \
+  "6/6" \
+  "news.csv" \
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1687688944&single=true&output=csv" \
+  "data/news.csv" \
+  || FAILED_FILES+=("news.csv")
+
+
+if [ ${#FAILED_FILES[@]} -gt 0 ]; then
+  echo "========================================"
+  echo "❌ CSV更新に失敗しました"
+  echo "========================================"
+  echo ""
+
+  echo "失敗したファイル："
+
+  for file in "${FAILED_FILES[@]}"; do
+    echo "・$file"
+  done
+
+  echo ""
+  echo "GitHubへの送信は行っていません。"
+  echo "失敗箇所を確認して、もう一度実行してください。"
+  echo ""
+
+  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  exit 1
+fi
+
+
+echo "========================================"
+echo "✅ すべてのCSV更新が完了しました"
+echo "========================================"
 echo ""
 
-git add .
+
+echo "GitHubへ送信する準備中..."
+
+if ! git add .; then
+  echo ""
+  echo "❌ git add に失敗しました。"
+  echo ""
+
+  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  exit 1
+fi
+
 
 if git diff --cached --quiet; then
+  echo ""
   echo "変更はありませんでした。"
+
 else
   COMMIT_MESSAGE="データ更新 $(date '+%Y-%m-%d %H:%M')"
 
-  git commit -m "$COMMIT_MESSAGE"
-  git push origin main
+  echo "GitHubへコミット中..."
+
+  if ! git commit -m "$COMMIT_MESSAGE"; then
+    echo ""
+    echo "❌ git commit に失敗しました。"
+    echo ""
+
+    read -n 1 -s -r -p "何かキーを押すと閉じます..."
+    exit 1
+  fi
 
   echo ""
-  echo "GitHubへ送信しました。"
-  echo "GitHub Pagesへ反映中です。通常30秒〜数分で更新されます。"
+  echo "GitHubへ送信中..."
+
+  if ! git push origin main; then
+    echo ""
+    echo "❌ GitHubへの送信に失敗しました。"
+    echo "   通信状態やGitHubへのログイン状態を確認してください。"
+    echo ""
+
+    read -n 1 -s -r -p "何かキーを押すと閉じます..."
+    exit 1
+  fi
+
+  echo ""
+  echo "✅ GitHubへ送信しました。"
+  echo "GitHub Pagesへ反映中です。"
+  echo "通常30秒〜数分で更新されます。"
 fi
 
+
 echo ""
-echo "処理が完了しました。"
+echo "========================================"
+echo "✅ すべての処理が完了しました"
+echo "========================================"
+echo ""
 echo "この画面は閉じて大丈夫です。"
 echo ""
 

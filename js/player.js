@@ -2009,13 +2009,12 @@ displayPlayerName =
       activeLeague =
         getLeagueForYear(activeYear);
   
-      activeStage = "ALL";
-  
-      renderPlayerPage();
-  
-     
-  
-    } catch (error) {
+        activeStage = "ALL";
+
+        renderPlayerPage();
+        updateFavoriteButton();
+        
+        } catch (error) {
       console.error(
         "選手詳細読込エラー:",
         error
@@ -2141,14 +2140,16 @@ function saveFavoritePlayers(players) {
 function isFavoritePlayer() {
   return getFavoritePlayers()
     .some(item => {
-      if (currentPlayerId) {
-        return item.id === currentPlayerId;
-      }
+      const idMatches =
+        currentPlayerId &&
+        item.id &&
+        item.id === currentPlayerId;
 
-      return (
+      const nameMatches =
         item.name === displayPlayerName ||
-        item.name === playerName
-      );
+        item.name === playerName;
+
+      return idMatches || nameMatches;
     });
 }
 
@@ -2190,17 +2191,19 @@ function toggleFavoritePlayer() {
   const isFavorite =
     isFavoritePlayer();
 
-  const updatedFavorites =
+    const updatedFavorites =
     isFavorite
       ? favorites.filter(item => {
-          if (currentPlayerId) {
-            return item.id !== currentPlayerId;
-          }
-
-          return (
-            item.name !== displayPlayerName &&
-            item.name !== playerName
-          );
+          const idMatches =
+            currentPlayerId &&
+            item.id &&
+            item.id === currentPlayerId;
+  
+          const nameMatches =
+            item.name === displayPlayerName ||
+            item.name === playerName;
+  
+          return !idMatches && !nameMatches;
         })
       : [
           ...favorites,
@@ -2229,5 +2232,4 @@ favoriteButton?.addEventListener(
 ======================================== */
 
 initializeMatchDetailModal();
-updateFavoriteButton();
 loadPlayerDetail();

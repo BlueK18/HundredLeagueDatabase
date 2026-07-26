@@ -230,18 +230,89 @@ function renderTeamSummary(
       0
     );
 
-  const ranks = teamRows
-    .map(row => toNullableNumber(row["順位"]))
-    .filter(rank =>
-      rank !== null &&
-      Number.isFinite(rank) &&
-      rank > 0
-    );
-
-  const bestRank =
-    ranks.length > 0
-      ? Math.min(...ranks)
-      : null;
+    const stagePriority = {
+      "レギュラー": 1,
+      "Regular": 1,
+      "Semi-Final": 2,
+      "Final": 3
+    };
+    
+    const bestResult =
+      teamRows
+        .map(row => {
+          const rank =
+            toNullableNumber(row["順位"]);
+    
+          if (
+            rank === null ||
+            !Number.isFinite(rank) ||
+            rank <= 0
+          ) {
+            return null;
+          }
+    
+          const year =
+            String(row["年度"] || "").trim();
+    
+          const league =
+            HLDB.normalizeLeague(
+              row["リーグ"]
+            ) || "";
+    
+          const stage =
+            HLDB.normalizeStage(
+              row["ステージ"]
+            ) || "";
+    
+          return {
+            rank,
+            year,
+            league,
+            stage
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => {
+          const rankDiff =
+            a.rank - b.rank;
+    
+          if (rankDiff !== 0) {
+            return rankDiff;
+          }
+    
+          const stageDiff =
+            (stagePriority[b.stage] || 0) -
+            (stagePriority[a.stage] || 0);
+    
+          if (stageDiff !== 0) {
+            return stageDiff;
+          }
+    
+          return (
+            Number(b.year) -
+            Number(a.year)
+          );
+        })[0] || null;
+    
+    const bestResultLeague =
+      bestResult?.league === "単一リーグ"
+        ? ""
+        : bestResult?.league || "";
+    
+    const bestResultDetail =
+      bestResult
+        ? [
+            bestResult.year,
+            [
+              bestResultLeague,
+              bestResult.stage
+            ]
+              .filter(Boolean)
+              .join(" / ")
+          ]
+            .filter(Boolean)
+            .join(" ")
+        : "";
 
   const participationYears =
     new Set(
@@ -282,12 +353,22 @@ function renderTeamSummary(
       </span>
 
       <strong class="summary-value">
-        ${
-          bestRank !== null
-            ? `${bestRank}位`
-            : "－"
-        }
-      </strong>
+  ${
+    bestResult
+      ? `${bestResult.rank}位`
+      : "－"
+  }
+</strong>
+
+${
+  bestResultDetail
+    ? `
+      <span class="summary-detail">
+        ${escapeHtml(bestResultDetail)}
+      </span>
+    `
+    : ""
+}
     </div>
 
     <div class="team-summary-card">

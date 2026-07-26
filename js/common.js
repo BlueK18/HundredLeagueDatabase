@@ -15,7 +15,12 @@ HLDB.DATA_URLS = {
   players: "data/players.csv",
   matches: "data/matches.csv",
   awards: "data/awards.csv",
-  playerAlias: "data/playerAlias.csv"
+  playerAlias: "data/playerAlias.csv",
+
+  news: "data/news.csv",
+
+  newsFallback:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1687688944&single=true&output=csv"
 };
 
 
@@ -232,15 +237,67 @@ HLDB.loadData = async function (
       `${dataName}: CSVを取得`
     );
 
-    const freshData =
+    let freshData;
+
+if (dataName === "news") {
+  try {
+    /*
+      まずローカルCSVを取得する
+    */
+    freshData =
       await HLDB.fetchCsv(url);
 
-    HLDB.memoryDataCache[
-      dataName
-    ] = {
-      data: freshData,
-      savedAt: now
-    };
+    /*
+      ファイルが空、または見出しだけなら
+      スプレッドシートへ切り替える
+    */
+    if (
+      !Array.isArray(freshData) ||
+      freshData.length === 0
+    ) {
+      throw new Error(
+        "ローカルのお知らせCSVが空です"
+      );
+    }
+
+    console.log(
+      "news: ローカルCSVを使用"
+    );
+
+  } catch (localNewsError) {
+    const fallbackUrl =
+      HLDB.DATA_URLS.newsFallback;
+
+    if (!fallbackUrl) {
+      throw localNewsError;
+    }
+
+    console.warn(
+      "news: ローカルCSVを使用できないため、スプレッドシートへ切り替えます",
+      localNewsError
+    );
+
+    freshData =
+      await HLDB.fetchCsv(
+        fallbackUrl
+      );
+
+    console.log(
+      "news: スプレッドシートCSVを使用"
+    );
+  }
+
+} else {
+  freshData =
+    await HLDB.fetchCsv(url);
+}
+
+HLDB.memoryDataCache[
+  dataName
+] = {
+  data: freshData,
+  savedAt: now
+};
 
 
     /*
@@ -2112,6 +2169,9 @@ HLDB.initializeCommonUi =
       HLDB
         .initializeIcons();
 
+        await HLDB
+  .updateNewsNavigationState();
+
     } catch (error) {
       console.error(
         "共通UIの初期化に失敗しました:",
@@ -2139,3 +2199,188 @@ if (
 } else {
   HLDB.initializeCommonUi();
 }
+/* ========================================
+   お知らせ未読管理
+======================================== */
+
+HLDB.NEWS_READ_STORAGE_KEY =
+  "hldbLastReadNewsKey";
+
+
+HLDB.createNewsKey = function (newsItem) {
+  if (!newsItem) {
+    return "";
+  }
+
+  return [
+    String(
+      newsItem["日付"] || ""
+    ).trim(),
+
+    String(
+      newsItem["タイトル"] || ""
+    ).trim(),
+
+    String(
+      newsItem["カテゴリ"] || ""
+    ).trim()
+  ].join("|");
+};
+
+
+HLDB.isPublishedNews = function (newsItem) {
+  const value =
+    String(
+      newsItem?.["公開"] || ""
+    )
+      .trim()
+      .toLowerCase();
+
+  return (
+    value === "true" ||
+    value === "1" ||
+    value === "yes" ||
+    value === "公開"
+  );
+};
+
+
+HLDB.getNewsDateNumber = function (value) {
+  const text =
+    String(value || "").trim();
+
+  if (!text) {
+    return 0;
+  }
+
+  const normalized =
+    text
+      .replace(/[年月]/g, "/")
+      .replace(/日/g, "")
+      .replace(/\./g, "/")
+      .replace(/-/g, "/");
+
+  const date =
+    new Date(normalized);
+
+  const time =
+    date.getTime();
+
+  return Number.isFinite(time)
+    ? time
+    : 0;
+};
+
+
+HLDB.getLatestPublishedNews =
+  function (newsData) {
+    return [...newsData]
+      .filter(
+        HLDB.isPublishedNews
+      )
+      .sort((a, b) => {
+        return (
+          HLDB.getNewsDateNumber(
+            b["日付"]
+          ) -
+          HLDB.getNewsDateNumber(
+            a["日付"]
+          )
+        );
+      })[0] || null;
+  };
+
+
+HLDB.markLatestNewsAsRead =
+  function (newsItem) {
+    const newsKey =
+      HLDB.createNewsKey(
+        newsItem
+      );
+
+    if (!newsKey) {
+      return;
+    }
+
+    localStorage.setItem(
+      HLDB.NEWS_READ_STORAGE_KEY,
+      newsKey
+    );
+  };
+
+
+HLDB.updateNewsNavigationState =
+  async function () {
+    const newsLinks =
+      document.querySelectorAll(
+        'a[href*="news.html"]'
+      );
+
+    if (
+      newsLinks.length === 0
+    ) {
+      return;
+    }
+
+    try {
+      const newsData =
+        await HLDB.loadData(
+          "news"
+        );
+
+      const latestNews =
+        HLDB.getLatestPublishedNews(
+          newsData
+        );
+
+      if (!latestNews) {
+        return;
+      }
+
+      const latestNewsKey =
+        HLDB.createNewsKey(
+          latestNews
+        );
+
+      const lastReadNewsKey =
+        localStorage.getItem(
+          HLDB.NEWS_READ_STORAGE_KEY
+        ) || "";
+
+      const isNewsPage =
+        window.location.pathname
+          .toLowerCase()
+          .endsWith(
+            "/news.html"
+          ) ||
+        window.location.pathname
+          .toLowerCase()
+          .endsWith(
+            "news.html"
+          );
+
+      if (isNewsPage) {
+        HLDB.markLatestNewsAsRead(
+          latestNews
+        );
+      }
+
+      const hasUnreadNews =
+        !isNewsPage &&
+        latestNewsKey !==
+          lastReadNewsKey;
+
+          newsLinks.forEach(link => {
+            link.classList.toggle(
+              "has-unread-news",
+              hasUnreadNews
+            );
+          });
+
+    } catch (error) {
+      console.error(
+        "お知らせ未読判定エラー:",
+        error
+      );
+    }
+  };
