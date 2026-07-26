@@ -178,9 +178,24 @@ function renderTeamInfo(team, teamsData) {
   }
 
   teamTitle.textContent =
-    team["チーム"] || teamName;
+  team["チーム"] || teamName;
 
-  teamInfo.innerHTML = `
+HLDB.screenshotData = {
+  type: "team",
+  teamName: team["チーム"] || teamName,
+  year: team["年度"] || year,
+  league: HLDB.normalizeLeague(team["リーグ"]),
+  stage: HLDB.displayStageName(team["ステージ"]),
+  rank: team["順位"] || "―",
+  point: HLDB.formatDecimal(point),
+  matches: team["試合数"] || "―",
+  placements: team["着順分布"] || "―",
+  upperDiff: upperDiffText,
+  borderDiff: borderDiffText,
+  isPastSingleLeague
+};
+
+teamInfo.innerHTML = `
     <div class="team-detail">
 
       <p>

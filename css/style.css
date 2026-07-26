@@ -4582,3 +4582,1273 @@ body.support-popup-open {
 
   text-align:center;
 }
+/* ========================================
+   Screenshot Mode
+======================================== */
+
+#screenshot-overlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,.92);
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:
+    opacity .25s ease,
+    visibility .25s ease;
+}
+
+#screenshot-overlay.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+/* ========================================
+   Screenshot Builder Layout
+======================================== */
+
+.screenshot-builder{
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  padding:24px;
+
+  overflow-y:auto;
+}
+
+.screenshot-panel{
+  width:min(680px,100%);
+  margin:0 auto;
+  padding:28px;
+
+  color:#fff;
+  text-align:center;
+
+  background:#111;
+
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:22px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.screenshot-header{
+  margin-bottom:18px;
+  text-align:center;
+}
+
+.screenshot-header h2{
+  margin:0;
+
+  color:#d4af37;
+
+  font-size:24px;
+  line-height:1.4;
+  letter-spacing:.08em;
+}
+
+.screenshot-header p{
+  margin:10px 0 0;
+
+  color:rgba(255,255,255,.65);
+
+  font-size:14px;
+  line-height:1.7;
+}
+
+.screenshot-builder-preview{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  width:100%;
+  padding:12px;
+
+  background:rgba(255,255,255,.035);
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+
+  overflow:hidden;
+}
+
+.screenshot-setting{
+  margin-top:18px;
+  padding:17px 18px;
+
+  text-align:left;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+}
+
+.screenshot-setting-title{
+  color:#fff;
+
+  font-size:15px;
+  font-weight:700;
+}
+
+.screenshot-setting-title::before{
+  content:"▼";
+
+  margin-right:9px;
+
+  color:#d4af37;
+
+  font-size:11px;
+}
+
+.screenshot-setting-note{
+  margin-top:6px;
+
+  color:rgba(255,255,255,.42);
+
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* ========================================
+   Screenshot Actions
+======================================== */
+
+.screenshot-actions{
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:12px;
+
+  margin-top:24px;
+}
+
+.screenshot-actions button{
+  min-height:48px;
+
+  padding:12px 16px;
+
+  border:none;
+  border-radius:12px;
+
+  font:inherit;
+  font-size:14px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.screenshot-cancel-button{
+  color:#fff;
+
+  background:rgba(255,255,255,.09);
+
+  border:1px solid rgba(255,255,255,.12) !important;
+}
+
+.screenshot-create-button{
+  color:#111;
+
+  background:#d4af37;
+}
+
+.screenshot-cancel-button:hover,
+.screenshot-create-button:hover{
+  filter:brightness(1.08);
+}
+/* ========================================
+   Screenshot Card
+   準備画面・完成画面・保存画像で共通
+======================================== */
+
+.screenshot-card-stage{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  width:100%;
+}
+
+.screenshot-builder-preview .screenshot-card-stage{
+  width:100%;
+}
+
+.screenshot-card{
+  position:relative;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+
+  width:100%;
+  aspect-ratio:16 / 9;
+
+  padding:7%;
+
+  color:#fff;
+  text-align:center;
+
+  background-image:url("../assets/themes/001.png");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  border:none;
+  border-radius:3%;
+
+  box-shadow:none;
+
+  overflow:hidden;
+}
+
+.screenshot-card::before,
+.screenshot-card::after{
+  display:none;
+}
+
+.screenshot-card-header,
+.screenshot-card-stats,
+.screenshot-card-placements{
+  position:relative;
+  z-index:1;
+}
+
+.screenshot-card-header{
+  width:100%;
+  margin-top:1%;
+}
+
+.screenshot-card-title{
+  width:100%;
+  max-width:88%;
+  margin:0 auto;
+
+  color:#fff;
+
+  font-size:clamp(22px,5.5vw,52px);
+  font-weight:800;
+  line-height:1.2;
+  letter-spacing:.04em;
+
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
+
+.screenshot-card-subtitle{
+  margin-top:3%;
+
+  color:rgba(255,255,255,.62);
+
+  font-size:clamp(10px,1.8vw,18px);
+  line-height:1.4;
+  letter-spacing:.1em;
+}
+
+.screenshot-card-stats{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  width:72%;
+
+  gap:7%;
+
+  margin-top:5%;
+  margin-bottom:2%;
+}
+
+.screenshot-card-stat{
+  flex:1 1 0;
+
+  min-width:0;
+
+  text-align:center;
+}
+
+.screenshot-card-label{
+  display:block;
+
+  margin-bottom:8%;
+
+  color:rgba(255,255,255,.55);
+
+  font-size:clamp(10px,1.6vw,16px);
+  line-height:1.3;
+  letter-spacing:.12em;
+}
+
+.screenshot-card-stat strong{
+  display:block;
+
+  max-width:100%;
+
+  color:#d4af37;
+
+  font-size:clamp(24px,5vw,48px);
+  line-height:1;
+
+  white-space:nowrap;
+}
+
+.screenshot-card-divider{
+  flex:0 0 1px;
+
+  width:1px;
+  height:clamp(42px,8vw,80px);
+
+  background:rgba(212,175,55,.55);
+}
+
+.screenshot-card-placements{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+
+  width:72%;
+
+  margin-top:2%;
+
+  border-top:1px solid rgba(212,175,55,.24);
+  border-bottom:1px solid rgba(212,175,55,.16);
+}
+
+.screenshot-card-placement{
+  min-width:0;
+
+  padding:2.5% 2%;
+
+  text-align:center;
+}
+
+.screenshot-card-placement + .screenshot-card-placement{
+  border-left:1px solid rgba(255,255,255,.08);
+}
+
+.screenshot-card-placement span{
+  display:block;
+
+  color:rgba(255,255,255,.52);
+
+  font-size:clamp(9px,1.4vw,14px);
+  line-height:1.3;
+  letter-spacing:.08em;
+}
+
+.screenshot-card-placement strong{
+  display:block;
+
+  margin-top:8%;
+
+  color:#fff;
+
+  font-size:clamp(17px,3vw,28px);
+  line-height:1;
+
+  white-space:nowrap;
+}
+
+.screenshot-card-logo{
+  position:absolute;
+
+  right:2%;
+  bottom:2%;
+
+  width:clamp(58px,15%,135px);
+  height:auto;
+  max-height:28%;
+
+  z-index:2;
+
+  object-fit:contain;
+
+  pointer-events:none;
+
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));
+}
+
+/* ========================================
+   Builder内のカード
+======================================== */
+
+.screenshot-builder-preview .screenshot-card{
+  width:100%;
+  margin:0;
+}
+
+/* ========================================
+   完成画面のカード
+======================================== */
+
+.screenshot-card-stage-final{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  width:min(100%,960px);
+}
+
+.screenshot-card-stage-final .screenshot-card{
+  width:100%;
+  margin:0;
+}
+/* ========================================
+   Screenshot Preview
+======================================== */
+
+.screenshot-preview{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:24px;
+
+  width:100%;
+  height:100%;
+  padding:24px;
+
+  background:rgba(0,0,0,.94);
+
+  overflow:auto;
+}
+
+.screenshot-preview.show{
+  display:flex;
+}
+
+.screenshot-preview .screenshot-card-stage-final{
+  width:min(100%,960px);
+
+  flex-shrink:0;
+}
+
+.screenshot-preview .screenshot-card-stage{
+  width:100%;
+}
+
+.screenshot-preview .screenshot-card{
+  width:100%;
+  margin:0;
+
+  transform:none;
+}
+
+.screenshot-preview-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+
+  width:min(100%,960px);
+
+  flex-shrink:0;
+}
+
+.screenshot-back-button,
+.screenshot-save-button{
+  min-height:56px;
+
+  padding:12px 18px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;
+
+  font:inherit;
+  font-size:18px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.screenshot-back-button{
+  color:#fff;
+  background:#292929;
+}
+
+.screenshot-save-button{
+  color:#111;
+
+  background:#d4af37;
+  border-color:#d5ad2d;
+}
+
+.screenshot-back-button:hover,
+.screenshot-save-button:hover{
+  filter:brightness(1.08);
+}
+
+.screenshot-back-button:disabled,
+.screenshot-save-button:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+/* ========================================
+   Screenshot Theme List
+======================================== */
+
+.screenshot-theme-list{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+
+  margin-top:14px;
+}
+
+.screenshot-theme-item{
+  display:block;
+
+  width:100%;
+  aspect-ratio:16 / 9;
+
+  object-fit:cover;
+
+  background:#222;
+
+  border:2px solid transparent;
+  border-radius:10px;
+
+  cursor:pointer;
+
+  opacity:.72;
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease,
+    border-color .2s ease;
+}
+
+.screenshot-theme-item:hover{
+  opacity:1;
+
+  transform:translateY(-2px);
+}
+
+.screenshot-theme-item.active{
+  opacity:1;
+
+  border-color:#d4af37;
+
+  box-shadow:0 0 0 2px rgba(212,175,55,.18);
+}
+/* ========================================
+   Screenshot Mobile
+======================================== */
+
+@media (max-width:600px){
+
+  #screenshot-overlay{
+    align-items:flex-start;
+  }
+
+  .screenshot-builder{
+    padding:14px;
+  }
+
+  .screenshot-panel{
+    padding:20px 16px;
+
+    border-radius:18px;
+  }
+
+  .screenshot-header{
+    margin-bottom:14px;
+  }
+
+  .screenshot-header h2{
+    font-size:21px;
+  }
+
+  .screenshot-header p{
+    font-size:13px;
+  }
+
+  .screenshot-builder-preview{
+    padding:8px;
+
+    border-radius:12px;
+  }
+
+  .screenshot-setting{
+    padding:15px 14px;
+  }
+
+  .screenshot-actions{
+    grid-template-columns:1fr;
+  }
+
+  .screenshot-create-button{
+    order:-1;
+  }
+
+  .screenshot-preview{
+    justify-content:flex-start;
+
+    padding:24px 14px;
+  }
+
+  .screenshot-preview .screenshot-card-stage-final{
+    width:100%;
+
+    margin-top:auto;
+  }
+
+  .screenshot-preview-actions{
+    grid-template-columns:1fr;
+
+    width:100%;
+
+    margin-bottom:auto;
+  }
+
+  .screenshot-save-button{
+    order:-1;
+  }
+
+  .screenshot-back-button,
+  .screenshot-save-button{
+    min-height:52px;
+
+    font-size:16px;
+  }
+
+  .screenshot-theme-list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:10px;
+    margin-top:12px;
+  }
+
+  .screenshot-theme-item{
+    border-radius:8px;
+  }
+
+  .screenshot-theme-item:hover{
+    transform:none;
+  }
+}
+/* ========================================
+   Screenshot Card Size Fix
+   Builderは完成カードをそのまま縮小表示
+======================================== */
+
+.screenshot-card-stage{
+  position:relative;
+
+  width:960px;
+  height:540px;
+
+  flex:0 0 auto;
+}
+
+.screenshot-card{
+  width:960px;
+  height:540px;
+  aspect-ratio:auto;
+
+  flex:0 0 auto;
+}
+
+.screenshot-builder-preview{
+  position:relative;
+
+  height:auto;
+  min-height:0;
+
+  padding:12px;
+
+  overflow:hidden;
+}
+
+.screenshot-builder-preview .screenshot-card-stage{
+  width:960px;
+  height:540px;
+
+  transform-origin:top left;
+}
+
+.screenshot-card-stage-final{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+
+  width:100%;
+  height:auto;
+
+  flex:0 0 auto;
+
+  overflow:hidden;
+}
+
+.screenshot-card-stage-final .screenshot-card-stage{
+  width:960px;
+  height:540px;
+
+  margin:0;
+
+  transform-origin:top center;
+}
+/* Builder縮小カードの位置修正 */
+.screenshot-builder-preview{
+  display:flex;
+  justify-content:flex-start;
+  align-items:flex-start;
+}
+
+.screenshot-builder-preview .screenshot-card-stage{
+  margin:0;
+}
+/* ========================================
+   Screenshot Detail Setting
+======================================== */
+
+.screenshot-detail-setting{
+  margin-top:18px;
+
+  color:#fff;
+  text-align:left;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+
+  overflow:hidden;
+}
+
+.screenshot-detail-summary{
+  position:relative;
+
+  padding:17px 46px 17px 18px;
+
+  color:#fff;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  list-style:none;
+}
+
+.screenshot-detail-summary::-webkit-details-marker{
+  display:none;
+}
+
+.screenshot-detail-summary::after{
+  content:"＋";
+
+  position:absolute;
+
+  top:50%;
+  right:18px;
+
+  color:#d4af37;
+
+  font-size:22px;
+  line-height:1;
+
+  transform:translateY(-50%);
+}
+
+.screenshot-detail-setting[open]
+.screenshot-detail-summary::after{
+  content:"−";
+}
+
+.screenshot-detail-content{
+  padding:0 18px 18px;
+}
+
+.screenshot-detail-label{
+  display:block;
+
+  margin-bottom:8px;
+
+  color:rgba(255,255,255,.68);
+
+  font-size:13px;
+  font-weight:700;
+}
+
+.screenshot-font-select{
+  width:100%;
+  min-height:46px;
+
+  padding:10px 42px 10px 13px;
+
+  color:#fff;
+
+  background:#202020;
+
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:10px;
+
+  font-size:15px;
+
+  cursor:pointer;
+}
+
+.screenshot-font-select:focus{
+  border-color:#d4af37;
+
+  outline:none;
+
+  box-shadow:
+    0 0 0 3px rgba(212,175,55,.14);
+}
+
+.screenshot-font-select option{
+  color:#fff;
+  background:#202020;
+}
+/* ========================================
+   Screenshot Setting Groups
+======================================== */
+
+.screenshot-setting-group{
+  padding-top:18px;
+}
+
+.screenshot-setting-group:first-child{
+  padding-top:0;
+}
+
+.screenshot-setting-group + .screenshot-setting-group{
+  margin-top:22px;
+  padding-top:22px;
+
+  border-top:1px solid rgba(212,175,55,.22);
+}
+
+.screenshot-setting-group-title{
+  margin-bottom:16px;
+  padding-bottom:10px;
+
+  color:#d4af37;
+
+  font-size:14px;
+  font-weight:800;
+  line-height:1.4;
+  letter-spacing:.08em;
+
+  border-bottom:1px solid rgba(212,175,55,.3);
+}
+
+.screenshot-setting-group
+.screenshot-detail-label:not(:first-of-type){
+  margin-top:16px;
+}
+
+/* ========================================
+   Screenshot Selects
+======================================== */
+
+.screenshot-title-color-select,
+.screenshot-subtitle-color-select,
+.screenshot-stats-color-select,
+.screenshot-placements-color-select{
+  width:100%;
+  min-height:46px;
+
+  padding:10px 42px 10px 13px;
+
+  color:#fff;
+
+  background:#202020;
+
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:10px;
+
+  font-size:15px;
+
+  cursor:pointer;
+}
+
+.screenshot-title-color-select:focus,
+.screenshot-subtitle-color-select:focus,
+.screenshot-stats-color-select:focus,
+.screenshot-placements-color-select:focus{
+  border-color:#d4af37;
+
+  outline:none;
+
+  box-shadow:
+    0 0 0 3px rgba(212,175,55,.14);
+}
+
+.screenshot-title-color-select option,
+.screenshot-subtitle-color-select option,
+.screenshot-stats-color-select option,
+.screenshot-placements-color-select option{
+  color:#fff;
+  background:#202020;
+}
+/* ========================================
+   Screenshot Theme Accordion
+======================================== */
+
+.screenshot-theme-setting{
+  margin-bottom:18px;
+
+  background:rgba(255,255,255,.04);
+
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+
+  overflow:hidden;
+}
+
+.screenshot-theme-summary{
+  position:relative;
+
+  padding:16px 44px 16px 18px;
+
+  color:#fff;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  list-style:none;
+}
+
+.screenshot-theme-summary::-webkit-details-marker{
+  display:none;
+}
+
+.screenshot-theme-summary::before{
+  content:"▼";
+
+  margin-right:9px;
+
+  color:#d4af37;
+
+  font-size:11px;
+}
+
+.screenshot-theme-summary::after{
+  content:"＋";
+
+  position:absolute;
+
+  top:50%;
+  right:18px;
+
+  color:#d4af37;
+
+  font-size:20px;
+  line-height:1;
+
+  transform:translateY(-50%);
+}
+
+.screenshot-theme-setting[open]
+.screenshot-theme-summary::after{
+  content:"−";
+}
+
+.screenshot-theme-content{
+  padding:0 18px 18px;
+}
+/* ========================================
+   Screenshot Color Picker
+======================================== */
+
+.screenshot-color-picker-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.screenshot-color-picker{
+  width:54px;
+  height:42px;
+
+  padding:3px;
+
+  background:#202020;
+
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:10px;
+
+  cursor:pointer;
+}
+
+.screenshot-color-picker::-webkit-color-swatch-wrapper{
+  padding:0;
+}
+
+.screenshot-color-picker::-webkit-color-swatch{
+  border:none;
+  border-radius:6px;
+}
+
+.screenshot-color-picker-help{
+  color:rgba(255,255,255,.55);
+
+  font-size:12px;
+  line-height:1.5;
+}
+/* ========================================
+   カスタムカラーの案内
+======================================== */
+
+.screenshot-color-control-row:has(
+  .screenshot-color-select
+){
+  display:grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    54px;
+
+  align-items:center;
+  gap:8px 10px;
+}
+
+/* プルダウンは1段目いっぱい */
+.screenshot-color-control-row
+.screenshot-color-select{
+  grid-column:1 / -1;
+}
+
+/* 色の四角の左に説明を表示 */
+.screenshot-color-control-row:has(
+  .screenshot-color-select
+)::before{
+  content:"テンプレート以外の色に変えるならここ →";
+
+  grid-column:1;
+  grid-row:2;
+
+  color:rgba(255,255,255,.58);
+
+  font-size:12px;
+  line-height:1.5;
+
+  text-align:right;
+}
+
+/* 色の四角は説明の右側 */
+.screenshot-color-control-row:has(
+  .screenshot-color-select
+)
+.screenshot-color-picker{
+  grid-column:2;
+  grid-row:2;
+}
+/* ========================================
+   背景一覧をコンパクト表示
+======================================== */
+
+.screenshot-theme-content{
+  padding:14px;
+  overflow:hidden;
+}
+
+.screenshot-theme-list{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:10px;
+}
+
+.screenshot-theme-item{
+  width:100%;
+  min-width:0;
+  padding:0;
+
+  aspect-ratio:16 / 9;
+
+  overflow:hidden;
+
+  background:#151515;
+
+  border:2px solid transparent;
+  border-radius:10px;
+
+  cursor:pointer;
+}
+
+.screenshot-theme-item img{
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.screenshot-theme-item:hover{
+  border-color:rgba(212,175,55,.65);
+}
+
+.screenshot-theme-item.active{
+  border-color:#d4af37;
+
+  box-shadow:
+    0 0 0 3px rgba(212,175,55,.15);
+}
+/* ========================================
+   画像メーカー・スマホ表示の再調整
+======================================== */
+
+@media screen and (max-width:600px){
+
+  #screenshot-overlay{
+    box-sizing:border-box;
+
+    padding:8px;
+
+    align-items:flex-start;
+    justify-content:center;
+
+    overflow-y:auto;
+  }
+
+  .screenshot-builder{
+    box-sizing:border-box;
+
+    width:100%;
+    max-width:100%;
+
+    margin:0;
+  }
+
+  .screenshot-panel{
+    box-sizing:border-box;
+
+    width:100%;
+    max-width:none;
+
+    padding:18px 12px;
+
+    border-radius:18px;
+  }
+
+  .screenshot-header{
+    margin-bottom:16px;
+  }
+
+  .screenshot-header h2{
+    margin:0 0 8px;
+
+    font-size:24px;
+    line-height:1.3;
+  }
+
+  .screenshot-header p{
+    margin:0;
+
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .screenshot-builder-preview{
+    box-sizing:border-box;
+
+    width:100%;
+
+    margin:0 0 16px;
+    padding:8px;
+
+    overflow:hidden;
+  }
+
+  .screenshot-builder-preview
+.screenshot-card-stage{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+
+  width:100%;
+  margin:0;
+}
+
+  .screenshot-detail-setting{
+    width:100%;
+
+    margin:0 0 16px;
+  }
+
+  .screenshot-detail-summary{
+    min-height:56px;
+
+    padding:0 16px;
+
+    font-size:16px;
+  }
+
+  .screenshot-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:10px;
+
+    width:100%;
+  }
+
+  .screenshot-cancel-button,
+  .screenshot-create-button{
+    width:100%;
+    min-height:50px;
+
+    margin:0;
+
+    font-size:15px;
+  }
+}/* ========================================
+   スマホで文字が二重縮小される問題を修正
+   カードは960×540px固定で作り、全体を縮小表示する
+======================================== */
+
+.screenshot-card{
+  container-type:inline-size;
+}
+
+.screenshot-card-title{
+  font-size:52px !important;
+}
+
+.screenshot-card-subtitle{
+  font-size:18px !important;
+}
+
+.screenshot-card-label{
+  font-size:16px !important;
+}
+
+.screenshot-card-stat strong{
+  font-size:48px !important;
+}
+
+.screenshot-card-divider{
+  height:80px !important;
+}
+
+.screenshot-card-placement span{
+  font-size:14px !important;
+}
+
+.screenshot-card-placement strong{
+  font-size:28px !important;
+}
+
+.screenshot-card-logo{
+  width:135px !important;
+}

@@ -2656,3 +2656,1645 @@ HLDB.updateNewsNavigationState =
       );
     }
   };
+ /* ========================================
+   Screenshot Mode
+======================================== */
+
+HLDB.openScreenshotMode = function () {
+
+  /*
+    画像メーカー用フォントを読み込む
+  */
+  if (!document.getElementById("screenshot-fonts")) {
+
+    const fontLink =
+      document.createElement("link");
+
+    fontLink.id = "screenshot-fonts";
+    fontLink.rel = "stylesheet";
+
+    fontLink.href =
+    "https://fonts.googleapis.com/css2?"
+    + "family=BIZ+UDPGothic:wght@400;700&"
+    + "family=Dela+Gothic+One&"
+    + "family=DotGothic16&"
+    + "family=Hachi+Maru+Pop&"
+    + "family=Kaisei+Decol:wght@400;700&"
+    + "family=Kiwi+Maru:wght@400;500&"
+    + "family=Kosugi+Maru&"
+    + "family=M+PLUS+Rounded+1c:wght@400;700;800&"
+    + "family=Mochiy+Pop+One&"
+    + "family=Noto+Sans+JP:wght@400;700;900&"
+    + "family=Rampart+One&"
+    + "family=Reggae+One&"
+    + "family=RocknRoll+One&"
+    + "family=Shippori+Mincho:wght@400;700;800&"
+    + "family=Stick&"
+    + "family=Train+One&"
+    + "family=Yusei+Magic&"
+    + "family=Zen+Kaku+Gothic+New:wght@400;500;700&"
+    + "family=Zen+Maru+Gothic:wght@400;700;900&"
+    + "family=Zen+Old+Mincho:wght@400;700&"
+    + "&display=swap";
+    document.head.appendChild(fontLink);
+
+  }
+
+  const data = HLDB.screenshotData || {};
+
+  const teamName =
+    data.teamName || "チーム名";
+
+  const year =
+    data.year || "―";
+
+  const league =
+    data.league || "";
+
+  const stage =
+    data.stage || "";
+
+  const rank =
+    data.rank !== undefined &&
+    data.rank !== null &&
+    data.rank !== ""
+      ? `${data.rank}位`
+      : "―";
+
+  const point =
+    data.point !== undefined &&
+    data.point !== null &&
+    data.point !== ""
+      ? `${data.point}pt`
+      : "―";
+
+      const leagueText =
+      league === "単一リーグ"
+        ? ""
+        : (
+            league && league.endsWith("リーグ")
+              ? league
+              : league
+                ? `${league}リーグ`
+                : ""
+          );
+
+  const subtitle = [
+    year ? `${year}年` : "",
+    leagueText,
+    stage
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  /*
+    着順分布を4つに分割
+
+    例：
+    12-10-8-6
+    12－10－8－6
+    12 / 10 / 8 / 6
+  */
+  const placements = String(data.placements || "")
+    .split(/[-－–—/／,\s]+/)
+    .filter(value => value !== "");
+
+  const placementValues = [
+    placements[0] || "0",
+    placements[1] || "0",
+    placements[2] || "0",
+    placements[3] || "0"
+  ];
+
+  /*
+    準備画面と完成画面で共通使用するカード
+  */
+  const createScreenshotCard = () => `
+    <div class="screenshot-card-stage">
+
+      <div class="screenshot-card">
+
+        <div class="screenshot-card-header">
+
+          <div class="screenshot-card-title">
+            ${teamName}
+          </div>
+
+          <div class="screenshot-card-subtitle">
+            ${subtitle}
+          </div>
+
+        </div>
+
+        <div class="screenshot-card-stats">
+
+          <div class="screenshot-card-stat">
+
+            <span class="screenshot-card-label">
+              順位
+            </span>
+
+            <strong>
+              ${rank}
+            </strong>
+
+          </div>
+
+          <div class="screenshot-card-divider"></div>
+
+          <div class="screenshot-card-stat">
+
+            <span class="screenshot-card-label">
+              ポイント
+            </span>
+
+            <strong>
+              ${point}
+            </strong>
+
+          </div>
+
+        </div>
+
+        <div class="screenshot-card-placements">
+
+          <div class="screenshot-card-placement">
+            <span>1着</span>
+            <strong>${placementValues[0]}</strong>
+          </div>
+
+          <div class="screenshot-card-placement">
+            <span>2着</span>
+            <strong>${placementValues[1]}</strong>
+          </div>
+
+          <div class="screenshot-card-placement">
+            <span>3着</span>
+            <strong>${placementValues[2]}</strong>
+          </div>
+
+          <div class="screenshot-card-placement">
+            <span>4着</span>
+            <strong>${placementValues[3]}</strong>
+          </div>
+
+                </div>
+
+        <img
+          src="apple-touch-icon.png"
+          class="screenshot-card-logo"
+          alt="Hundred League">
+
+      </div>
+
+    </div>
+  `;
+
+  let overlay =
+    document.getElementById("screenshot-overlay");
+
+  if (overlay) {
+    overlay.remove();
+  }
+
+  overlay = document.createElement("div");
+
+  overlay.id = "screenshot-overlay";
+
+  overlay.innerHTML = `
+
+    <div class="screenshot-builder">
+
+      <div class="screenshot-panel">
+
+        <div class="screenshot-header">
+
+          <h2>
+            画像メーカー
+          </h2>
+
+          <p>
+            標準の黒金デザインで画像を作成します
+          </p>
+
+        </div>
+
+        <div class="screenshot-builder-preview">
+
+          ${createScreenshotCard()}
+
+</div>
+
+                <details class="screenshot-detail-setting">
+
+  <summary class="screenshot-detail-summary">
+    詳細設定
+  </summary>
+
+  <div class="screenshot-detail-content">
+
+    <div class="screenshot-setting-group">
+
+      <div class="screenshot-setting-group-title">
+        🎨 デザイン
+      </div>
+
+      <details class="screenshot-theme-setting">
+
+        <summary class="screenshot-theme-summary">
+          背景
+        </summary>
+
+        <div class="screenshot-theme-content">
+
+          <div class="screenshot-theme-list">
+
+            ${Array.from(
+              { length: 12 },
+              (_, index) => {
+
+                const no =
+                  String(index + 1).padStart(3, "0");
+
+                return `
+                  <button
+                    type="button"
+                    class="screenshot-theme-item"
+                    data-theme="${no}">
+
+                    <img
+                      src="assets/themes/${no}.png"
+                      alt="背景 ${no}">
+
+                  </button>
+                `;
+
+              }
+            ).join("")}
+
+          </div>
+
+        </div>
+
+      </details>
+
+      <div class="screenshot-setting">
+
+        <label
+          for="screenshot-font-select"
+          class="screenshot-detail-label">
+
+          フォント
+
+        </label>
+
+        <select
+          id="screenshot-font-select"
+          class="screenshot-font-select">
+
+          <option value='"Noto Sans JP", sans-serif'>
+            Noto Sans JP
+          </option>
+
+          <option value='"BIZ UDPGothic", sans-serif'>
+            BIZ UDPゴシック
+          </option>
+
+          <option value='"M PLUS Rounded 1c", sans-serif'>
+            M PLUS Rounded
+          </option>
+
+          <option value='"Zen Kaku Gothic New", sans-serif'>
+            Zen角ゴシック
+          </option>
+
+          <option value='"Kosugi Maru", sans-serif'>
+            小杉丸ゴシック
+          </option>
+
+          <option value='"Zen Maru Gothic", sans-serif'>
+            Zen丸ゴシック
+          </option>
+
+          <option value='"Kiwi Maru", serif'>
+            Kiwi Maru
+          </option>
+
+          <option value='"Hachi Maru Pop", cursive'>
+            はちまるポップ
+          </option>
+
+          <option value='"Mochiy Pop One", sans-serif'>
+            モッチーポップ
+          </option>
+
+          <option value='"Yusei Magic", sans-serif'>
+            油性マジック
+          </option>
+
+          <option value='"RocknRoll One", sans-serif'>
+            ロックンロール
+          </option>
+
+          <option value='"Dela Gothic One", sans-serif'>
+            デラゴシック
+          </option>
+
+          <option value='"Reggae One", sans-serif'>
+            レゲエ
+          </option>
+
+          <option value='"Rampart One", sans-serif'>
+            ランパート
+          </option>
+
+          <option value='"Train One", sans-serif'>
+            トレイン
+          </option>
+
+          <option value='"Stick", sans-serif'>
+            スティック
+          </option>
+
+          <option value='"DotGothic16", sans-serif'>
+            ドットゴシック
+          </option>
+
+          <option value='"Kaisei Decol", serif'>
+            解星デコール
+          </option>
+
+          <option value='"Shippori Mincho", serif'>
+            しっぽり明朝
+          </option>
+
+          <option value='"Zen Old Mincho", serif'>
+            Zenオールド明朝
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div class="screenshot-setting-group">
+
+      <div class="screenshot-setting-group-title">
+        📝 文字色
+      </div>
+
+      <p class="screenshot-color-guide">
+        テンプレートの色はプルダウンから選択できます。
+        テンプレート以外の色は、色の四角から変更できます。
+      </p>
+
+      <div class="screenshot-color-control">
+
+        <label
+          for="screenshot-all-text-color"
+          class="screenshot-detail-label">
+
+          文字色一括編集
+
+        </label>
+
+        <div class="screenshot-color-control-row screenshot-all-color-row">
+
+          <span class="screenshot-custom-color-guide">
+            すべて同じ色に変更 →
+          </span>
+
+          <input
+            type="color"
+            id="screenshot-all-text-color"
+            class="screenshot-color-picker"
+            value="#ffffff"
+            aria-label="文字色を一括変更">
+
+        </div>
+
+      </div>
+
+      <div class="screenshot-color-control">
+
+        <label
+          for="screenshot-title-color-select"
+          class="screenshot-detail-label">
+
+          チーム名文字色
+
+        </label>
+
+        <div class="screenshot-color-control-row">
+
+          <select
+            id="screenshot-title-color-select"
+            class="screenshot-title-color-select screenshot-color-select">
+
+            <option value="#ffffff">白（標準）</option>
+            <option value="#d4af37">金</option>
+            <option value="#4aa3ff">青</option>
+            <option value="#ff4d4d">赤</option>
+            <option value="#39d98a">緑</option>
+            <option value="#111111">黒</option>
+
+            <option
+              value="#ffffff"
+              class="screenshot-custom-color-option">
+              カスタム
+            </option>
+
+          </select>
+
+          <span class="screenshot-custom-color-guide">
+            テンプレート以外に変えるならここ →
+          </span>
+
+          <input
+            type="color"
+            id="screenshot-title-color-picker"
+            class="screenshot-color-picker"
+            value="#ffffff"
+            aria-label="チーム名のカスタムカラー">
+
+        </div>
+
+      </div>
+
+      <div class="screenshot-color-control">
+
+        <label
+          for="screenshot-subtitle-color-select"
+          class="screenshot-detail-label">
+
+          年度・リーグ文字色
+
+        </label>
+
+        <div class="screenshot-color-control-row">
+
+          <select
+            id="screenshot-subtitle-color-select"
+            class="screenshot-subtitle-color-select screenshot-color-select">
+
+            <option value="#ffffff">白（標準）</option>
+            <option value="#d4af37">金</option>
+            <option value="#4aa3ff">青</option>
+            <option value="#ff4d4d">赤</option>
+            <option value="#39d98a">緑</option>
+            <option value="#111111">黒</option>
+
+            <option
+              value="#ffffff"
+              class="screenshot-custom-color-option">
+              カスタム
+            </option>
+
+          </select>
+
+          <span class="screenshot-custom-color-guide">
+            テンプレート以外に変えるならここ →
+          </span>
+
+          <input
+            type="color"
+            id="screenshot-subtitle-color-picker"
+            class="screenshot-color-picker"
+            value="#ffffff"
+            aria-label="年度・リーグのカスタムカラー">
+
+        </div>
+
+      </div>
+
+      <div class="screenshot-color-control">
+
+        <label
+          for="screenshot-stats-color-select"
+          class="screenshot-detail-label">
+
+          順位・ポイント色
+
+        </label>
+
+        <div class="screenshot-color-control-row">
+
+          <select
+            id="screenshot-stats-color-select"
+            class="screenshot-stats-color-select screenshot-color-select">
+
+            <option value="#ffffff">白（標準）</option>
+            <option value="#d4af37">金</option>
+            <option value="#4aa3ff">青</option>
+            <option value="#ff4d4d">赤</option>
+            <option value="#39d98a">緑</option>
+            <option value="#111111">黒</option>
+
+            <option
+              value="#ffffff"
+              class="screenshot-custom-color-option">
+              カスタム
+            </option>
+
+          </select>
+
+          <span class="screenshot-custom-color-guide">
+            テンプレート以外に変えるならここ →
+          </span>
+
+          <input
+            type="color"
+            id="screenshot-stats-color-picker"
+            class="screenshot-color-picker"
+            value="#ffffff"
+            aria-label="順位・ポイントのカスタムカラー">
+
+        </div>
+
+      </div>
+
+      <div class="screenshot-color-control">
+
+        <label
+          for="screenshot-placements-color-select"
+          class="screenshot-detail-label">
+
+          着順色
+
+        </label>
+
+        <div class="screenshot-color-control-row">
+
+          <select
+            id="screenshot-placements-color-select"
+            class="screenshot-placements-color-select screenshot-color-select">
+
+            <option value="#ffffff">白（標準）</option>
+            <option value="#d4af37">金</option>
+            <option value="#4aa3ff">青</option>
+            <option value="#ff4d4d">赤</option>
+            <option value="#39d98a">緑</option>
+            <option value="#111111">黒</option>
+
+            <option
+              value="#ffffff"
+              class="screenshot-custom-color-option">
+              カスタム
+            </option>
+
+          </select>
+
+          <span class="screenshot-custom-color-guide">
+            テンプレート以外に変えるならここ →
+          </span>
+
+          <input
+            type="color"
+            id="screenshot-placements-color-picker"
+            class="screenshot-color-picker"
+            value="#ffffff"
+            aria-label="着順のカスタムカラー">
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</details>
+
+<div class="screenshot-actions">
+
+  <button
+    type="button"
+    class="screenshot-cancel-button">
+
+            閉じる
+
+          </button>
+
+
+          <button
+            type="button"
+            class="screenshot-create-button">
+
+            画像を作成
+
+          </button>
+
+        </div>
+
+      </div>
+
+      </div>
+
+    </div>
+
+        <div class="screenshot-preview">
+
+  <div class="screenshot-card-stage-final">
+
+  </div>
+
+  <div class="screenshot-preview-actions">
+
+        <button
+          type="button"
+          class="screenshot-back-button">
+
+          戻る
+
+        </button>
+
+        <button
+          type="button"
+          class="screenshot-save-button">
+
+          PNGで保存
+
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+  const cancelButton =
+    overlay.querySelector(
+      ".screenshot-cancel-button"
+    );
+
+  const createButton =
+    overlay.querySelector(
+      ".screenshot-create-button"
+    );
+
+  const builder =
+    overlay.querySelector(
+      ".screenshot-builder"
+    );
+
+    const preview =
+    overlay.querySelector(
+      ".screenshot-preview"
+    );
+    const previewCard =
+  overlay.querySelector(
+    ".screenshot-builder-preview .screenshot-card-stage"
+  );
+
+const previewStage =
+  overlay.querySelector(
+    ".screenshot-card-stage-final"
+  );
+  let currentTheme = "001";
+
+  let currentFont =
+    '"Noto Sans JP", sans-serif';
+
+    let currentTitleColor =
+  "#ffffff";
+
+let currentSubtitleColor =
+  "#ffffff";
+
+let currentStatsColor =
+  "#ffffff";
+
+let currentPlacementsColor =
+  "#ffffff";
+  
+  const previewCards =
+    overlay.querySelectorAll(".screenshot-card");
+  
+    const themeItems =
+    overlay.querySelectorAll(".screenshot-theme-item");
+  
+  const fontSelect =
+    overlay.querySelector(
+      ".screenshot-font-select"
+    );
+  
+    const titleColorSelect =
+    overlay.querySelector(
+      ".screenshot-title-color-select"
+    );
+  
+  const subtitleColorSelect =
+    overlay.querySelector(
+      ".screenshot-subtitle-color-select"
+    );
+  
+  const statsColorSelect =
+    overlay.querySelector(
+      ".screenshot-stats-color-select"
+    );
+  
+  const placementsColorSelect =
+    overlay.querySelector(
+      ".screenshot-placements-color-select"
+    );
+
+    const allTextColorSelect =
+  overlay.querySelector(
+    "#screenshot-all-text-color"
+  );
+
+const titleColorPicker =
+  overlay.querySelector(
+    "#screenshot-title-color-picker"
+  );
+
+const subtitleColorPicker =
+  overlay.querySelector(
+    "#screenshot-subtitle-color-picker"
+  );
+
+const statsColorPicker =
+  overlay.querySelector(
+    "#screenshot-stats-color-picker"
+  );
+
+const placementsColorPicker =
+  overlay.querySelector(
+    "#screenshot-placements-color-picker"
+  );
+
+  const applyAllTextColor = color => {
+
+    if (titleColorSelect) {
+      titleColorSelect.value = color;
+      applyTitleColor(color);
+    }
+  
+    if (subtitleColorSelect) {
+      subtitleColorSelect.value = color;
+      applySubtitleColor(color);
+    }
+  
+    if (statsColorSelect) {
+      statsColorSelect.value = color;
+      applyStatsColor(color);
+    }
+  
+    if (placementsColorSelect) {
+      placementsColorSelect.value = color;
+      applyPlacementsColor(color);
+    }
+  
+  };
+  
+  const applyFont = fontFamily => {
+  
+    currentFont = fontFamily;
+  
+    previewCards.forEach(card => {
+  
+      card.style.fontFamily =
+        fontFamily;
+  
+    });
+  
+  };
+  const applyTitleColor = color => {
+
+    currentTitleColor = color;
+  
+    previewCards.forEach(card => {
+  
+      const title =
+        card.querySelector(
+          ".screenshot-card-title"
+        );
+  
+      if (title) {
+        title.style.color = color;
+      }
+  
+    });
+  
+  };
+  
+  const applySubtitleColor = color => {
+  
+    currentSubtitleColor = color;
+  
+    previewCards.forEach(card => {
+  
+      const subtitle =
+        card.querySelector(
+          ".screenshot-card-subtitle"
+        );
+  
+      if (subtitle) {
+        subtitle.style.color = color;
+      }
+  
+    });
+  
+  };
+  
+  const applyStatsColor = color => {
+  
+    currentStatsColor = color;
+  
+    previewCards.forEach(card => {
+  
+      const statsTexts =
+        card.querySelectorAll(
+          ".screenshot-card-stats .screenshot-card-label, " +
+          ".screenshot-card-stats strong"
+        );
+  
+      statsTexts.forEach(element => {
+        element.style.color = color;
+      });
+  
+    });
+  
+  };
+  
+  const applyPlacementsColor = color => {
+  
+    currentPlacementsColor = color;
+  
+    previewCards.forEach(card => {
+  
+      const placementTexts =
+        card.querySelectorAll(
+          ".screenshot-card-placement span, " +
+          ".screenshot-card-placement strong"
+        );
+  
+      placementTexts.forEach(element => {
+        element.style.color = color;
+      });
+  
+    });
+  
+  };
+
+const applyTheme = (themeNo) => {
+
+  currentTheme = themeNo;
+
+  previewCards.forEach(card => {
+
+    card.style.backgroundImage =
+      `url("assets/themes/${themeNo}.png")`;
+
+  });
+
+  themeItems.forEach(item => {
+
+    item.classList.toggle(
+      "active",
+      item.dataset.theme === themeNo
+    );
+
+  });
+
+};
+
+// 初期テーマ
+applyTheme("001");
+
+// 初期フォント
+applyFont(currentFont);
+
+// 初期タイトル文字色
+applyTitleColor(currentTitleColor);
+
+// 初期サブタイトル色
+applySubtitleColor(currentSubtitleColor);
+
+// 初期順位・ポイント色
+applyStatsColor(currentStatsColor);
+
+// 初期着順色
+applyPlacementsColor(currentPlacementsColor);
+
+if (fontSelect) {
+
+  fontSelect.addEventListener(
+    "change",
+    () => {
+
+      applyFont(fontSelect.value);
+
+    }
+  );
+
+}
+
+if (titleColorSelect) {
+
+  titleColorSelect.addEventListener(
+    "change",
+    () => {
+
+      applyTitleColor(
+        titleColorSelect.value
+      );
+
+    }
+  );
+
+}
+
+if (subtitleColorSelect) {
+
+  subtitleColorSelect.addEventListener(
+    "change",
+    () => {
+
+      applySubtitleColor(
+        subtitleColorSelect.value
+      );
+
+    }
+  );
+
+}
+
+if (statsColorSelect) {
+
+  statsColorSelect.addEventListener(
+    "change",
+    () => {
+
+      applyStatsColor(
+        statsColorSelect.value
+      );
+
+    }
+  );
+
+}
+
+if (placementsColorSelect) {
+
+  placementsColorSelect.addEventListener(
+    "change",
+    () => {
+
+      applyPlacementsColor(
+        placementsColorSelect.value
+      );
+
+    }
+  );
+
+}
+const setCustomColorOption = (
+  select,
+  color
+) => {
+
+  if (!select) {
+    return;
+  }
+
+  const customOption =
+    select.querySelector(
+      ".screenshot-custom-color-option"
+    );
+
+  if (!customOption) {
+    return;
+  }
+
+  customOption.value = color;
+  customOption.textContent =
+    `カスタム（${color.toUpperCase()}）`;
+
+  select.value = color;
+
+};
+
+const syncColorControl = (
+  select,
+  picker,
+  color
+) => {
+
+  if (picker) {
+    picker.value = color;
+  }
+
+  if (!select) {
+    return;
+  }
+
+  const presetOption =
+    Array.from(select.options).find(
+      option =>
+        !option.classList.contains(
+          "screenshot-custom-color-option"
+        ) &&
+        option.value.toLowerCase() ===
+          color.toLowerCase()
+    );
+
+  if (presetOption) {
+    select.value = presetOption.value;
+    return;
+  }
+
+  setCustomColorOption(
+    select,
+    color
+  );
+
+};
+
+if (titleColorSelect) {
+
+  titleColorSelect.addEventListener(
+    "change",
+    () => {
+
+      const color =
+        titleColorSelect.value;
+
+      applyTitleColor(color);
+
+      if (titleColorPicker) {
+        titleColorPicker.value = color;
+      }
+
+    }
+  );
+
+}
+
+if (titleColorPicker) {
+
+  titleColorPicker.addEventListener(
+    "input",
+    () => {
+
+      const color =
+        titleColorPicker.value;
+
+      setCustomColorOption(
+        titleColorSelect,
+        color
+      );
+
+      applyTitleColor(color);
+
+    }
+  );
+
+}
+
+if (subtitleColorSelect) {
+
+  subtitleColorSelect.addEventListener(
+    "change",
+    () => {
+
+      const color =
+        subtitleColorSelect.value;
+
+      applySubtitleColor(color);
+
+      if (subtitleColorPicker) {
+        subtitleColorPicker.value = color;
+      }
+
+    }
+  );
+
+}
+
+if (subtitleColorPicker) {
+
+  subtitleColorPicker.addEventListener(
+    "input",
+    () => {
+
+      const color =
+        subtitleColorPicker.value;
+
+      setCustomColorOption(
+        subtitleColorSelect,
+        color
+      );
+
+      applySubtitleColor(color);
+
+    }
+  );
+
+}
+
+if (statsColorSelect) {
+
+  statsColorSelect.addEventListener(
+    "change",
+    () => {
+
+      const color =
+        statsColorSelect.value;
+
+      applyStatsColor(color);
+
+      if (statsColorPicker) {
+        statsColorPicker.value = color;
+      }
+
+    }
+  );
+
+}
+
+if (statsColorPicker) {
+
+  statsColorPicker.addEventListener(
+    "input",
+    () => {
+
+      const color =
+        statsColorPicker.value;
+
+      setCustomColorOption(
+        statsColorSelect,
+        color
+      );
+
+      applyStatsColor(color);
+
+    }
+  );
+
+}
+
+if (placementsColorSelect) {
+
+  placementsColorSelect.addEventListener(
+    "change",
+    () => {
+
+      const color =
+        placementsColorSelect.value;
+
+      applyPlacementsColor(color);
+
+      if (placementsColorPicker) {
+        placementsColorPicker.value = color;
+      }
+
+    }
+  );
+
+}
+
+if (placementsColorPicker) {
+
+  placementsColorPicker.addEventListener(
+    "input",
+    () => {
+
+      const color =
+        placementsColorPicker.value;
+
+      setCustomColorOption(
+        placementsColorSelect,
+        color
+      );
+
+      applyPlacementsColor(color);
+
+    }
+  );
+
+}
+
+if (allTextColorSelect) {
+
+  allTextColorSelect.addEventListener(
+    "input",
+    () => {
+
+      const color =
+        allTextColorSelect.value;
+
+      applyAllTextColor(color);
+
+      syncColorControl(
+        titleColorSelect,
+        titleColorPicker,
+        color
+      );
+
+      syncColorControl(
+        subtitleColorSelect,
+        subtitleColorPicker,
+        color
+      );
+
+      syncColorControl(
+        statsColorSelect,
+        statsColorPicker,
+        color
+      );
+
+      syncColorControl(
+        placementsColorSelect,
+        placementsColorPicker,
+        color
+      );
+
+    }
+  );
+
+}
+
+themeItems.forEach(item => {
+
+  item.addEventListener("click", () => {
+
+    applyTheme(item.dataset.theme);
+
+  });
+
+});
+  
+  const backButton =
+    overlay.querySelector(
+      ".screenshot-back-button"
+    );
+  
+  const saveButton =
+    overlay.querySelector(
+      ".screenshot-save-button"
+    );
+
+    const builderPreview =
+    overlay.querySelector(
+      ".screenshot-builder-preview"
+    );
+
+    const resizeScreenshotCard = container => {
+
+      if (!container || !previewCard) {
+        return;
+      }
+    
+      const availableWidth =
+        container.clientWidth;
+    
+      const scale =
+        Math.min(
+          1,
+          availableWidth / 960
+        );
+    
+      const scaledWidth =
+        960 * scale;
+    
+      const scaledHeight =
+        540 * scale;
+    
+      previewCard.style.transform =
+        `scale(${scale})`;
+    
+      previewCard.style.transformOrigin =
+        "top left";
+    
+      previewCard.style.marginLeft =
+        `${Math.max(
+          0,
+          (availableWidth - scaledWidth) / 2
+        )}px`;
+    
+      container.style.height =
+        `${scaledHeight}px`;
+    
+    };
+    
+    const resizeBuilderPreview = () => {
+    
+      resizeScreenshotCard(
+        builderPreview
+      );
+    
+    };
+    
+    const resizeFinalPreview = () => {
+    
+      resizeScreenshotCard(
+        previewStage
+      );
+    
+    };
+  
+  const resetScreenshotMode = () => {
+
+    builderPreview.appendChild(previewCard);
+
+    preview.classList.remove("show");
+
+    builder.style.display = "";
+
+    requestAnimationFrame(() => {
+      resizeBuilderPreview();
+    });
+
+  };
+
+  cancelButton.addEventListener("click", () => {
+
+    resetScreenshotMode();
+
+    overlay.classList.remove("show");
+
+  });
+
+  createButton.addEventListener("click", () => {
+
+    previewStage.appendChild(
+      previewCard
+    );
+  
+    builder.style.display =
+      "none";
+  
+    preview.classList.add(
+      "show"
+    );
+  
+    requestAnimationFrame(() => {
+  
+      resizeFinalPreview();
+  
+    });
+  
+  });
+  
+  if (backButton) {
+
+    backButton.addEventListener("click", () => {
+  
+      resetScreenshotMode();
+  
+    });
+  
+  }
+  if (saveButton) {
+
+    saveButton.addEventListener("click", async () => {
+
+      const card =
+  preview.querySelector(
+    ".screenshot-card"
+  );
+  
+    if (!card) {
+      console.error(
+        "保存対象のカードが見つかりません。"
+      );
+      return;
+    }
+  
+    if (typeof window.html2canvas !== "function") {
+      console.error(
+        "html2canvasが読み込まれていません。"
+      );
+  
+      alert(
+        "画像保存機能を読み込めませんでした。"
+      );
+  
+      return;
+    }
+  
+    saveButton.disabled = true;
+    saveButton.textContent = "保存中...";
+  
+    try {
+  
+      if (document.fonts?.ready) {
+        await document.fonts.ready;
+      }
+  
+      const images =
+        [...card.querySelectorAll("img")];
+  
+      await Promise.all(
+        images.map(image => {
+  
+          if (image.complete) {
+            return Promise.resolve();
+          }
+  
+          return new Promise(resolve => {
+  
+            image.addEventListener(
+              "load",
+              resolve,
+              { once: true }
+            );
+  
+            image.addEventListener(
+              "error",
+              resolve,
+              { once: true }
+            );
+  
+          });
+  
+        })
+      );
+  
+      const cardWidth =
+  Math.round(card.getBoundingClientRect().width);
+
+const cardHeight =
+  Math.round(card.getBoundingClientRect().height);
+
+if (cardWidth <= 0 || cardHeight <= 0) {
+  throw new Error(
+    `カードサイズが不正です: ${cardWidth} × ${cardHeight}`
+  );
+}
+
+const canvas =
+  await window.html2canvas(card, {
+    backgroundColor: "#090909",
+    scale: 2,
+    useCORS: true,
+    logging: false,
+    removeContainer: true,
+
+    onclone: clonedDocument => {
+
+      const clonedCard =
+        clonedDocument.querySelector(
+          ".screenshot-preview.show .screenshot-card"
+        );
+
+      if (!clonedCard) {
+        throw new Error(
+          "複製した保存用カードが見つかりません。"
+        );
+      }
+      clonedCard.style.backgroundImage =
+  `url("assets/themes/${currentTheme}.png")`;
+
+clonedCard.style.fontFamily =
+  currentFont;
+  const clonedTitle =
+  clonedCard.querySelector(
+    ".screenshot-card-title"
+  );
+
+if (clonedTitle) {
+  clonedTitle.style.color =
+    currentTitleColor;
+}
+
+const clonedSubtitle =
+  clonedCard.querySelector(
+    ".screenshot-card-subtitle"
+  );
+
+if (clonedSubtitle) {
+  clonedSubtitle.style.color =
+    currentSubtitleColor;
+}
+
+clonedCard
+  .querySelectorAll(
+    ".screenshot-card-stats .screenshot-card-label, " +
+    ".screenshot-card-stats strong"
+  )
+  .forEach(element => {
+
+    element.style.color =
+      currentStatsColor;
+
+  });
+
+clonedCard
+  .querySelectorAll(
+    ".screenshot-card-placement span, " +
+    ".screenshot-card-placement strong"
+  )
+  .forEach(element => {
+
+    element.style.color =
+      currentPlacementsColor;
+
+  });
+
+clonedCard.style.backgroundSize = "cover";
+clonedCard.style.backgroundPosition = "center";
+clonedCard.style.backgroundRepeat = "no-repeat";
+
+      /*
+        html2canvasがグラデーション描画で
+        createPatternエラーを起こすため、
+        保存時の複製側だけ単色へ置き換える
+      */
+      const exportStyle =
+        clonedDocument.createElement("style");
+
+      exportStyle.textContent = `
+        .screenshot-preview.show .screenshot-card{
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+        .screenshot-preview.show .screenshot-card *,
+        .screenshot-preview.show .screenshot-card *::before,
+        .screenshot-preview.show .screenshot-card *::after{
+          background-image:none !important;
+        }
+
+        .screenshot-preview.show .screenshot-card-divider{
+          background:#6f5a18 !important;
+        }
+      `;
+
+      clonedDocument.head.appendChild(exportStyle);
+
+      clonedCard.style.transform = "none";
+      clonedCard.style.margin = "0";
+    }
+  });
+  
+      const safeTeamName =
+        String(teamName)
+          .replace(/[\\/:*?"<>|]/g, "")
+          .trim() || "team";
+  
+      const link =
+        document.createElement("a");
+  
+      link.download =
+        `${safeTeamName}_${year}_${stage}.png`;
+  
+      link.href =
+        canvas.toDataURL("image/png");
+  
+      document.body.appendChild(link);
+  
+      link.click();
+  
+      link.remove();
+  
+    } catch (error) {
+  
+      console.error(
+        "画像の保存に失敗しました。",
+        error
+      );
+  
+      alert(
+        "画像の保存に失敗しました。"
+      );
+  
+    } finally {
+  
+      saveButton.disabled = false;
+  
+      saveButton.textContent = "PNGで保存";
+  
+    }
+  
+  });
+}
+
+document.body.appendChild(overlay);
+
+overlay.classList.add("show");
+
+requestAnimationFrame(() => {
+  resizeBuilderPreview();
+});
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    if (preview.classList.contains("show")) {
+
+      resizeFinalPreview();
+
+      return;
+
+    }
+
+    resizeBuilderPreview();
+
+  }
+);
+};
