@@ -2180,6 +2180,276 @@ HLDB.initializeCommonUi =
     }
   };
 
+/* ========================================
+   YouTube応援ポップアップ
+======================================== */
+
+HLDB.initializeSupportPopup =
+  function () {
+    const DISPLAY_INTERVAL = 20;
+
+    const countKey =
+      "hldbSupportPopupPageCount";
+
+    const neverShowKey =
+      "hldbSupportPopupNeverShow";
+
+    /*
+      「登録してるよ」が押されていれば
+      今後は表示しない
+    */
+    if (
+      localStorage.getItem(
+        neverShowKey
+      ) === "true"
+    ) {
+      return;
+    }
+
+    let pageCount =
+      Number(
+        localStorage.getItem(
+          countKey
+        )
+      );
+
+    if (
+      !Number.isFinite(pageCount)
+    ) {
+      pageCount = 0;
+    }
+
+    pageCount += 1;
+
+    localStorage.setItem(
+      countKey,
+      String(pageCount)
+    );
+
+    if (
+      pageCount <
+      DISPLAY_INTERVAL
+    ) {
+      return;
+    }
+
+    /*
+      今回表示したので0へ戻す。
+
+      「今回は閉じる」の場合は、
+      また20ページ後に表示される。
+    */
+    localStorage.setItem(
+      countKey,
+      "0"
+    );
+
+    HLDB.showSupportPopup();
+  };
+
+
+HLDB.showSupportPopup =
+  function () {
+    if (
+      document.getElementById(
+        "supportPopupOverlay"
+      )
+    ) {
+      return;
+    }
+
+    const overlay =
+      document.createElement(
+        "div"
+      );
+
+    overlay.id =
+      "supportPopupOverlay";
+
+    overlay.className =
+      "support-popup-overlay";
+
+    overlay.innerHTML = `
+      <div
+        class="support-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="supportPopupTitle"
+      >
+
+        <div class="support-popup-icon">
+  <span class="support-popup-play">
+    ▶
+  </span>
+</div>
+
+        <h2 id="supportPopupTitle">
+          いつもご利用いただき<br>
+  ありがとうございます！
+        </h2>
+
+        <p class="support-popup-message">
+  ハンドレッドリーグ データバンクを<br>
+  ご利用いただきありがとうございます。
+</p>
+
+<p class="support-popup-sub-message">
+  このサイトが役に立った、<br>
+  また利用したいと思っていただけましたら、<br><br>
+
+  YouTubeチャンネル登録で<br>
+  応援していただけると、<br>
+  今後もより良いサイト作りの励みになります！
+</p>
+
+        <div class="support-popup-actions">
+          <a
+  class="support-popup-youtube"
+  href="https://www.youtube.com/@Blue-K18%E3%81%AE%E6%88%90%E9%95%B7%E6%97%A5%E8%A8%98"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <span class="support-popup-button-play">
+    ▶
+  </span>
+  YouTubeチャンネルを見る
+</a>
+
+          <button
+            type="button"
+            class="support-popup-thanks"
+            id="supportPopupNeverShow"
+          >
+            <i data-lucide="check"></i>
+            登録してるよ。いつもありがとう
+          </button>
+
+          <button
+            type="button"
+            class="support-popup-later"
+            id="supportPopupCloseButton"
+          >
+            今回は閉じる
+          </button>
+        </div>
+        <div class="support-popup-actions">
+  …
+</div>
+
+<div class="support-popup-footer">
+  Presented by Blue
+</div>
+      </div>
+    `;
+
+    document.body.appendChild(
+      overlay
+    );
+
+    document.body.classList.add(
+      "support-popup-open"
+    );
+
+    if (
+      typeof lucide !==
+      "undefined"
+    ) {
+      lucide.createIcons();
+    }
+
+    const closePopup =
+      function () {
+        overlay.remove();
+
+        document.body.classList.remove(
+          "support-popup-open"
+        );
+      };
+      const youtubeButton =
+  overlay.querySelector(
+    ".support-popup-youtube"
+  );
+
+youtubeButton?.addEventListener(
+  "click",
+  function () {
+    localStorage.setItem(
+      "hldbSupportPopupNeverShow",
+      "true"
+    );
+
+    localStorage.removeItem(
+      "hldbSupportPopupPageCount"
+    );
+
+    closePopup();
+  }
+);
+
+
+    document
+      .getElementById(
+        "supportPopupCloseButton"
+      )
+      ?.addEventListener(
+        "click",
+        closePopup
+      );
+
+    document
+      .getElementById(
+        "supportPopupNeverShow"
+      )
+      ?.addEventListener(
+        "click",
+        function () {
+          localStorage.setItem(
+            "hldbSupportPopupNeverShow",
+            "true"
+          );
+
+          localStorage.removeItem(
+            "hldbSupportPopupPageCount"
+          );
+
+          closePopup();
+        }
+      );
+
+    overlay.addEventListener(
+      "click",
+      function (event) {
+        if (
+          event.target ===
+          overlay
+        ) {
+          closePopup();
+        }
+      }
+    );
+
+    const escapeHandler =
+      function (event) {
+        if (
+          event.key !==
+          "Escape"
+        ) {
+          return;
+        }
+
+        closePopup();
+
+        document.removeEventListener(
+          "keydown",
+          escapeHandler
+        );
+      };
+
+    document.addEventListener(
+      "keydown",
+      escapeHandler
+    );
+  };
 
 /* ========================================
    DOM読込後に共通処理を実行
@@ -2193,11 +2463,13 @@ if (
     "DOMContentLoaded",
     () => {
       HLDB.initializeCommonUi();
+      HLDB.initializeSupportPopup();
     }
   );
 
 } else {
   HLDB.initializeCommonUi();
+  HLDB.initializeSupportPopup();
 }
 /* ========================================
    お知らせ未読管理
