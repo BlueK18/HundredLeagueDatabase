@@ -2662,6 +2662,366 @@ HLDB.updateNewsNavigationState =
    Screenshot Mode
 ======================================== */
 
+/*
+  iPhone・iPadを判定する
+*/
+HLDB.isIOSDevice = function () {
+
+  return (
+    /iPad|iPhone|iPod/.test(
+      navigator.userAgent
+    ) ||
+    (
+      navigator.platform === "MacIntel" &&
+      navigator.maxTouchPoints > 1
+    )
+  );
+
+};
+
+
+/*
+  Webフォント待ちが終わらない場合でも
+  保存処理を継続できるようにする
+*/
+HLDB.waitForScreenshotFonts =
+  async function () {
+
+    if (!document.fonts?.ready) {
+      return;
+    }
+
+    await Promise.race([
+
+      document.fonts.ready,
+
+      new Promise(resolve => {
+        window.setTimeout(resolve, 5000);
+      })
+
+    ]);
+
+  };
+
+
+/*
+  CanvasをPNGのBlobへ変換する
+*/
+HLDB.createScreenshotBlob =
+  function (canvas) {
+
+    return new Promise((
+      resolve,
+      reject
+    ) => {
+
+      canvas.toBlob(
+        blob => {
+
+          if (!blob) {
+            reject(
+              new Error(
+                "PNGデータを作成できませんでした。"
+              )
+            );
+            return;
+          }
+
+          resolve(blob);
+
+        },
+        "image/png"
+      );
+
+    });
+
+  };
+
+
+/*
+  iPhone用の保存・共有画面を表示する
+*/
+HLDB.showIOSScreenshotSaveDialog =
+  function ({
+    blob,
+    fileName
+  }) {
+
+    document
+      .getElementById(
+        "screenshot-ios-save-overlay"
+      )
+      ?.remove();
+
+    const imageUrl =
+      URL.createObjectURL(blob);
+
+    const file =
+      new File(
+        [blob],
+        fileName,
+        { type: "image/png" }
+      );
+
+    const canShareFile =
+      typeof navigator.share === "function" &&
+      (
+        typeof navigator.canShare !== "function" ||
+        navigator.canShare({ files: [file] })
+      );
+
+    const saveOverlay =
+      document.createElement("div");
+
+    saveOverlay.id =
+      "screenshot-ios-save-overlay";
+
+    saveOverlay.innerHTML = `
+      <div class="screenshot-ios-save-dialog">
+
+        <h3>画像を保存</h3>
+
+        <p>
+          下のボタンを押し、共有画面から<br>
+          「画像を保存」を選んでください。
+        </p>
+
+        <img
+          src="${imageUrl}"
+          alt="作成した画像">
+
+        <button
+          type="button"
+          class="screenshot-ios-share-button">
+          写真へ保存する
+        </button>
+
+        <button
+          type="button"
+          class="screenshot-ios-open-button">
+          画像だけを開く
+        </button>
+
+        <button
+          type="button"
+          class="screenshot-ios-close-button">
+          閉じる
+        </button>
+
+      </div>
+    `;
+
+    Object.assign(
+      saveOverlay.style,
+      {
+        position: "fixed",
+        inset: "0",
+        zIndex: "20000",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "18px",
+        background: "rgba(0,0,0,.82)",
+        overflow: "auto"
+      }
+    );
+
+    const dialog =
+      saveOverlay.querySelector(
+        ".screenshot-ios-save-dialog"
+      );
+
+    Object.assign(
+      dialog.style,
+      {
+        width: "min(520px, 100%)",
+        padding: "22px",
+        color: "#fff",
+        textAlign: "center",
+        background: "#181818",
+        border: "1px solid rgba(212,175,55,.5)",
+        borderRadius: "18px"
+      }
+    );
+
+    const previewImage =
+      dialog.querySelector("img");
+
+    Object.assign(
+      previewImage.style,
+      {
+        display: "block",
+        width: "100%",
+        height: "auto",
+        margin: "18px 0",
+        borderRadius: "10px"
+      }
+    );
+
+    dialog
+      .querySelectorAll("button")
+      .forEach(button => {
+
+        Object.assign(
+          button.style,
+          {
+            width: "100%",
+            marginTop: "10px",
+            padding: "14px",
+            color: "#fff",
+            fontSize: "16px",
+            fontWeight: "800",
+            background: "#2a2a2a",
+            border: "1px solid rgba(255,255,255,.15)",
+            borderRadius: "11px"
+          }
+        );
+
+      });
+
+    const shareButton =
+      dialog.querySelector(
+        ".screenshot-ios-share-button"
+      );
+
+    shareButton.style.color = "#111";
+    shareButton.style.background = "#d4af37";
+
+    if (!canShareFile) {
+      shareButton.textContent =
+        "画像だけを開いて保存する";
+    }
+
+    const closeDialog = () => {
+
+      saveOverlay.remove();
+
+      window.setTimeout(
+        () => URL.revokeObjectURL(imageUrl),
+        1000
+      );
+
+    };
+
+    shareButton.addEventListener(
+      "click",
+      async () => {
+
+        if (!canShareFile) {
+          window.open(imageUrl, "_blank");
+          return;
+        }
+
+        try {
+
+          await navigator.share({
+            files: [file],
+            title: fileName
+          });
+
+        } catch (error) {
+
+          if (error?.name !== "AbortError") {
+            console.error(
+              "画像の共有に失敗しました。",
+              error
+            );
+          }
+
+        }
+
+      }
+    );
+
+    dialog
+      .querySelector(
+        ".screenshot-ios-open-button"
+      )
+      .addEventListener(
+        "click",
+        () => {
+          window.open(imageUrl, "_blank");
+        }
+      );
+
+    dialog
+      .querySelector(
+        ".screenshot-ios-close-button"
+      )
+      .addEventListener(
+        "click",
+        closeDialog
+      );
+
+    saveOverlay.addEventListener(
+      "click",
+      event => {
+
+        if (event.target === saveOverlay) {
+          closeDialog();
+        }
+
+      }
+    );
+
+    document.body.appendChild(
+      saveOverlay
+    );
+
+  };
+
+
+/*
+  PCはダウンロード、iPhoneは共有画面へ渡す
+*/
+HLDB.saveScreenshotCanvas =
+  async function ({
+    canvas,
+    fileName
+  }) {
+
+    const blob =
+      await HLDB.createScreenshotBlob(
+        canvas
+      );
+
+    if (HLDB.isIOSDevice()) {
+
+      HLDB.showIOSScreenshotSaveDialog({
+        blob,
+        fileName
+      });
+
+      return;
+
+    }
+
+    const imageUrl =
+      URL.createObjectURL(blob);
+
+    const downloadLink =
+      document.createElement("a");
+
+    downloadLink.download =
+      fileName;
+
+    downloadLink.href =
+      imageUrl;
+
+    document.body.appendChild(
+      downloadLink
+    );
+
+    downloadLink.click();
+    downloadLink.remove();
+
+    window.setTimeout(
+      () => URL.revokeObjectURL(imageUrl),
+      1000
+    );
+
+  };
+
 HLDB.openScreenshotMode = function () {
 
   /*
@@ -4438,11 +4798,7 @@ HLDB.openScreenshotMode = function () {
             /*
               Webフォントの読み込み完了を待つ
             */
-            if (document.fonts?.ready) {
-  
-              await document.fonts.ready;
-  
-            }
+            await HLDB.waitForScreenshotFonts();
   
             /*
               カード内画像の読み込み完了を待つ
@@ -4572,7 +4928,9 @@ HLDB.openScreenshotMode = function () {
                       "#090909",
   
                     scale:
-                      2,
+                      HLDB.isIOSDevice()
+                        ? 1.5
+                        : 2,
   
                     useCORS:
                       true,
@@ -4761,26 +5119,11 @@ HLDB.openScreenshotMode = function () {
   
               ].filter(Boolean);
   
-              const downloadLink =
-                document.createElement(
-                  "a"
-                );
-  
-              downloadLink.download =
-                `${fileNameParts.join("_")}.png`;
-  
-              downloadLink.href =
-                canvas.toDataURL(
-                  "image/png"
-                );
-  
-              document.body.appendChild(
-                downloadLink
-              );
-  
-              downloadLink.click();
-  
-              downloadLink.remove();
+              await HLDB.saveScreenshotCanvas({
+                canvas,
+                fileName:
+                  `${fileNameParts.join("_")}.png`
+              });
   
             } finally {
   
@@ -7410,11 +7753,7 @@ const createScreenshotCard = () => {
             /*
               Webフォントの読み込み完了を待つ
             */
-            if (document.fonts?.ready) {
-  
-              await document.fonts.ready;
-  
-            }
+            await HLDB.waitForScreenshotFonts();
   
             /*
               カード内画像の読み込み完了を待つ
@@ -7556,7 +7895,9 @@ const createScreenshotCard = () => {
                       "#090909",
   
                     scale:
-                      2,
+                      HLDB.isIOSDevice()
+                        ? 1.5
+                        : 2,
   
                     useCORS:
                       true,
@@ -7752,26 +8093,11 @@ const createScreenshotCard = () => {
   
               ].filter(Boolean);
   
-              const downloadLink =
-                document.createElement(
-                  "a"
-                );
-  
-              downloadLink.download =
-                `${fileNameParts.join("_")}.png`;
-  
-              downloadLink.href =
-                canvas.toDataURL(
-                  "image/png"
-                );
-  
-              document.body.appendChild(
-                downloadLink
-              );
-  
-              downloadLink.click();
-  
-              downloadLink.remove();
+              await HLDB.saveScreenshotCanvas({
+                canvas,
+                fileName:
+                  `${fileNameParts.join("_")}.png`
+              });
   
             } finally {
   
