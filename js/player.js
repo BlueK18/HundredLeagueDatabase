@@ -46,6 +46,7 @@ let currentPlayerAliasNames = [];
 let activeYear = "";
 let activeLeague = "";
 let activeStage = "ALL";
+let currentPlayerRecords = [];
 
 /* ========================================
    CSV解析
@@ -677,6 +678,19 @@ function renderFilters() {
 function renderRegularRanking(
   regularPlayer
 ) {
+  const regularPlayerCount =
+  playersData.filter(
+    player =>
+      normalizeYear(
+        player["年度"]
+      ) === activeYear &&
+      normalizeLeague(
+        player["リーグ"]
+      ) === activeLeague &&
+      normalizeStage(
+        player["ステージ"]
+      ) === "レギュラー"
+  ).length;
   if (activeYear === "ALL") {
     return `
       <section class="regular-ranking-section">
@@ -714,10 +728,12 @@ function renderRegularRanking(
                 </span>
 
                 <strong class="regular-ranking-value">
-                  ${formatRank(
-                    regularPlayer["順位"]
-                  )}
-                </strong>
+  ${
+    regularPlayer["順位"]
+      ? `${regularPlayer["順位"]}位 / ${regularPlayerCount}人`
+      : "―"
+  }
+</strong>
               </div>
 
               <div class="regular-ranking-row">
@@ -872,6 +888,212 @@ function renderPlayerInfo() {
       : `${escapeHtml(activeYear)}年・${escapeHtml(
           displayLeagueName(activeLeague)
         )}`;
+        const playerScreenshotButton =
+  document.getElementById(
+    "playerScreenshotButton"
+  );
+
+if (playerScreenshotButton) {
+
+  playerScreenshotButton.onclick = () => {
+    
+    const regularPlayerCount =
+  playersData.filter(
+    player =>
+      normalizeYear(
+        player["年度"]
+      ) === activeYear &&
+      normalizeLeague(
+        player["リーグ"]
+      ) === activeLeague &&
+      normalizeStage(
+        player["ステージ"]
+      ) === "レギュラー"
+  ).length;
+
+  const screenshotTeamNames =
+  String(teamDisplay || "")
+    .split("/")
+    .map(team => team.trim())
+    .filter(Boolean);
+
+    const screenshotCurrentTeam =
+    activeYear === "ALL"
+      ? screenshotTeamNames[0] || ""
+      : teamDisplay;
+  
+  const screenshotPastTeams =
+    activeYear === "ALL"
+      ? screenshotTeamNames.slice(1)
+      : [];
+
+      const getRankNumber = value => {
+
+        const rank =
+          Number(
+            String(value ?? "")
+              .replace(/[^\d.-]/g, "")
+          );
+      
+        return Number.isFinite(rank) &&
+          rank > 0
+          ? rank
+          : null;
+      
+      };
+      
+      const historicalRegularRecords =
+        currentPlayerRecords.filter(record =>
+          String(record["ステージ"] || "")
+            .trim() === "レギュラー"
+        );
+      
+      const findBestHistoricalRank =
+        columnName => {
+      
+          const candidates =
+            historicalRegularRecords
+              .map(record => ({
+                rank:
+                  getRankNumber(
+                    record[columnName]
+                  ),
+      
+                year:
+                  String(
+                    record["年度"] || ""
+                  ).trim()
+              }))
+              .filter(item =>
+                item.rank !== null &&
+                item.year
+              )
+              .sort((a, b) => {
+      
+                if (a.rank !== b.rank) {
+                  return a.rank - b.rank;
+                }
+      
+                return (
+                  Number(b.year) -
+                  Number(a.year)
+                );
+      
+              });
+      
+          return candidates[0] || null;
+      
+        };
+      
+      const bestRanks = {
+      
+        mvp:
+          findBestHistoricalRank(
+            "ポイント賞順位"
+          ),
+      
+        topRate:
+          findBestHistoricalRank(
+            "トップ率賞順位"
+          ),
+      
+        avoidRate:
+          findBestHistoricalRank(
+            "ラス回避率賞順位"
+          ),
+      
+        mostWins:
+          findBestHistoricalRank(
+            "最多勝利賞順位"
+          ),
+      
+        highestScore:
+          findBestHistoricalRank(
+            "最高得点賞順位"
+          )
+      
+      };
+
+    HLDB.playerScreenshotData = {
+
+      playerName:
+        displayPlayerName,
+
+      year:
+        activeYear,
+
+      league:
+        displayLeagueName(
+          activeLeague
+        ),
+
+      stage:
+        selectedStageName,
+
+        teamName:
+        screenshotCurrentTeam,
+      
+      pastTeams:
+        screenshotPastTeams,
+
+      totalPoint:
+        stats.totalPoint,
+
+      gameCount:
+        stats.gameCount,
+
+        mvpRank:
+        regularPlayer?.["順位"] || null,
+      
+      topRateRank:
+        regularPlayer?.["トップ率順位"] || null,
+      
+      avoidRateRank:
+        regularPlayer?.["ラス回避率順位"] || null,
+      
+      mostWinsRank:
+        regularPlayer?.["最多勝利順位"] || null,
+      
+      playerCount:
+        regularPlayerCount,
+
+        bestRanks:
+  bestRanks,
+
+      averagePlacement:
+        stats.averagePlacement,
+
+      topRate:
+        stats.topRate,
+
+      avoidRate:
+        stats.avoidRate,
+
+        highestScoreRank:
+  regularPlayer?.["最高得点順位"] || null,
+
+      highestScore:
+        stats.highestScore,
+
+      firstCount:
+        stats.firstCount,
+
+      secondCount:
+        stats.secondCount,
+
+      thirdCount:
+        stats.thirdCount,
+
+      fourthCount:
+        stats.fourthCount
+
+    };
+
+    HLDB.openPlayerScreenshotMode();
+
+  };
+
+}
 
         playerTitle.textContent =
         displayPlayerName || "選手詳細";
@@ -1951,7 +2173,7 @@ if (playerId) {
           currentPlayerAliasNames
         }
       );
-      const currentPlayerRecords =
+      currentPlayerRecords =
   playersData
     .filter(row =>
       String(row["選手ID"] || "").trim() ===

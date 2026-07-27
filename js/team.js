@@ -55,9 +55,18 @@ async function loadTeamDetail() {
       return;
     }
 
-    renderTeamInfo(selectedTeam, teamsData);
+    const specialStats =
+      renderTeamInfo(
+      selectedTeam,
+      teamsData,
+      matchesData
+    );
+
     renderTeamPlayers(playersData);
-    renderTeamMatches(matchesData);
+    renderTeamMatches(
+      matchesData,
+      specialStats
+    );
 
   } catch (error) {
     console.error(error);
@@ -80,7 +89,11 @@ async function loadTeamDetail() {
    チーム情報
 ========================= */
 
-function renderTeamInfo(team, teamsData) {
+function renderTeamInfo(
+  team,
+  teamsData,
+  matchesData
+) {
   const point = HLDB.toNumber(team["ポイント"]) ?? 0;
   const rank = Number(team["順位"]);
 
@@ -177,6 +190,112 @@ function renderTeamInfo(team, teamsData) {
     }
   }
 
+  /*
+    表示中のチーム・年度・リーグ・ステージに
+    該当する試合だけを取得する
+  */
+  const selectedMatches =
+    matchesData.filter(row =>
+      HLDB.normalizeYear(row["年度"]) === normalizedYear &&
+      row["チーム名"] === (team["チーム"] || teamName) &&
+      HLDB.normalizeLeague(row["リーグ"]) === normalizedLeague &&
+      HLDB.normalizeStage(row["ステージ"]) === normalizedStage
+    );
+
+  /*
+    日付ごとに試合をまとめる
+  */
+  const matchesByDate =
+    new Map();
+
+  selectedMatches.forEach(match => {
+
+    const matchDate =
+      String(match["日付"] || "")
+        .trim();
+
+    if (!matchDate) {
+      return;
+    }
+
+    if (!matchesByDate.has(matchDate)) {
+      matchesByDate.set(matchDate, []);
+    }
+
+    matchesByDate
+      .get(matchDate)
+      .push(match);
+
+  });
+
+  let dailyDoubleCount = 0;
+  let consecutiveAppearanceCount = 0;
+
+  const dailyDoubleDates = [];
+  const consecutiveAppearanceDates = [];
+
+  matchesByDate.forEach((
+    dayMatches,
+    matchDate
+  ) => {
+
+    /*
+      同じ日の2試合でチームが両方1着なら
+      デイリーダブル1回
+    */
+    const firstPlaceCount =
+      dayMatches.filter(match =>
+        parseInt(
+          String(match["着順"] || ""),
+          10
+        ) === 1
+      ).length;
+
+    if (firstPlaceCount >= 2) {
+      dailyDoubleCount += 1;
+      dailyDoubleDates.push(matchDate);
+    }
+
+    /*
+      同じ日の2試合へ同じ選手が出場したら
+      連投1回
+    */
+    const playerCounts =
+      new Map();
+
+    dayMatches.forEach(match => {
+
+      const playerKey =
+        String(
+          match["選手ID"] ||
+          match["選手名"] ||
+          ""
+        ).trim();
+
+      if (!playerKey) {
+        return;
+      }
+
+      playerCounts.set(
+        playerKey,
+        (playerCounts.get(playerKey) || 0) + 1
+      );
+
+    });
+
+    const hasConsecutiveAppearance =
+      Array.from(playerCounts.values())
+        .some(count => count >= 2);
+
+    if (hasConsecutiveAppearance) {
+      consecutiveAppearanceCount += 1;
+      consecutiveAppearanceDates.push(
+        matchDate
+      );
+    }
+
+  });
+
   teamTitle.textContent =
   team["チーム"] || teamName;
 
@@ -234,12 +353,32 @@ teamInfo.innerHTML = `
           <strong>${upperDiffText}</strong>
         </div>
 
-                ${isPastSingleLeague ? "" : `
+        ${isPastSingleLeague ? "" : `
           <div>
             <span>ボーダーまで</span>
             <strong>${borderDiffText}</strong>
           </div>
         `}
+
+        <div
+          id="dailyDoubleCard"
+          class="team-special-stat-card is-daily-double"
+          role="button"
+          tabindex="0"
+          aria-label="デイリーダブル達成日を表示">
+          <span>デイリーダブル</span>
+          <strong>${dailyDoubleCount}回</strong>
+        </div>
+
+        <div
+          id="consecutiveAppearanceCard"
+          class="team-special-stat-card is-consecutive-appearance"
+          role="button"
+          tabindex="0"
+          aria-label="連投した日を表示">
+          <span>連投回数</span>
+          <strong>${consecutiveAppearanceCount}回</strong>
+        </div>
 
       </div>
 
@@ -251,6 +390,408 @@ teamInfo.innerHTML = `
 
     </div>
   `;
+
+  ensureSpecialStatsStyles();
+
+  bindSpecialStatCard(
+    "dailyDoubleCard",
+    "デイリーダブル達成日",
+    dailyDoubleDates,
+    "daily-double"
+  );
+
+  bindSpecialStatCard(
+    "consecutiveAppearanceCard",
+    "連投した日",
+    consecutiveAppearanceDates,
+    "consecutive-appearance"
+  );
+
+  return {
+    dailyDoubleDates,
+    consecutiveAppearanceDates
+  };
+}
+
+
+/* =========================
+   特別記録カード・ポップアップ
+========================= */
+
+function ensureSpecialStatsStyles() {
+
+  if (
+    document.getElementById(
+      "teamSpecialStatsStyles"
+    )
+  ) {
+    return;
+  }
+
+  const style =
+    document.createElement("style");
+
+  style.id =
+    "teamSpecialStatsStyles";
+
+  style.textContent = `
+    .team-special-stat-card{
+      cursor:pointer;
+      transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+    }
+
+    .team-special-stat-card:hover,
+    .team-special-stat-card:focus-visible{
+      transform:translateY(-3px);
+      outline:none;
+    }
+
+    .team-special-stat-card.is-daily-double:hover,
+    .team-special-stat-card.is-daily-double:focus-visible{
+      border-color:#ff5c5c;
+      box-shadow:0 10px 28px rgba(255,76,76,.18);
+    }
+
+    .team-special-stat-card.is-consecutive-appearance:hover,
+    .team-special-stat-card.is-consecutive-appearance:focus-visible{
+      border-color:#4aa3ff;
+      box-shadow:0 10px 28px rgba(74,163,255,.18);
+    }
+
+    .team-match-row.is-daily-double{
+      background:rgba(255,77,77,.14);
+      box-shadow:inset 4px 0 0 #ff4d4d;
+    }
+
+    .team-match-row.is-consecutive-appearance{
+      background:rgba(74,163,255,.14);
+      box-shadow:inset 4px 0 0 #4aa3ff;
+    }
+
+    .team-match-row.is-daily-double.is-consecutive-appearance{
+      background:linear-gradient(
+        90deg,
+        rgba(255,77,77,.16),
+        rgba(74,163,255,.16)
+      );
+      box-shadow:
+        inset 4px 0 0 #ff4d4d,
+        inset -4px 0 0 #4aa3ff;
+    }
+
+    .team-match-row.is-special-stat-focus{
+      animation:teamSpecialStatFocus 1.1s ease;
+    }
+
+    @keyframes teamSpecialStatFocus{
+      0%,100%{ filter:brightness(1); }
+      45%{ filter:brightness(1.8); }
+    }
+
+    .team-special-popup-overlay{
+      position:fixed;
+      inset:0;
+      z-index:10000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(0,0,0,.74);
+    }
+
+    .team-special-popup{
+      width:min(430px, 100%);
+      padding:24px;
+      color:#fff;
+      background:#181818;
+      border:1px solid rgba(212,175,55,.42);
+      border-radius:18px;
+      box-shadow:0 22px 60px rgba(0,0,0,.5);
+    }
+
+    .team-special-popup h3{
+      margin:0 0 8px;
+      color:#d4af37;
+      font-size:21px;
+    }
+
+    .team-special-popup-message{
+      margin:0 0 18px;
+      color:rgba(255,255,255,.68);
+      font-size:13px;
+    }
+
+    .team-special-popup-dates{
+      display:grid;
+      gap:9px;
+      max-height:330px;
+      overflow:auto;
+    }
+
+    .team-special-popup-date{
+      width:100%;
+      padding:12px 14px;
+      color:#fff;
+      text-align:left;
+      background:#242424;
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    .team-special-popup-date:hover{
+      border-color:#d4af37;
+    }
+
+    .team-special-popup-date.is-daily-double{
+      border-left:4px solid #ff4d4d;
+    }
+
+    .team-special-popup-date.is-consecutive-appearance{
+      border-left:4px solid #4aa3ff;
+    }
+
+    .team-special-popup-empty{
+      margin:0;
+      padding:16px;
+      color:rgba(255,255,255,.62);
+      text-align:center;
+      background:#222;
+      border-radius:10px;
+    }
+
+    .team-special-popup-close{
+      width:100%;
+      margin-top:18px;
+      padding:12px;
+      color:#111;
+      font-weight:800;
+      background:#d4af37;
+      border:0;
+      border-radius:10px;
+      cursor:pointer;
+    }
+  `;
+
+  document.head.appendChild(style);
+
+}
+
+
+function bindSpecialStatCard(
+  cardId,
+  title,
+  dates,
+  type
+) {
+
+  const card =
+    document.getElementById(cardId);
+
+  if (!card) {
+    return;
+  }
+
+  const openPopup = () => {
+    showSpecialStatsPopup(
+      title,
+      dates,
+      type
+    );
+  };
+
+  card.addEventListener(
+    "click",
+    openPopup
+  );
+
+  card.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key !== "Enter" &&
+        event.key !== " "
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      openPopup();
+
+    }
+  );
+
+}
+
+
+function showSpecialStatsPopup(
+  title,
+  dates,
+  type
+) {
+
+  document
+    .querySelector(
+      ".team-special-popup-overlay"
+    )
+    ?.remove();
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.className =
+    "team-special-popup-overlay";
+
+  const dateButtons =
+    dates.length > 0
+      ? dates.map(date => `
+          <button
+            type="button"
+            class="team-special-popup-date is-${type}"
+            data-match-date="${date}">
+            ${date}
+          </button>
+        `).join("")
+      : `
+          <p class="team-special-popup-empty">
+            該当する日はありません
+          </p>
+        `;
+
+  overlay.innerHTML = `
+    <div
+      class="team-special-popup"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="teamSpecialPopupTitle">
+
+      <h3 id="teamSpecialPopupTitle">
+        ${title}
+      </h3>
+
+      <p class="team-special-popup-message">
+        日付を押すと、該当する試合履歴へ移動します。
+      </p>
+
+      <div class="team-special-popup-dates">
+        ${dateButtons}
+      </div>
+
+      <button
+        type="button"
+        class="team-special-popup-close">
+        閉じる
+      </button>
+
+    </div>
+  `;
+
+  const closePopup = () => {
+    overlay.remove();
+  };
+
+  overlay
+    .querySelector(
+      ".team-special-popup-close"
+    )
+    ?.addEventListener(
+      "click",
+      closePopup
+    );
+
+  overlay.addEventListener(
+    "click",
+    event => {
+
+      if (event.target === overlay) {
+        closePopup();
+      }
+
+    }
+  );
+
+  overlay
+    .querySelectorAll(
+      ".team-special-popup-date"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const targetDate =
+            button.dataset.matchDate;
+
+          const targetRows =
+            Array.from(
+              document.querySelectorAll(
+                ".team-match-row"
+              )
+            )
+              .filter(row =>
+                row.dataset.matchDate === targetDate
+              );
+
+          closePopup();
+
+          if (targetRows.length === 0) {
+            return;
+          }
+
+          targetRows[0].scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+
+          targetRows.forEach(row => {
+
+            row.classList.remove(
+              "is-special-stat-focus"
+            );
+
+            requestAnimationFrame(() => {
+              row.classList.add(
+                "is-special-stat-focus"
+              );
+            });
+
+          });
+
+        }
+      );
+
+    });
+
+  const escapeHandler = event => {
+
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    closePopup();
+    document.removeEventListener(
+      "keydown",
+      escapeHandler
+    );
+
+  };
+
+  document.addEventListener(
+    "keydown",
+    escapeHandler
+  );
+
+  document.body.appendChild(overlay);
+
+  overlay
+    .querySelector("button")
+    ?.focus();
+
 }
 
 
@@ -315,7 +856,10 @@ function renderTeamPlayers(playersData) {
    試合履歴
 ========================= */
 
-function renderTeamMatches(matchesData) {
+function renderTeamMatches(
+  matchesData,
+  specialStats = {}
+) {
 
   const selectedMatches = matchesData.filter(row =>
     row["年度"] === year &&
@@ -330,6 +874,16 @@ function renderTeamMatches(matchesData) {
     `;
     return;
   }
+
+  const dailyDoubleDateSet =
+    new Set(
+      specialStats.dailyDoubleDates || []
+    );
+
+  const consecutiveAppearanceDateSet =
+    new Set(
+      specialStats.consecutiveAppearanceDates || []
+    );
 
   teamMatches.innerHTML = `
     <div class="matches-table-wrapper">
@@ -347,10 +901,39 @@ function renderTeamMatches(matchesData) {
 
         <tbody>
 
-          ${selectedMatches.map(match => `
+          ${selectedMatches.map(match => {
+
+            const matchDate =
+              String(match["日付"] || "")
+                .trim();
+
+            const rowClasses = [
+              "team-match-row"
+            ];
+
+            if (
+              dailyDoubleDateSet.has(matchDate)
+            ) {
+              rowClasses.push(
+                "is-daily-double"
+              );
+            }
+
+            if (
+              consecutiveAppearanceDateSet.has(
+                matchDate
+              )
+            ) {
+              rowClasses.push(
+                "is-consecutive-appearance"
+              );
+            }
+
+            return `
 
             <tr
-              class="team-match-row"
+              class="${rowClasses.join(" ")}"
+              data-match-date="${matchDate}"
               data-url="${HLDB.createPlayerUrl({
                 id: match["選手ID"],
                 year,
@@ -385,7 +968,9 @@ function renderTeamMatches(matchesData) {
 
             </tr>
 
-          `).join("")}
+          `;
+
+          }).join("")}
 
         </tbody>
 
