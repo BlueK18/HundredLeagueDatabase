@@ -1,2347 +1,2532 @@
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 body{
 
-    background:#111;
+  background:#111;
 
-    color:white;
+  color:white;
 
-    font-family:sans-serif;
+  font-family:sans-serif;
 
 }
 
 header{
 
-    background:#d4af37;
+  background:#d4af37;
 
-    color:black;
+  color:black;
 
-    text-align:center;
+  text-align:center;
 
-    padding:30px;
+  padding:30px;
 
 }
 
 header h1{
 
-    font-size:40px;
+  font-size:40px;
 
 }
 
 header p{
 
-    margin-top:10px;
+  margin-top:10px;
 
 }
 
 .menu{
 
-    display:grid;
+  display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 
-    gap:20px;
+  gap:20px;
 
-    padding:40px;
+  padding:40px;
 
 }
 
 button{
 
-    padding:40px;
+  padding:40px;
 
-    font-size:25px;
+  font-size:25px;
 
-    border:none;
+  border:none;
 
-    border-radius:20px;
+  border-radius:20px;
 
-    background:#222;
+  background:#222;
 
-    color:white;
+  color:white;
 
-    cursor:pointer;
+  cursor:pointer;
 
-    transition:.3s;
+  transition:.3s;
 
 }
 
 button:hover{
 
-    background:#d4af37;
+  background:#d4af37;
 
-    color:black;
+  color:black;
 
 }
 .controls{
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    padding:30px;
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  padding:30px;
 }
 
 select{
-    padding:12px 20px;
-    font-size:18px;
-    border-radius:10px;
+  padding:12px 20px;
+  font-size:18px;
+  border-radius:10px;
 }
 
 .ranking{
-    padding:20px 40px 60px;
+  padding:20px 40px 60px;
 }
 
 .ranking h2{
-    margin-bottom:20px;
-    text-align:center;
+  margin-bottom:20px;
+  text-align:center;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
-    background:#1c1c1c;
+  width:100%;
+  border-collapse:collapse;
+  background:#1c1c1c;
 }
 
 th,td{
-    padding:14px;
-    border-bottom:1px solid #333;
-    text-align:center;
+  padding:14px;
+  border-bottom:1px solid #333;
+  text-align:center;
 }
 
 th{
-    background:#d4af37;
-    color:#111;
+  background:#d4af37;
+  color:#111;
 }
 
 tr:hover{
-    background:#2a2a2a;
+  background:#2a2a2a;
 }
 .team-link{
-    color:white;
-    font-weight:bold;
-    text-decoration:none;
+  color:white;
+  font-weight:bold;
+  text-decoration:none;
 }
 
 .team-link:hover{
-    color:#d4af37;
-    text-decoration:underline;
+  color:#d4af37;
+  text-decoration:underline;
 }
 .team-detail{
-    max-width:900px;
-    margin:40px auto;
-    padding:0 20px;
+  max-width:900px;
+  margin:40px auto;
+  padding:0 20px;
 }
 
 .team-detail > p{
-    text-align:center;
-    margin-bottom:12px;
-    color:#d6d6d6;
+  text-align:center;
+  margin-bottom:12px;
+  color:#d6d6d6;
 }
 
 .team-stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-    gap:16px;
-    margin:30px 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:16px;
+  margin:30px 0;
 }
 
 .team-stats > div{
-    background:#1c1c1c;
-    border:1px solid #3a3a3a;
-    border-radius:16px;
-    padding:22px 16px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
+  background:#1c1c1c;
+  border:1px solid #3a3a3a;
+  border-radius:16px;
+  padding:22px 16px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
 }
 
 .team-stats span{
-    display:block;
-    font-size:14px;
-    color:#b9b9b9;
-    margin-bottom:10px;
+  display:block;
+  font-size:14px;
+  color:#b9b9b9;
+  margin-bottom:10px;
 }
 
 .team-stats strong{
-    display:block;
-    font-size:24px;
-    color:#d4af37;
+  display:block;
+  font-size:24px;
+  color:#d4af37;
 }
 
 .team-detail a{
-    display:inline-block;
-    color:#d4af37;
-    text-decoration:none;
-    font-weight:bold;
-    margin-top:12px;
+  display:inline-block;
+  color:#d4af37;
+  text-decoration:none;
+  font-weight:bold;
+  margin-top:12px;
 }
 
 .team-detail a:hover{
-    text-decoration:underline;
+  text-decoration:underline;
 }
 
 @media(max-width:600px){
-    .team-stats{
-        grid-template-columns:repeat(2,1fr);
-    }
+  .team-stats{
+      grid-template-columns:repeat(2,1fr);
+  }
 
-    .team-stats strong{
-        font-size:20px;
-    }
+  .team-stats strong{
+      font-size:20px;
+  }
 }
 .team-matches-section{
-    max-width:1100px;
-    margin:20px auto 60px;
-    padding:0 20px;
+  max-width:1100px;
+  margin:20px auto 60px;
+  padding:0 20px;
 }
 
 .team-matches-section h2{
-    text-align:center;
-    margin-bottom:20px;
+  text-align:center;
+  margin-bottom:20px;
 }
 
 .matches-table-wrapper{
-    overflow-x:auto;
-    border-radius:16px;
+  overflow-x:auto;
+  border-radius:16px;
 }
 
 .matches-table-wrapper table{
-    min-width:650px;
+  min-width:650px;
 }
 .team-players-section{
-    max-width:1100px;
-    margin:20px auto 50px;
-    padding:0 20px;
+  max-width:1100px;
+  margin:20px auto 50px;
+  padding:0 20px;
 }
 
 .team-players-section h2{
-    text-align:center;
-    margin-bottom:20px;
+  text-align:center;
+  margin-bottom:20px;
 }
 
 .player-list{
-    display:grid;
-    grid-template-columns:repeat(
-        auto-fit,
-        minmax(220px,1fr)
-    );
-    gap:16px;
+  display:grid;
+  grid-template-columns:repeat(
+      auto-fit,
+      minmax(220px,1fr)
+  );
+  gap:16px;
 }
 
 .player-card{
-    display:block;
-    background:#1c1c1c;
-    border:1px solid #3a3a3a;
-    border-radius:16px;
-    padding:20px;
-    color:white;
-    text-decoration:none;
-    transition:.2s;
+  display:block;
+  background:#1c1c1c;
+  border:1px solid #3a3a3a;
+  border-radius:16px;
+  padding:20px;
+  color:white;
+  text-decoration:none;
+  transition:.2s;
 }
 
 .player-card:hover{
-    border-color:#d4af37;
-    transform:translateY(-3px);
-    box-shadow:0 10px 24px rgba(0,0,0,.35);
+  border-color:#d4af37;
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(0,0,0,.35);
 }
 
 .player-card-name{
-    font-size:20px;
-    font-weight:bold;
-    color:#d4af37;
-    margin-bottom:12px;
+  font-size:20px;
+  font-weight:bold;
+  color:#d4af37;
+  margin-bottom:12px;
 }
 
 .player-card-stats{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    font-size:14px;
-    color:#cfcfcf;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  font-size:14px;
+  color:#cfcfcf;
 }
 
 .player-card-stats span{
-    background:#2a2a2a;
-    border-radius:999px;
-    padding:5px 9px;
+  background:#2a2a2a;
+  border-radius:999px;
+  padding:5px 9px;
 }
 .awards-page{
-    max-width:1200px;
-    margin:0 auto;
-    padding:30px 20px 70px;
+  max-width:1200px;
+  margin:0 auto;
+  padding:30px 20px 70px;
 }
 
 .awards-controls{
-    width:min(700px,100%);
-    margin:0 auto 35px;
+  width:min(700px,100%);
+  margin:0 auto 35px;
 
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(160px,.55fr);
-    gap:14px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(160px,.55fr);
+  gap:14px;
 }
 
 .awards-controls select{
-    width:100%;
-    min-width:0;
-    margin:0;
+  width:100%;
+  min-width:0;
+  margin:0;
 }
 
 .awards-controls #leagueControl{
-    width:100%;
-    min-width:0;
+  width:100%;
+  min-width:0;
 }
 
 .awards-controls #leagueControl select{
-    width:100%;
+  width:100%;
 }
 
 .awards-grid{
-    display:grid;
-    grid-template-columns:repeat(
-        auto-fit,
-        minmax(320px,1fr)
-    );
-    gap:24px;
+  display:grid;
+  grid-template-columns:repeat(
+      auto-fit,
+      minmax(320px,1fr)
+  );
+  gap:24px;
 }
 
 .award-category-card{
-    background:#181818;
-    border:1px solid #3a3a3a;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 12px 30px rgba(0,0,0,.28);
+  background:#181818;
+  border:1px solid #3a3a3a;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(0,0,0,.28);
 }
 
 .award-category-header{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    padding:22px 16px;
-    background:linear-gradient(
-        135deg,
-        #d4af37,
-        #8f6d10
-    );
-    color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:22px 16px;
+  background:linear-gradient(
+      135deg,
+      #d4af37,
+      #8f6d10
+  );
+  color:#111;
 }
 
 .award-category-header h2{
-    font-size:22px;
+  font-size:22px;
 }
 
 .award-category-icon{
-    font-size:28px;
+  font-size:28px;
 }
 
 .award-ranking-list{
-    padding:14px;
+  padding:14px;
 }
 
 .award-player-row{
-    display:grid;
-    grid-template-columns:50px 1fr auto;
-    align-items:center;
-    gap:12px;
-    padding:15px 14px;
-    margin-bottom:10px;
-    border-radius:14px;
-    background:#242424;
-    color:white;
-    text-decoration:none;
-    transition:.2s;
+  display:grid;
+  grid-template-columns:50px 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:15px 14px;
+  margin-bottom:10px;
+  border-radius:14px;
+  background:#242424;
+  color:white;
+  text-decoration:none;
+  transition:.2s;
 }
 
 .award-player-row:last-child{
-    margin-bottom:0;
+  margin-bottom:0;
 }
 
 .award-player-row:hover{
-    transform:translateY(-2px);
-    border-color:#d4af37;
-    box-shadow:0 8px 18px rgba(0,0,0,.3);
+  transform:translateY(-2px);
+  border-color:#d4af37;
+  box-shadow:0 8px 18px rgba(0,0,0,.3);
 }
 
 .award-first{
-    background:linear-gradient(
-        90deg,
-        rgba(212,175,55,.28),
-        #242424
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(212,175,55,.28),
+      #242424
+  );
 }
 
 .award-second{
-    background:linear-gradient(
-        90deg,
-        rgba(190,190,190,.22),
-        #242424
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(190,190,190,.22),
+      #242424
+  );
 }
 
 .award-third{
-    background:linear-gradient(
-        90deg,
-        rgba(176,101,54,.24),
-        #242424
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(176,101,54,.24),
+      #242424
+  );
 }
 
 .award-medal{
-    font-size:26px;
-    text-align:center;
+  font-size:26px;
+  text-align:center;
 }
 
 .award-player-info{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 .award-player-info strong{
-    font-size:18px;
+  font-size:18px;
 }
 
 .award-player-info span{
-    font-size:13px;
-    color:#bdbdbd;
+  font-size:13px;
+  color:#bdbdbd;
 }
 
 .award-value{
-    font-size:18px;
-    font-weight:bold;
-    color:#d4af37;
-    white-space:nowrap;
+  font-size:18px;
+  font-weight:bold;
+  color:#d4af37;
+  white-space:nowrap;
 }
 
 .no-data-message{
-    text-align:center;
-    padding:40px 20px;
-    color:#cfcfcf;
+  text-align:center;
+  padding:40px 20px;
+  color:#cfcfcf;
 }
 
 @media(max-width:600px){
-    .awards-controls{
-        width:100%;
-        grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
-        gap:10px;
-    }
+  .awards-controls{
+      width:100%;
+      grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+      gap:10px;
+  }
 
-    .awards-grid{
-        grid-template-columns:1fr;
-    }
+  .awards-grid{
+      grid-template-columns:1fr;
+  }
 
-    .award-player-row{
-        grid-template-columns:42px 1fr;
-    }
+  .award-player-row{
+      grid-template-columns:42px 1fr;
+  }
 
-    .award-value{
-        grid-column:2;
-        margin-top:4px;
-    }
+  .award-value{
+      grid-column:2;
+      margin-top:4px;
+  }
 }
 .players-page{
-    max-width:1250px;
-    margin:0 auto;
-    padding:30px 20px 70px;
+  max-width:1250px;
+  margin:0 auto;
+  padding:30px 20px 70px;
 }
 
 .players-controls{
-    width:min(900px,100%);
-    margin:0 auto 35px;
+  width:min(900px,100%);
+  margin:0 auto 35px;
 
-    display:grid;
-    grid-template-columns:
-        minmax(120px,.8fr)
-        minmax(160px,1fr)
-        minmax(220px,1.3fr);
-    gap:14px;
+  display:grid;
+  grid-template-columns:
+      minmax(120px,.8fr)
+      minmax(160px,1fr)
+      minmax(220px,1.3fr);
+  gap:14px;
 
-    align-items:end;
+  align-items:end;
 }
 
 .players-controls select{
-    width:100%;
-    min-width:0;
-    margin:0;
+  width:100%;
+  min-width:0;
+  margin:0;
 }
 
 .players-controls #leagueControl{
-    width:100%;
-    min-width:0;
+  width:100%;
+  min-width:0;
 }
 
 .players-controls #leagueControl select{
-    width:100%;
+  width:100%;
 }
 
 .players-ranking-section h2{
-    text-align:center;
-    margin-bottom:22px;
+  text-align:center;
+  margin-bottom:22px;
 }
 
 .players-table-wrapper{
-    overflow-x:auto;
-    border-radius:18px;
-    border:1px solid #383838;
-    box-shadow:0 12px 30px rgba(0,0,0,.28);
-    width:100%;
+  overflow-x:auto;
+  border-radius:18px;
+  border:1px solid #383838;
+  box-shadow:0 12px 30px rgba(0,0,0,.28);
+  width:100%;
 }
 
 .players-ranking-table{
-    width:100%;
-    min-width:900px;
-    margin:0;
+  width:100%;
+  min-width:900px;
+  margin:0;
 }
 
 .players-ranking-table th{
-    position:sticky;
-    top:0;
-    z-index:1;
+  position:sticky;
+  top:0;
+  z-index:1;
 }
 
 .players-ranking-table tbody tr{
-    transition:.2s;
+  transition:.2s;
 }
 
 .players-ranking-table tbody tr:hover{
-    background:#303030;
+  background:#303030;
 }
 
 .players-rank-cell{
-    font-size:18px;
-    font-weight:bold;
-    white-space:nowrap;
+  font-size:18px;
+  font-weight:bold;
+  white-space:nowrap;
 }
 
 .players-name-cell{
-    text-align:left;
+  text-align:left;
 }
 
 .player-ranking-link{
-    color:white;
-    font-weight:bold;
-    text-decoration:none;
+  color:white;
+  font-weight:bold;
+  text-decoration:none;
 }
 
 .player-ranking-link:hover{
-    color:#d4af37;
-    text-decoration:underline;
+  color:#d4af37;
+  text-decoration:underline;
 }
 
 .players-point-cell{
-    color:#d4af37;
-    font-weight:bold;
-    white-space:nowrap;
+  color:#d4af37;
+  font-weight:bold;
+  white-space:nowrap;
 }
 
 .player-rank-first{
-    background:linear-gradient(
-        90deg,
-        rgba(212,175,55,.28),
-        #1c1c1c
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(212,175,55,.28),
+      #1c1c1c
+  );
 }
 
 .player-rank-second{
-    background:linear-gradient(
-        90deg,
-        rgba(190,190,190,.20),
-        #1c1c1c
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(190,190,190,.20),
+      #1c1c1c
+  );
 }
 
 .player-rank-third{
-    background:linear-gradient(
-        90deg,
-        rgba(176,101,54,.23),
-        #1c1c1c
-    );
+  background:linear-gradient(
+      90deg,
+      rgba(176,101,54,.23),
+      #1c1c1c
+  );
 }
 
 @media(max-width:700px){
-    .players-controls{
-        width:100%;
+  .players-controls{
+      width:100%;
 
-        grid-template-columns:
-            minmax(0,.8fr)
-            minmax(0,1.2fr);
-        gap:10px;
-    }
+      grid-template-columns:
+          minmax(0,.8fr)
+          minmax(0,1.2fr);
+      gap:10px;
+  }
 
-    .players-controls > .filter-field:last-child{
-        grid-column:1 / -1;
-    }
+  .players-controls > .filter-field:last-child{
+      grid-column:1 / -1;
+  }
 
-    .players-page{
-        padding-left:12px;
-        padding-right:12px;
-    }
+  .players-page{
+      padding-left:12px;
+      padding-right:12px;
+  }
 }
 .home-navigation{
-    max-width:1100px;
-    margin:35px auto 10px;
-    padding:0 20px;
-    display:grid;
-    grid-template-columns:repeat(
-        3,
-        minmax(0,1fr)
-    );
-    gap:18px;
+  max-width:1100px;
+  margin:35px auto 10px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(
+      3,
+      minmax(0,1fr)
+  );
+  gap:18px;
 }
 
 .home-menu-card{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    min-height:155px;
-    padding:22px 16px;
-    border:1px solid #3a3a3a;
-    border-radius:20px;
-    background:#1c1c1c;
-    color:white;
-    text-align:center;
-    text-decoration:none;
-    box-shadow:0 10px 26px rgba(0,0,0,.25);
-    transition:
-        transform .2s,
-        border-color .2s,
-        background .2s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:155px;
+  padding:22px 16px;
+  border:1px solid #3a3a3a;
+  border-radius:20px;
+  background:#1c1c1c;
+  color:white;
+  text-align:center;
+  text-decoration:none;
+  box-shadow:0 10px 26px rgba(0,0,0,.25);
+  transition:
+      transform .2s,
+      border-color .2s,
+      background .2s;
 }
 
 .home-menu-card:hover{
-    transform:translateY(-4px);
-    border-color:#d4af37;
-    background:#25200f;
+  transform:translateY(-4px);
+  border-color:#d4af37;
+  background:#25200f;
 }
 
 .home-menu-icon{
-    display:block;
-    margin-bottom:12px;
-    font-size:38px;
+  display:block;
+  margin-bottom:12px;
+  font-size:38px;
 }
 
 .home-menu-card strong{
-    margin-bottom:7px;
-    color:#d4af37;
-    font-size:21px;
+  margin-bottom:7px;
+  color:#d4af37;
+  font-size:21px;
 }
 
 .home-menu-card small{
-    color:#bdbdbd;
-    font-size:13px;
+  color:#bdbdbd;
+  font-size:13px;
 }
 
 html{
-    scroll-behavior:smooth;
+  scroll-behavior:smooth;
 }
 
 @media(max-width:700px){
-    .home-navigation{
-        grid-template-columns:1fr;
-    }
+  .home-navigation{
+      grid-template-columns:1fr;
+  }
 
-    .home-menu-card{
-        min-height:120px;
-    }
+  .home-menu-card{
+      min-height:120px;
+  }
 }
 .site-nav{
-    position:sticky;
-    top:0;
-    z-index:1000;
+  position:sticky;
+  top:0;
+  z-index:1000;
 
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 
-    padding:14px 24px;
+  padding:14px 24px;
 
-    background:rgba(12,12,12,.94);
-    border-bottom:1px solid #3a3a3a;
-    backdrop-filter:blur(10px);
+  background:rgba(12,12,12,.94);
+  border-bottom:1px solid #3a3a3a;
+  backdrop-filter:blur(10px);
 }
 
 .site-brand{
-    color:#d4af37;
-    font-size:17px;
-    font-weight:bold;
-    text-decoration:none;
-    white-space:nowrap;
+  color:#d4af37;
+  font-size:17px;
+  font-weight:bold;
+  text-decoration:none;
+  white-space:nowrap;
 }
 
 .site-nav-links{
-    display:flex;
-    align-items:center;
-    gap:18px;
+  display:flex;
+  align-items:center;
+  gap:18px;
 }
 
 .site-nav-links a{
-  display:flex;
-  align-items:center;
-  gap:6px;
+display:flex;
+align-items:center;
+gap:6px;
 
-  color:#e8e8e8;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
-  transition:.2s;
+color:#e8e8e8;
+text-decoration:none;
+font-size:14px;
+font-weight:bold;
+transition:.2s;
 }
 
 .site-nav-links a:hover{
-  color:#d4af37;
+color:#d4af37;
 }
 .site-nav-links a svg{
-  width:17px;
-  height:17px;
-  stroke-width:2;
-  flex-shrink:0;
-  transition:.2s;
+width:17px;
+height:17px;
+stroke-width:2;
+flex-shrink:0;
+transition:.2s;
 }
 
 .site-nav-links a:hover svg{
-  transform:translateY(-1px);
+transform:translateY(-1px);
 }
 
 @media(max-width:700px){
-    .site-nav{
-        align-items:flex-start;
-        flex-direction:column;
-        gap:10px;
-        padding:12px 16px;
-    }
+  .site-nav{
+      align-items:flex-start;
+      flex-direction:column;
+      gap:10px;
+      padding:12px 16px;
+  }
 
-    .site-nav-links{
-        width:100%;
-        gap:8px;
-        overflow-x:auto;
-        padding-bottom:2px;
-    }
+  .site-nav-links{
+      width:100%;
+      gap:8px;
+      overflow-x:auto;
+      padding-bottom:2px;
+  }
 
-    .site-nav-links a{
-        flex:0 0 auto;
-        padding:8px 10px;
-        border:1px solid #333;
-        border-radius:999px;
-        background:#1b1b1b;
-    }
+  .site-nav-links a{
+      flex:0 0 auto;
+      padding:8px 10px;
+      border:1px solid #333;
+      border-radius:999px;
+      background:#1b1b1b;
+  }
 
-    .site-brand{
-        font-size:15px;
-    }
+  .site-brand{
+      font-size:15px;
+  }
 }
 .site-search{
-    position:relative;
-    width:min(260px,100%);
+  position:relative;
+  width:min(260px,100%);
 }
 
 .site-search input{
-    width:100%;
-    padding:10px 14px;
-    border:1px solid #444;
-    border-radius:999px;
-    background:#1b1b1b;
-    color:white;
-    font-size:14px;
-    outline:none;
+  width:100%;
+  padding:10px 14px;
+  border:1px solid #444;
+  border-radius:999px;
+  background:#1b1b1b;
+  color:white;
+  font-size:14px;
+  outline:none;
 }
 
 .site-search input:focus{
-    border-color:#d4af37;
-    box-shadow:0 0 0 3px rgba(212,175,55,.12);
+  border-color:#d4af37;
+  box-shadow:0 0 0 3px rgba(212,175,55,.12);
 }
 
 .site-search-results{
-    display:none;
-    position:absolute;
-    top:calc(100% + 8px);
-    right:0;
-    z-index:2000;
-    width:320px;
-    max-height:420px;
-    overflow-y:auto;
-    padding:8px;
-    border:1px solid #444;
-    border-radius:16px;
-    background:#151515;
-    box-shadow:0 16px 38px rgba(0,0,0,.5);
+  display:none;
+  position:absolute;
+  top:calc(100% + 8px);
+  right:0;
+  z-index:2000;
+  width:320px;
+  max-height:420px;
+  overflow-y:auto;
+  padding:8px;
+  border:1px solid #444;
+  border-radius:16px;
+  background:#151515;
+  box-shadow:0 16px 38px rgba(0,0,0,.5);
 }
 
 .site-search-results.is-open{
-    display:block;
+  display:block;
 }
 
 .site-search-result{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    padding:12px 13px;
-    border-radius:11px;
-    color:white;
-    text-decoration:none;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:12px 13px;
+  border-radius:11px;
+  color:white;
+  text-decoration:none;
 }
 
 .site-search-result:hover{
-    background:#29240f;
+  background:#29240f;
 }
 
 .site-search-result strong{
-    color:#d4af37;
-    font-size:15px;
+  color:#d4af37;
+  font-size:15px;
 }
 
 .site-search-result span{
-    color:#bdbdbd;
-    font-size:12px;
+  color:#bdbdbd;
+  font-size:12px;
 }
 
 .site-search-empty{
-    padding:16px 12px;
-    color:#bdbdbd;
-    text-align:center;
-    font-size:13px;
+  padding:16px 12px;
+  color:#bdbdbd;
+  text-align:center;
+  font-size:13px;
 }
 
 @media(max-width:900px){
-    .site-search{
-        width:100%;
-    }
+  .site-search{
+      width:100%;
+  }
 
-    .site-search-results{
-        right:auto;
-        left:0;
-        width:100%;
-    }
+  .site-search-results{
+      right:auto;
+      left:0;
+      width:100%;
+  }
 }
 .favorite-bar{
-    display:flex;
-    justify-content:center;
-    padding:18px 20px 0;
+  display:flex;
+  justify-content:center;
+  padding:18px 20px 0;
 }
 
 .favorite-button{
-    padding:11px 18px;
-    border:1px solid #d4af37;
-    border-radius:999px;
-    background:#1b1b1b;
-    color:#d4af37;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
+  padding:11px 18px;
+  border:1px solid #d4af37;
+  border-radius:999px;
+  background:#1b1b1b;
+  color:#d4af37;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
 }
 
 .favorite-button:hover{
-    background:#2a240f;
-    transform:translateY(-2px);
+  background:#2a240f;
+  transform:translateY(-2px);
 }
 
 .favorite-button.is-favorite{
-    background:#d4af37;
-    color:#111;
+  background:#d4af37;
+  color:#111;
 }
 .favorites-section{
-    max-width:1100px;
-    margin:30px auto;
-    padding:0 20px;
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 20px;
 }
 
 .favorites-section h2{
-    text-align:center;
-    margin-bottom:18px;
+  text-align:center;
+  margin-bottom:18px;
 }
 
 .favorite-player-list{
-    display:grid;
-    grid-template-columns:repeat(
-        auto-fit,
-        minmax(190px,1fr)
-    );
-    gap:14px;
+  display:grid;
+  grid-template-columns:repeat(
+      auto-fit,
+      minmax(190px,1fr)
+  );
+  gap:14px;
 }
 
 .favorite-player-card{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:16px;
-    border:1px solid #3a3a3a;
-    border-radius:16px;
-    background:#1c1c1c;
-    color:white;
-    text-decoration:none;
-    transition:.2s;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px;
+  border:1px solid #3a3a3a;
+  border-radius:16px;
+  background:#1c1c1c;
+  color:white;
+  text-decoration:none;
+  transition:.2s;
 }
 
 .favorite-player-card:hover{
-    border-color:#d4af37;
-    transform:translateY(-3px);
+  border-color:#d4af37;
+  transform:translateY(-3px);
 }
 
 .favorite-player-card > span{
-    font-size:24px;
+  font-size:24px;
 }
 
 .favorite-player-card div{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 .favorite-player-card strong{
-    color:#d4af37;
+  color:#d4af37;
 }
 
 .favorite-player-card small{
-    color:#aaa;
+  color:#aaa;
 }
 .favorite-player-card-detail{
-    justify-content:space-between;
+  justify-content:space-between;
 }
 
 .favorite-player-main{
-    flex:1;
-    min-width:0;
+  flex:1;
+  min-width:0;
 }
 
 .favorite-player-meta{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:4px;
-    color:#d4af37;
-    font-size:13px;
-    white-space:nowrap;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  color:#d4af37;
+  font-size:13px;
+  white-space:nowrap;
 }
 
 .favorite-player-missing{
-    opacity:.65;
+  opacity:.65;
 }
 
 @media(max-width:600px){
-    .favorite-player-card-detail{
-        align-items:flex-start;
-        flex-wrap:wrap;
-    }
+  .favorite-player-card-detail{
+      align-items:flex-start;
+      flex-wrap:wrap;
+  }
 
-    .favorite-player-meta{
-        width:100%;
-        padding-left:36px;
-        align-items:flex-start;
-        flex-direction:row;
-        flex-wrap:wrap;
-        gap:10px;
-    }
+  .favorite-player-meta{
+      width:100%;
+      padding-left:36px;
+      align-items:flex-start;
+      flex-direction:row;
+      flex-wrap:wrap;
+      gap:10px;
+  }
 }
 .award-condition{
-    padding:0 16px 16px;
-    color:#9f9f9f;
-    text-align:center;
-    font-size:12px;
+  padding:0 16px 16px;
+  color:#9f9f9f;
+  text-align:center;
+  font-size:12px;
 }
 
 .award-no-winner{
-    padding:28px 14px;
-    color:#cfcfcf;
-    text-align:center;
-    font-size:16px;
+  padding:28px 14px;
+  color:#cfcfcf;
+  text-align:center;
+  font-size:16px;
 }
 .award-condition{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-    padding:0 16px 16px;
-    color:#9f9f9f;
-    text-align:left;
-    font-size:12px;
-    line-height:1.6;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:0 16px 16px;
+  color:#9f9f9f;
+  text-align:left;
+  font-size:12px;
+  line-height:1.6;
 }
 
 .award-condition span:nth-child(2){
-    margin-top:5px;
-    color:#c8c8c8;
-    font-weight:bold;
+  margin-top:5px;
+  color:#c8c8c8;
+  font-weight:bold;
 }
 .player-awards-section{
-    max-width:1100px;
-    margin:34px auto;
-    padding:0 20px;
+  max-width:1100px;
+  margin:34px auto;
+  padding:0 20px;
 }
 
 .player-awards-section h2{
-    margin-bottom:18px;
-    text-align:center;
+  margin-bottom:18px;
+  text-align:center;
 }
 
 .player-awards-list{
-    display:grid;
-    grid-template-columns:repeat(
-        auto-fit,
-        minmax(250px,1fr)
-    );
-    gap:14px;
+  display:grid;
+  grid-template-columns:repeat(
+      auto-fit,
+      minmax(250px,1fr)
+  );
+  gap:14px;
 }
 
 .player-award-card{
-    display:grid;
-    grid-template-columns:48px 1fr auto;
-    align-items:center;
-    gap:12px;
-    padding:16px;
-    border:1px solid #3a3a3a;
-    border-radius:16px;
-    background:#1c1c1c;
+  display:grid;
+  grid-template-columns:48px 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:16px;
+  border:1px solid #3a3a3a;
+  border-radius:16px;
+  background:#1c1c1c;
 }
 
 .player-award-icon{
-    font-size:26px;
-    text-align:center;
+  font-size:26px;
+  text-align:center;
 }
 
 .player-award-main{
-    display:flex;
-    flex-direction:column;
-    gap:4px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
 .player-award-main strong{
-    color:#d4af37;
-    font-size:17px;
+  color:#d4af37;
+  font-size:17px;
 }
 
 .player-award-main span{
-    color:#bdbdbd;
-    font-size:12px;
+  color:#bdbdbd;
+  font-size:12px;
 }
 
 .player-award-rank{
-    color:white;
-    font-weight:bold;
-    white-space:nowrap;
+  color:white;
+  font-weight:bold;
+  white-space:nowrap;
 }
 .player-match-row{
-    cursor:pointer;
-    transition:
-        background-color .18s ease,
-        transform .18s ease;
+  cursor:pointer;
+  transition:
+      background-color .18s ease,
+      transform .18s ease;
 }
 
 .player-match-row:hover{
-    background:#272727;
+  background:#272727;
 }
 
 .player-match-row:focus-visible{
-    outline:2px solid #d4af37;
-    outline-offset:-2px;
+  outline:2px solid #d4af37;
+  outline-offset:-2px;
 }
 
 .match-row-guide{
-    margin:12px 0 0;
-    color:#9f9f9f;
-    text-align:center;
-    font-size:12px;
+  margin:12px 0 0;
+  color:#9f9f9f;
+  text-align:center;
+  font-size:12px;
 }
 
 .match-detail-modal{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
 .match-detail-modal.is-open{
-    display:flex;
+  display:flex;
 }
 .match-detail-modal.is-open .match-detail-overlay{
-    animation:matchOverlayFade .2s ease-out;
+  animation:matchOverlayFade .2s ease-out;
 }
 
 .match-detail-modal.is-open .match-detail-dialog{
-    animation:matchDialogOpen .22s ease-out;
+  animation:matchDialogOpen .22s ease-out;
 }
 
 @keyframes matchOverlayFade{
-    from{
-        opacity:0;
-    }
+  from{
+      opacity:0;
+  }
 
-    to{
-        opacity:1;
-    }
+  to{
+      opacity:1;
+  }
 }
 
 @keyframes matchDialogOpen{
-    from{
-        opacity:0;
-        transform:translateY(12px) scale(.97);
-    }
+  from{
+      opacity:0;
+      transform:translateY(12px) scale(.97);
+  }
 
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
+  to{
+      opacity:1;
+      transform:translateY(0) scale(1);
+  }
 }
 
 .match-detail-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,.78);
-    backdrop-filter:blur(4px);
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(4px);
 }
 
 .match-detail-dialog{
-    position:relative;
-    z-index:1;
-    width:min(680px,100%);
-    max-height:88vh;
-    overflow-y:auto;
-    padding:26px;
-    border:1px solid #5a4a1e;
-    border-radius:20px;
-    background:#151515;
-    box-shadow:0 24px 70px rgba(0,0,0,.55);
+  position:relative;
+  z-index:1;
+  width:min(680px,100%);
+  max-height:88vh;
+  overflow-y:auto;
+  padding:26px;
+  border:1px solid #5a4a1e;
+  border-radius:20px;
+  background:#151515;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);
 }
 
 .match-detail-dialog > h2{
-    margin:0 42px 20px 0;
-    color:#d4af37;
+  margin:0 42px 20px 0;
+  color:#d4af37;
 }
 
 .match-modal-close{
-    position:absolute;
-    top:12px;
-    right:14px;
-    width:38px;
-    height:38px;
-    padding:0;
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:38px;
+  height:38px;
+  padding:0;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-    border:0;
-    border-radius:50%;
-    background:#292929;
-    color:#fff;
+  border:0;
+  border-radius:50%;
+  background:#292929;
+  color:#fff;
 
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .match-modal-close svg{
-    width:20px;
-    height:20px;
-    stroke-width:2.5;
+  width:20px;
+  height:20px;
+  stroke-width:2.5;
 }
 
 .match-modal-close:hover{
-    background:#3a3a3a;
-    color:#d4af37;
+  background:#3a3a3a;
+  color:#d4af37;
 }
 
 .match-modal-close:hover{
-    background:#3a3a3a;
+  background:#3a3a3a;
 }
 
 .match-detail-meta{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    gap:9px;
-    margin-bottom:18px;
-    color:#bdbdbd;
-    font-size:13px;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px;
+  margin-bottom:18px;
+  color:#bdbdbd;
+  font-size:13px;
 }
 
 .match-detail-results{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
 
 .match-detail-player{
-    display:grid;
-    grid-template-columns:54px minmax(0,1fr) auto;
-    align-items:center;
-    gap:12px;
-    padding:15px;
-    border:1px solid #353535;
-    border-radius:15px;
-    background:#1e1e1e;
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  padding:15px;
+  border:1px solid #353535;
+  border-radius:15px;
+  background:#1e1e1e;
 }
 
 .match-detail-player.is-current-player{
-    border-color:#a98b32;
-    background:#282313;
+  border-color:#a98b32;
+  background:#282313;
 }
 
 .match-detail-rank{
-    font-size:23px;
-    text-align:center;
+  font-size:23px;
+  text-align:center;
 }
 
 .match-detail-player-info{
-    display:flex;
-    min-width:0;
-    flex-direction:column;
-    gap:4px;
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  gap:4px;
 }
 
 .match-detail-player-info a{
-    overflow:hidden;
-    color:#fff;
-    font-weight:bold;
-    text-decoration:none;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+  overflow:hidden;
+  color:#fff;
+  font-weight:bold;
+  text-decoration:none;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .match-detail-player-info a:hover{
-    color:#d4af37;
+  color:#d4af37;
 }
 
 .match-detail-player-info span{
-    overflow:hidden;
-    color:#a9a9a9;
-    font-size:12px;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+  overflow:hidden;
+  color:#a9a9a9;
+  font-size:12px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .match-detail-score{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:4px;
-    white-space:nowrap;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:4px;
+  white-space:nowrap;
 }
 
 .match-detail-score strong{
-    color:#d4af37;
+  color:#d4af37;
 }
 
 .match-detail-score span{
-    color:#bdbdbd;
-    font-size:12px;
+  color:#bdbdbd;
+  font-size:12px;
 }
 
 body.modal-open{
-    overflow:hidden;
+  overflow:hidden;
 }
 
 @media(max-width:600px){
-    .match-detail-dialog{
-        padding:21px 15px;
-    }
+  .match-detail-dialog{
+      padding:21px 15px;
+  }
 
-    .match-detail-player{
-        grid-template-columns:42px minmax(0,1fr);
-    }
+  .match-detail-player{
+      grid-template-columns:42px minmax(0,1fr);
+  }
 
-    .match-detail-score{
-        grid-column:2;
-        align-items:flex-start;
-    }
+  .match-detail-score{
+      grid-column:2;
+      align-items:flex-start;
+  }
 }
 /* ========================================
-   スマホ表示調整
+ スマホ表示調整
 ======================================== */
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
 
-    #teamTable th:nth-child(6),
-    #teamTable td:nth-child(6) {
-      display: none;
-    }
-  
+  #teamTable th:nth-child(6),
+  #teamTable td:nth-child(6) {
+    display: none;
   }
-  .players-ranking-table th:first-child,
+
+}
+.players-ranking-table th:first-child,
 .players-ranking-table td:first-child {
-  width: 72px;
-  min-width: 72px;
-  text-align: center;
+width: 72px;
+min-width: 72px;
+text-align: center;
 }
 
 .players-rank-cell {
-  text-align: center;
-  white-space: nowrap;
+text-align: center;
+white-space: nowrap;
 }
 /* ========================================
-   選手詳細ページ：本文の横幅を整える
+ 選手詳細ページ：本文の横幅を整える
 ======================================== */
 
 .player-page {
-    width: min(1400px, calc(100% - 48px));
-    margin: 0 auto;
-  }
-  
-  .player-page > section,
-  .player-page > div {
-    width: 100%;
-  }
-  /* ==========================================
-   選手詳細ページレイアウト
+  width: min(1400px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.player-page > section,
+.player-page > div {
+  width: 100%;
+}
+/* ==========================================
+ 選手詳細ページレイアウト
 ========================================== */
 
 .player-detail-page {
-    width: min(1400px, calc(100% - 48px));
-    margin: 40px auto;
+  width: min(1400px, calc(100% - 48px));
+  margin: 40px auto;
 }
 .player-detail-page section {
-    margin-bottom: 60px;
+  margin-bottom: 60px;
 }
 /* 着順分布の位置を揃える */
 .placement-row {
-    display: flex;
-    align-items: center;
-  }
-  
-  .placement-icon {
-    display: inline-block;
-    width: 24px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-  /* 着順分布の文字位置をそろえる */
+  display: flex;
+  align-items: center;
+}
+
+.placement-icon {
+  display: inline-block;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+/* 着順分布の文字位置をそろえる */
 .placement-label {
-    display: inline-flex;
-    align-items: center;
-  }
-  
-  .placement-medal {
-    display: inline-block;
-    width: 1.5em;
-    text-align: center;
-    flex-shrink: 0;
-  }
-  .placing-grid > div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 170px;
-    margin-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.placement-medal {
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+  flex-shrink: 0;
+}
+.placing-grid > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 170px;
+  margin-bottom: 6px;
 }
 
 .placing-grid strong {
-    min-width: 24px;
-    text-align: right;
+  min-width: 24px;
+  text-align: right;
 }
 /* ========================================
-   HOME：年度・リーグ・ステージ選択
+ HOME：年度・リーグ・ステージ選択
 ======================================== */
 
 .ranking-controls {
-    width: min(1100px, calc(100% - 48px));
-    margin: 40px auto 60px;
-  
-    display: grid;
+  width: min(1100px, calc(100% - 48px));
+  margin: 40px auto 60px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(140px, 0.8fr)
+    minmax(180px, 1fr)
+    minmax(240px, 1.4fr);
+  gap: 16px;
+
+  align-items: center;
+}
+
+/* 年度・ステージ */
+.ranking-controls > select {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+/* リーグ */
+.ranking-controls #leagueControl {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.ranking-controls #leagueControl select {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+
+/* ========================================
+   スマホ表示
+======================================== */
+
+@media (max-width: 768px) {
+  .ranking-controls {
+    width: calc(100% - 32px);
+    margin: 16px auto 28px;
+
     grid-template-columns:
-      minmax(140px, 0.8fr)
-      minmax(180px, 1fr)
-      minmax(240px, 1.4fr);
-    gap: 16px;
-  
-    align-items: center;
+      minmax(0, 0.8fr)
+      minmax(0, 1.2fr);
+    gap: 10px;
   }
-  
-  /* 年度・ステージ */
-  .ranking-controls > select {
+
+  /* ステージは下段いっぱい */
+  .ranking-controls #stageSelect {
+    grid-column: 1 / -1;
+  }
+}
+/* ========================================
+ チーム順位表：スマホ専用
+ 固定なし・横スクロールのみ
+======================================== */
+@media (max-width: 768px) {
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .ranking {
     width: 100%;
-    min-width: 0;
+    max-width: 100%;
+    padding: 18px 4px 40px;
+  }
+
+  #teamTable {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #teamTable table {
+    width: 720px;
+    min-width: 720px;
+    table-layout: fixed;
+    border-collapse: collapse;
     margin: 0;
   }
-  
-  /* リーグ */
-  .ranking-controls #leagueControl {
-    display: block;
-    width: 100%;
-    min-width: 0;
+
+  #teamTable th,
+  #teamTable td {
+    padding: 10px 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    text-align: center;
   }
-  
-  .ranking-controls #leagueControl select {
+
+  /* 順位 */
+  #teamTable th:nth-child(1),
+  #teamTable td:nth-child(1) {
+    width: 70px;
+  }
+
+  /* チーム */
+  #teamTable th:nth-child(2),
+  #teamTable td:nth-child(2) {
+    width: 230px;
+    text-align: left;
+    padding-left: 12px;
+  }
+
+  /* 試合数 */
+  #teamTable th:nth-child(3),
+  #teamTable td:nth-child(3) {
+    width: 70px;
+  }
+
+  /* ポイント */
+  #teamTable th:nth-child(4),
+  #teamTable td:nth-child(4) {
+    width: 90px;
+  }
+
+  /* 着順分布 */
+  #teamTable th:nth-child(5),
+  #teamTable td:nth-child(5) {
+    width: 130px;
+  }
+
+  /* ポイント差 */
+  #teamTable th:nth-child(6),
+  #teamTable td:nth-child(6) {
+    display: table-cell !important;
+    width: 100px;
+  }
+
+  /* チーム名は省略しない */
+  #teamTable td:nth-child(2),
+  #teamTable td:nth-child(2) .team-link {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: nowrap;
+  }
+}
+/* ========================================
+ HOME黄色メイン枠：スマホ調整
+======================================== */
+@media (max-width: 768px) {
+
+  header {
     width: 100%;
-    min-width: 0;
+    padding: 28px 16px;
+  }
+
+  header h1 {
+    margin: 0 auto;
+    font-size: 28px;
+    line-height: 1.35;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  header p {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+}
+/* ========================================
+ 選手ランキング：スマホ専用
+ チーム順位と同じくらいコンパクトにする
+======================================== */
+@media (max-width: 768px) {
+
+  .players-page {
+    width: 100%;
+    max-width: 100%;
+    padding: 18px 4px 40px;
+    overflow: hidden;
+  }
+
+  .players-ranking-section {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .players-ranking-section h2 {
+    margin-bottom: 18px;
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .players-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .players-ranking-table {
+    width: 760px;
+    min-width: 760px;
+    table-layout: fixed;
     margin: 0;
   }
-  
-  
-  /* ========================================
-     スマホ表示
-  ======================================== */
-  
-  @media (max-width: 768px) {
-    .ranking-controls {
-      width: calc(100% - 32px);
-      margin: 16px auto 28px;
-  
-      grid-template-columns:
-        minmax(0, 0.8fr)
-        minmax(0, 1.2fr);
-      gap: 10px;
-    }
-  
-    /* ステージは下段いっぱい */
-    .ranking-controls #stageSelect {
-      grid-column: 1 / -1;
-    }
+
+  .players-ranking-table th,
+  .players-ranking-table td {
+    height: 58px;
+    padding: 9px 6px;
+    font-size: 13px;
+    line-height: 1.25;
+    white-space: nowrap;
+    text-align: center;
   }
-  /* ========================================
-   チーム順位表：スマホ専用
-   固定なし・横スクロールのみ
+
+  /* 順位 */
+  .players-ranking-table th:nth-child(1),
+  .players-ranking-table td:nth-child(1) {
+    width: 66px;
+    min-width: 66px;
+  }
+
+  /* 選手名 */
+  .players-ranking-table th:nth-child(2),
+  .players-ranking-table td:nth-child(2) {
+    width: 190px;
+    min-width: 190px;
+    padding-left: 10px;
+    text-align: left;
+  }
+
+  /* チーム */
+  .players-ranking-table th:nth-child(3),
+  .players-ranking-table td:nth-child(3) {
+    width: 170px;
+    min-width: 170px;
+    padding-left: 8px;
+    text-align: left;
+  }
+
+  /* 4列目以降 */
+  .players-ranking-table th:nth-child(n+4),
+  .players-ranking-table td:nth-child(n+4) {
+    width: 84px;
+  }
+
+  .players-rank-cell {
+    font-size: 13px;
+  }
+
+  .player-ranking-link {
+    font-size: 13px;
+  }
+
+  .players-name-cell,
+  .players-ranking-table td:nth-child(3) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+/* ========================================
+ HOMEメニューカード：スマホ専用
+ 横幅はそのまま・高さだけコンパクトに
 ======================================== */
 @media (max-width: 768px) {
 
-    html,
-    body {
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-  
-    .ranking {
-      width: 100%;
-      max-width: 100%;
-      padding: 18px 4px 40px;
-    }
-  
-    #teamTable {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-  
-    #teamTable table {
-      width: 720px;
-      min-width: 720px;
-      table-layout: fixed;
-      border-collapse: collapse;
-      margin: 0;
-    }
-  
-    #teamTable th,
-    #teamTable td {
-      padding: 10px 6px;
-      font-size: 13px;
-      white-space: nowrap;
-      text-align: center;
-    }
-  
-    /* 順位 */
-    #teamTable th:nth-child(1),
-    #teamTable td:nth-child(1) {
-      width: 70px;
-    }
-  
-    /* チーム */
-    #teamTable th:nth-child(2),
-    #teamTable td:nth-child(2) {
-      width: 230px;
-      text-align: left;
-      padding-left: 12px;
-    }
-  
-    /* 試合数 */
-    #teamTable th:nth-child(3),
-    #teamTable td:nth-child(3) {
-      width: 70px;
-    }
-  
-    /* ポイント */
-    #teamTable th:nth-child(4),
-    #teamTable td:nth-child(4) {
-      width: 90px;
-    }
-  
-    /* 着順分布 */
-    #teamTable th:nth-child(5),
-    #teamTable td:nth-child(5) {
-      width: 130px;
-    }
-  
-    /* ポイント差 */
-    #teamTable th:nth-child(6),
-    #teamTable td:nth-child(6) {
-      display: table-cell !important;
-      width: 100px;
-    }
-  
-    /* チーム名は省略しない */
-    #teamTable td:nth-child(2),
-    #teamTable td:nth-child(2) .team-link {
-      overflow: visible;
-      text-overflow: clip;
-      white-space: nowrap;
-    }
+  .home-navigation {
+    width: 100%;
+    max-width: 100%;
+    margin: 24px auto 10px;
+    padding: 0 16px;
+    gap: 14px;
   }
-  /* ========================================
-   HOME黄色メイン枠：スマホ調整
-======================================== */
-@media (max-width: 768px) {
 
-    header {
-      width: 100%;
-      padding: 28px 16px;
-    }
-  
-    header h1 {
-      margin: 0 auto;
-      font-size: 28px;
-      line-height: 1.35;
-      overflow-wrap: normal;
-      word-break: keep-all;
-    }
-  
-    header p {
-      margin-top: 14px;
-      font-size: 16px;
-      line-height: 1.4;
-    }
-  
+  .home-menu-card {
+      min-height: 145px;
+      padding: 16px 16px;
+      border-radius: 18px;
   }
-  /* ========================================
-   選手ランキング：スマホ専用
-   チーム順位と同じくらいコンパクトにする
-======================================== */
-@media (max-width: 768px) {
 
-    .players-page {
-      width: 100%;
-      max-width: 100%;
-      padding: 18px 4px 40px;
-      overflow: hidden;
-    }
+  .home-menu-icon {
+      margin-bottom: 4px;
+      font-size: 30px;
+  }
+
+  .home-menu-card strong {
+      display: block;
+      margin: 2px 0 2px;
+      font-size: 20px;
+      line-height: 1.15;
+      font-weight: 700;
+  }
   
-    .players-ranking-section {
-      width: 100%;
-      max-width: 100%;
-    }
-  
-    .players-ranking-section h2 {
-      margin-bottom: 18px;
-      font-size: 28px;
-      line-height: 1.25;
-    }
-  
-    .players-table-wrapper {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: auto;
-      overflow-y: hidden;
-      border-radius: 0;
-      -webkit-overflow-scrolling: touch;
-    }
-  
-    .players-ranking-table {
-      width: 760px;
-      min-width: 760px;
-      table-layout: fixed;
-      margin: 0;
-    }
-  
-    .players-ranking-table th,
-    .players-ranking-table td {
-      height: 58px;
-      padding: 9px 6px;
+  .home-menu-card small {
+      display: block;
+      margin-top: 2px;
       font-size: 13px;
       line-height: 1.25;
-      white-space: nowrap;
-      text-align: center;
-    }
-  
-    /* 順位 */
-    .players-ranking-table th:nth-child(1),
-    .players-ranking-table td:nth-child(1) {
-      width: 66px;
-      min-width: 66px;
-    }
-  
-    /* 選手名 */
-    .players-ranking-table th:nth-child(2),
-    .players-ranking-table td:nth-child(2) {
-      width: 190px;
-      min-width: 190px;
-      padding-left: 10px;
-      text-align: left;
-    }
-  
-    /* チーム */
-    .players-ranking-table th:nth-child(3),
-    .players-ranking-table td:nth-child(3) {
-      width: 170px;
-      min-width: 170px;
-      padding-left: 8px;
-      text-align: left;
-    }
-  
-    /* 4列目以降 */
-    .players-ranking-table th:nth-child(n+4),
-    .players-ranking-table td:nth-child(n+4) {
-      width: 84px;
-    }
-  
-    .players-rank-cell {
-      font-size: 13px;
-    }
-  
-    .player-ranking-link {
-      font-size: 13px;
-    }
-  
-    .players-name-cell,
-    .players-ranking-table td:nth-child(3) {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      color: #b8b8b8;
   }
-  /* ========================================
-   HOMEメニューカード：スマホ専用
-   横幅はそのまま・高さだけコンパクトに
+}
+/* ========================================
+ スマホ：上部の3メニューを非表示
 ======================================== */
 @media (max-width: 768px) {
 
-    .home-navigation {
-      width: 100%;
-      max-width: 100%;
-      margin: 24px auto 10px;
-      padding: 0 16px;
-      gap: 14px;
-    }
-  
-    .home-menu-card {
-        min-height: 145px;
-        padding: 16px 16px;
-        border-radius: 18px;
-    }
-  
-    .home-menu-icon {
-        margin-bottom: 4px;
-        font-size: 30px;
-    }
-  
-    .home-menu-card strong {
-        display: block;
-        margin: 2px 0 2px;
-        font-size: 20px;
-        line-height: 1.15;
-        font-weight: 700;
-    }
-    
-    .home-menu-card small {
-        display: block;
-        margin-top: 2px;
-        font-size: 13px;
-        line-height: 1.25;
-        color: #b8b8b8;
-    }
-  }
-  /* ========================================
-   スマホ：上部の3メニューを非表示
-======================================== */
-@media (max-width: 768px) {
-
-    .site-nav-links {
-      display: none;
-    }
-  
-  }
-  /* ========================================
-   スマホ共通：下部固定ナビ
-======================================== */
-
-.bottom-nav {
+  .site-nav-links {
     display: none;
   }
-  
-  @media (max-width: 768px) {
-  
-    body {
-      padding-bottom: 88px;
-    }
-  
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 5000;
-  
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-  
-      min-height: 72px;
-      padding:
-        7px
-        4px
-        max(7px, env(safe-area-inset-bottom));
-  
-      background: rgba(12, 12, 12, 0.96);
-      border-top: 1px solid #3a3a3a;
-  
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-  
-      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45);
-    }
-  
-    .bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-  
-      min-width: 0;
-      padding: 5px 2px;
-  
-      color: #a9a9a9;
-      text-decoration: none;
-      font-weight: 700;
-    }
-  
-    .bottom-nav-icon {
-        width: 26px;
-        height: 26px;
-        display: block;
-        flex-shrink: 0;
-      
-        stroke: currentColor;
-      }
-  
-    .bottom-nav-label{
-        display:block;
-        font-size:10px;
-        line-height:1.1;
-        white-space:nowrap;
-    
-        letter-spacing:-0.04em;
-    }
-  
-    .bottom-nav-item:hover,
-    .bottom-nav-item:focus-visible,
-    .bottom-nav-item.is-active {
-      color: #d4af37;
-    }
-  }
-  .bottom-nav-item.is-active .bottom-nav-icon {
-    stroke-width: 2.6;
-  }
-  @media (max-width: 768px) {
 
-    .team-stats > div {
-      padding: 14px 8px;
-    }
-  
-    .team-stats strong {
-      font-size: 21px;
-      line-height: 1.2;
-    }
-  
-    .team-stats .placement-stat strong {
-      font-size: 17px;
-      white-space: nowrap;
-      letter-spacing: -0.04em;
-    }
-  
-  }
-  .award-ranking-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  
-    margin-top: 14px;
-    padding: 13px 16px 10px;
-  
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-  
-    color: #d8b75b;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  
-  .award-ranking-link:hover {
-    opacity: 0.8;
-  }
-  
-  .award-ranking-link svg {
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
-  }
-  .award-ranking-card{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+}
+/* ========================================
+ スマホ共通：下部固定ナビ
+======================================== */
 
-    margin-top:14px;
-    padding:14px 16px;
+.award-ranking-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 
-    border-radius:14px;
+  margin-top: 14px;
+  padding: 13px 16px 10px;
 
-    background:linear-gradient(
-        135deg,
-        rgba(212,175,55,.12),
-        rgba(255,255,255,.04)
-    );
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 
-    border:1px solid rgba(212,175,55,.28);
+  color: #d8b75b;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
 
-    text-decoration:none;
-    color:#fff;
+.award-ranking-link:hover {
+  opacity: 0.8;
+}
 
-    transition:.2s;
+.award-ranking-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.award-ranking-card{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-top:14px;
+  padding:14px 16px;
+
+  border-radius:14px;
+
+  background:linear-gradient(
+      135deg,
+      rgba(212,175,55,.12),
+      rgba(255,255,255,.04)
+  );
+
+  border:1px solid rgba(212,175,55,.28);
+
+  text-decoration:none;
+  color:#fff;
+
+  transition:.2s;
 }
 
 .award-ranking-card:hover{
-    transform:translateY(-2px);
-    border-color:#d4af37;
-    box-shadow:0 6px 16px rgba(212,175,55,.18);
+  transform:translateY(-2px);
+  border-color:#d4af37;
+  box-shadow:0 6px 16px rgba(212,175,55,.18);
 }
 
 .award-ranking-card-left{
-    display:flex;
-    align-items:center;
-    gap:12px;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .award-ranking-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    width: 38px;
-    height: 38px;
-  
-    border-radius: 10px;
-    background: rgba(212, 175, 55, 0.14);
-    color: #d4af37;
-    flex-shrink: 0;
-  }
-  
-  .award-ranking-icon svg {
-    width: 21px;
-    height: 21px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.14);
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.award-ranking-icon svg {
+  width: 21px;
+  height: 21px;
+}
 
 .award-ranking-card strong{
-    display:block;
-    font-size:15px;
-    color:#d4af37;
+  display:block;
+  font-size:15px;
+  color:#d4af37;
 }
 
 .award-ranking-card small{
-    color:#bcbcbc;
-    font-size:12px;
+  color:#bcbcbc;
+  font-size:12px;
 }
 
 .award-ranking-card svg{
-    width:20px;
-    height:20px;
-    color:#d4af37;
+  width:20px;
+  height:20px;
+  color:#d4af37;
 }
 /* ========================================
-   個人賞ランキング
+ 個人賞ランキング
 ======================================== */
 
 .award-full-ranking {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .award-full-ranking-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  
-    padding: 16px 14px;
-  
-    border-radius: 14px;
-    background: #1b1b1b;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  
-    color: #fff;
-    text-decoration: none;
-  
-    transition: 0.2s;
-  }
-  
-  .award-full-ranking-row:hover {
-    border-color: #d4af37;
-    transform: translateY(-2px);
-  }
-  
-  /* 順位・メダル */
-  .award-full-rank {
-    width: 38px;
-    flex-shrink: 0;
-  
-    align-self: flex-start;
-    padding-top: 2px;
-  
-    text-align: center;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  /* 選手情報 */
-  .award-full-player {
-    flex: 1;
-    min-width: 0;
-  }
-  
-  .award-full-player strong {
-    display: block;
-    font-size: 18px;
-  }
-  
-  .award-full-player > span {
-    display: block;
-    color: #9b9b9b;
-    font-size: 13px;
-  }
-  
-  .award-full-player small {
-    display: block;
-    margin-top: 4px;
-  
-    color: #d4af37;
-  }
-  
-  /* 記録値 */
-  .award-full-value {
-    flex-shrink: 0;
-  
-    color: #d4af37;
-    font-size: 20px;
-    font-weight: 700;
-  }
-  
-  /* 受賞条件未達 */
-  .award-full-player em {
-    display: block;
-    margin-top: 6px;
-  
-    font-size: 12px;
-    font-style: normal;
-    line-height: 1.5;
-  }
-  
-  .not-eligible-title {
-    display: block;
-  
-    color: #d4af37;
-    font-weight: 700;
-  }
-  
-  .not-eligible-detail {
-    display: block;
-  
-    color: #b8b8b8;
-    font-size: 11px;
-    font-weight: 400;
-  }
-  
-  /* 受賞対象まで */
-  .award-full-player em{
-    display:block;
-    margin-top:5px;
-  
-    color:#d4af37;
-    font-size:12px;
-    font-style:normal;
-    line-height:1.4;
-  
-    white-space:nowrap;
-  }
-  /* ========================================
-   共通フィルター・セレクト
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.award-full-ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 16px 14px;
+
+  border-radius: 14px;
+  background: #1b1b1b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #fff;
+  text-decoration: none;
+
+  transition: 0.2s;
+}
+
+.award-full-ranking-row:hover {
+  border-color: #d4af37;
+  transform: translateY(-2px);
+}
+
+/* 順位・メダル */
+.award-full-rank {
+  width: 38px;
+  flex-shrink: 0;
+
+  align-self: flex-start;
+  padding-top: 2px;
+
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* 選手情報 */
+.award-full-player {
+  flex: 1;
+  min-width: 0;
+}
+
+.award-full-player strong {
+  display: block;
+  font-size: 18px;
+}
+
+.award-full-player > span {
+  display: block;
+  color: #9b9b9b;
+  font-size: 13px;
+}
+
+.award-full-player small {
+  display: block;
+  margin-top: 4px;
+
+  color: #d4af37;
+}
+
+/* 記録値 */
+.award-full-value {
+  flex-shrink: 0;
+
+  color: #d4af37;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* 受賞条件未達 */
+.award-full-player em {
+  display: block;
+  margin-top: 6px;
+
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.not-eligible-title {
+  display: block;
+
+  color: #d4af37;
+  font-weight: 700;
+}
+
+.not-eligible-detail {
+  display: block;
+
+  color: #b8b8b8;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* 受賞対象まで */
+.award-full-player em{
+  display:block;
+  margin-top:5px;
+
+  color:#d4af37;
+  font-size:12px;
+  font-style:normal;
+  line-height:1.4;
+
+  white-space:nowrap;
+}
+/* ========================================
+ 共通フィルター・セレクト
 ======================================== */
 
 select {
-    width: 100%;
-    min-height: 48px;
-    padding: 0 44px 0 14px;
-  
-    border: 1px solid rgba(212, 175, 55, 0.45);
-    border-radius: 12px;
-  
-    background-color: #181818;
-    color: #ffffff;
-  
-    font-size: 15px;
-    font-weight: 600;
-  
-    cursor: pointer;
-    outline: none;
-  
-    appearance: none;
-    -webkit-appearance: none;
-  
-    background-image:
-      linear-gradient(45deg, transparent 50%, #d4af37 50%),
-      linear-gradient(135deg, #d4af37 50%, transparent 50%);
-    background-position:
-      calc(100% - 19px) 50%,
-      calc(100% - 13px) 50%;
-    background-size:
-      6px 6px,
-      6px 6px;
-    background-repeat: no-repeat;
-  
-    transition:
-      border-color 0.2s,
-      box-shadow 0.2s,
-      background-color 0.2s;
-  }
-  
-  select:hover {
-    border-color: #d4af37;
-    background-color: #1e1e1e;
-  }
-  
-  select:focus {
-    border-color: #d4af37;
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
-  }
-  
-  select option {
-    background: #181818;
-    color: #ffffff;
-  }
-  /* ========================================
-   共通フィルターパネル
+  width: 100%;
+  min-height: 48px;
+  padding: 0 44px 0 14px;
+
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 12px;
+
+  background-color: #181818;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  outline: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #d4af37 50%),
+    linear-gradient(135deg, #d4af37 50%, transparent 50%);
+  background-position:
+    calc(100% - 19px) 50%,
+    calc(100% - 13px) 50%;
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+select:hover {
+  border-color: #d4af37;
+  background-color: #1e1e1e;
+}
+
+select:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+}
+
+select option {
+  background: #181818;
+  color: #ffffff;
+}
+/* ========================================
+ 共通フィルターパネル
 ======================================== */
 
 .filter-panel {
-    margin: 16px 4px 24px;
-    padding: 14px;
-  
-    border: 1px solid rgba(212, 175, 55, 0.28);
-    border-radius: 16px;
-  
-    background:
-      linear-gradient(
-        145deg,
-        rgba(212, 175, 55, 0.07),
-        rgba(255, 255, 255, 0.015)
-      ),
-      #151515;
-  
-    box-shadow:
-      0 10px 26px rgba(0, 0, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  }
-  
-  .filter-panel-title {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  
-    margin-bottom: 12px;
-  
-    color: #d4af37;
-    font-size: 14px;
-    font-weight: 700;
-  }
-  
-  .filter-panel-title svg {
-    width: 17px;
-    height: 17px;
-  }
-  
-  .filter-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
-    gap: 10px;
-  
-    margin-bottom: 10px;
-  }
-  
-  .filter-field {
-    min-width: 0;
-  }
-  
-  .filter-field label {
-    display: block;
-    margin: 0 0 5px 2px;
-  
-    color: #a9a9a9;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  
-  .filter-field select {
-    width: 100%;
-    margin: 0;
-  }
-  /* ========================================
-   選手ランキング見出し
+  margin: 16px 4px 24px;
+  padding: 14px;
+
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(212, 175, 55, 0.07),
+      rgba(255, 255, 255, 0.015)
+    ),
+    #151515;
+
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.filter-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 12px;
+
+  color: #d4af37;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.filter-panel-title svg {
+  width: 17px;
+  height: 17px;
+}
+
+.filter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.filter-field {
+  min-width: 0;
+}
+
+.filter-field label {
+  display: block;
+  margin: 0 0 5px 2px;
+
+  color: #a9a9a9;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.filter-field select {
+  width: 100%;
+  margin: 0;
+}
+/* ========================================
+ 選手ランキング見出し
 ======================================== */
 
 #rankingTitle {
-    text-align: center;
-  }
-  
-  .ranking-title-line {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-  
-    white-space: nowrap;
-  }
-  
-  .ranking-title-stage {
-    display: block;
-    margin-top: 3px;
-  
-    text-align: center;
-  }
-  .player-team-link{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-top:12px;
-    padding:14px 16px;
-    border:1px solid #4f431d;
-    border-radius:14px;
-    background:#1d1b14;
-    color:#fff;
-    text-decoration:none;
-    transition:.2s ease;
+  text-align: center;
+}
+
+.ranking-title-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  white-space: nowrap;
+}
+
+.ranking-title-stage {
+  display: block;
+  margin-top: 3px;
+
+  text-align: center;
+}
+.player-team-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  padding:14px 16px;
+  border:1px solid #4f431d;
+  border-radius:14px;
+  background:#1d1b14;
+  color:#fff;
+  text-decoration:none;
+  transition:.2s ease;
 }
 
 .player-team-link-label{
-    color:#9f9f9f;
-    font-size:12px;
+  color:#9f9f9f;
+  font-size:12px;
 }
 
 .player-team-link strong{
-    flex:1;
-    min-width:0;
-    overflow:hidden;
-    color:#d4af37;
-    text-overflow:ellipsis;
-    white-space:nowrap;
+  flex:1;
+  min-width:0;
+  overflow:hidden;
+  color:#d4af37;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .player-team-link svg{
-    width:19px;
-    height:19px;
-    flex-shrink:0;
+  width:19px;
+  height:19px;
+  flex-shrink:0;
 }
 
 .player-team-link:hover{
-    border-color:#d4af37;
-    background:#272313;
-    transform:translateY(-1px);
+  border-color:#d4af37;
+  background:#272313;
+  transform:translateY(-1px);
 }
 /* ========================================
-   スマホ：横スクロール案内
+ スマホ：横スクロール案内
 ======================================== */
 
 .horizontal-scroll-hint{
-    display:none;
+  display:none;
 }
 
 @media (max-width:768px){
 
-    .horizontal-scroll-hint{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        gap:10px;
+  .horizontal-scroll-hint{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
 
-        width:100%;
-        margin:0 0 10px;
-        padding:8px 12px;
+      width:100%;
+      margin:0 0 10px;
+      padding:8px 12px;
 
-        color:#fff;
-        font-size:12px;
-        font-weight:700;
-        letter-spacing:.05em;
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.05em;
 
-        box-sizing:border-box;
-        pointer-events:none;
+      box-sizing:border-box;
+      pointer-events:none;
 
-        border-top:1px solid rgba(217,182,56,.5);
-        border-bottom:1px solid rgba(217,182,56,.5);
+      border-top:1px solid rgba(217,182,56,.5);
+      border-bottom:1px solid rgba(217,182,56,.5);
 
-        opacity:1;
-        max-height:50px;
+      opacity:1;
+      max-height:50px;
 
-        transition:
-            opacity .35s ease,
-            transform .35s ease,
-            max-height .35s ease,
-            margin .35s ease,
-            padding .35s ease;
-    }
+      transition:
+          opacity .35s ease,
+          transform .35s ease,
+          max-height .35s ease,
+          margin .35s ease,
+          padding .35s ease;
+  }
 
-    .horizontal-scroll-hint.is-hidden{
-        opacity:0;
-        transform:translateY(-4px);
-        max-height:0;
-        margin:0;
-        padding-top:0;
-        padding-bottom:0;
-        overflow:hidden;
-    }
+  .horizontal-scroll-hint.is-hidden{
+      opacity:0;
+      transform:translateY(-4px);
+      max-height:0;
+      margin:0;
+      padding-top:0;
+      padding-bottom:0;
+      overflow:hidden;
+  }
 
-    .horizontal-scroll-hint-icon{
-        display:flex;
-        align-items:center;
-        justify-content:center;
+  .horizontal-scroll-hint-icon{
+      display:flex;
+      align-items:center;
+      justify-content:center;
 
-        color:#d9b638;
-    }
+      color:#d9b638;
+  }
 
-    .horizontal-scroll-hint-icon svg{
-        width:18px;
-        height:18px;
-        stroke-width:2.4;
-    }
+  .horizontal-scroll-hint-icon svg{
+      width:18px;
+      height:18px;
+      stroke-width:2.4;
+  }
 
-    .horizontal-scroll-hint-icon-left{
-        animation:
-            horizontalHintLeft 1.2s ease-in-out infinite;
-    }
+  .horizontal-scroll-hint-icon-left{
+      animation:
+          horizontalHintLeft 1.2s ease-in-out infinite;
+  }
 
-    .horizontal-scroll-hint-icon-right{
-        animation:
-            horizontalHintRight 1.2s ease-in-out infinite;
-    }
+  .horizontal-scroll-hint-icon-right{
+      animation:
+          horizontalHintRight 1.2s ease-in-out infinite;
+  }
 
-    @keyframes horizontalHintLeft{
-        0%,
-        100%{
-            transform:translateX(3px);
-        }
+  @keyframes horizontalHintLeft{
+      0%,
+      100%{
+          transform:translateX(3px);
+      }
 
-        50%{
-            transform:translateX(-4px);
-        }
-    }
+      50%{
+          transform:translateX(-4px);
+      }
+  }
 
-    @keyframes horizontalHintRight{
-        0%,
-        100%{
-            transform:translateX(-3px);
-        }
+  @keyframes horizontalHintRight{
+      0%,
+      100%{
+          transform:translateX(-3px);
+      }
 
-        50%{
-            transform:translateX(4px);
-        }
-    }
+      50%{
+          transform:translateX(4px);
+      }
+  }
 }
 .matches-note{
-    margin:0 0 10px;
-    padding:0 4px;
-  
-    color:#9f9f9f;
-    font-size:12px;
-    line-height:1.5;
-    text-align:left;
+  margin:0 0 10px;
+  padding:0 4px;
+
+  color:#9f9f9f;
+  font-size:12px;
+  line-height:1.5;
+  text-align:left;
+}
+
+@media (max-width:768px){
+  .matches-note{
+    font-size:11px;
+    white-space:nowrap;
   }
-  
-  @media (max-width:768px){
-    .matches-note{
-      font-size:11px;
-      white-space:nowrap;
-    }
-  }
-  .matches-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    margin-bottom:12px;
+}
+.matches-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
 }
 
 .matches-header h2{
-    margin:0;
+  margin:0;
 }
 
 .matches-note{
-    display:flex;
-    align-items:center;
-    gap:6px;
+  display:flex;
+  align-items:center;
+  gap:6px;
 
-    font-size:14px;
-    font-weight:600;
-    color:#bdbdbd;
-    white-space:nowrap;
+  font-size:14px;
+  font-weight:600;
+  color:#bdbdbd;
+  white-space:nowrap;
 }
 
 .matches-note svg{
-    width:16px;
-    height:16px;
-    color:#d9b638;
-    stroke-width:2.2;
+  width:16px;
+  height:16px;
+  color:#d9b638;
+  stroke-width:2.2;
 }
 /* ========================================
-   選手詳細：受賞カードリンク
+ 選手詳細：受賞カードリンク
 ======================================== */
 
 .player-award-card{
-    display:flex;
-    align-items:center;
-  
-    color:inherit;
-    text-decoration:none;
-    cursor:pointer;
-  
-    transition:
-      transform .2s ease,
-      border-color .2s ease,
-      background-color .2s ease;
-  }
-  
-  .player-award-card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(217,182,56,.75);
-    background-color:rgba(217,182,56,.05);
-  }
-  
-  .player-award-card:active{
-    transform:scale(.985);
-  }
-  
-  .player-award-arrow{
-    flex-shrink:0;
-  
-    width:18px;
-    height:18px;
-    margin-left:8px;
-  
-    color:#d9b638;
-    stroke-width:2.4;
-  
-    transition:transform .2s ease;
-  }
-  
-  .player-award-card:hover .player-award-arrow{
-    transform:translateX(3px);
-  }
-  /* ========================================
-   共通：戻るボタン
+  display:flex;
+  align-items:center;
+
+  color:inherit;
+  text-decoration:none;
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background-color .2s ease;
+}
+
+.player-award-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(217,182,56,.75);
+  background-color:rgba(217,182,56,.05);
+}
+
+.player-award-card:active{
+  transform:scale(.985);
+}
+
+.player-award-arrow{
+  flex-shrink:0;
+
+  width:18px;
+  height:18px;
+  margin-left:8px;
+
+  color:#d9b638;
+  stroke-width:2.4;
+
+  transition:transform .2s ease;
+}
+
+.player-award-card:hover .player-award-arrow{
+  transform:translateX(3px);
+}
+/* ========================================
+ 共通：戻るボタン
 ======================================== */
 
 .back-button{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+
+  width:min(90%,420px);
+  margin:32px auto;
+  padding:14px 20px;
+
+  background:#1c1c1c;
+  border:1px solid rgba(217,182,56,.5);
+  border-radius:12px;
+
+  color:#fff;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:
+      background .2s ease,
+      border-color .2s ease,
+      transform .2s ease;
+}
+
+.back-button:hover{
+  background:#252525;
+  border-color:#d9b638;
+  transform:translateY(-2px);
+}
+
+.back-button:active{
+  transform:scale(.98);
+}
+
+.back-button svg{
+  width:20px;
+  height:20px;
+
+  color:#d9b638;
+  stroke-width:2.4;
+
+  transition:transform .2s ease;
+}
+
+.back-button:hover svg{
+  transform:translateX(-3px);
+}
+/* ========================================
+ 選手詳細：試合履歴の列幅
+======================================== */
+
+/* 日付は YYYY-MM-DD を必ず1行表示 */
+.player-matches-section .match-date{
+  width:108px;
+  min-width:108px;
+  max-width:108px;
+
+  white-space:nowrap;
+  text-align:center;
+}
+
+/* 共通（PC・スマホ） */
+.match-team{
+  width:140px;
+  min-width:140px;
+  text-align:center;
+}
+
+/* スマホだけ2行表示 */
+@media (max-width:768px){
+
+  .match-team{
+      width:130px;
+      min-width:130px;
+
+      white-space:normal;
+      word-break:keep-all;
+      overflow-wrap:anywhere;
+      line-height:1.3;
+  }
+
+}
+/* ========================================
+ 試合履歴：チーム名の表示を最終調整
+======================================== */
+
+/* PC版：チーム名は必ず1行 */
+.player-matches-section td.match-team{
+  width:180px;
+  min-width:180px;
+  max-width:180px;
+
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+
+  text-align:center;
+  vertical-align:middle;
+}
+
+/* PC版：チーム列の見出しも同じ幅 */
+.player-matches-section th:nth-child(2){
+  width:180px;
+  min-width:180px;
+  max-width:180px;
+  white-space:nowrap;
+}
+
+/* スマホ版：長いチーム名だけ折り返す */
+@media (max-width:768px){
+
+  .player-matches-section td.match-team{
+      width:130px;
+      min-width:130px;
+      max-width:130px;
+
+      white-space:normal;
+      word-break:keep-all;
+      overflow-wrap:normal;
+
+      line-height:1.3;
+  }
+
+  .player-matches-section th:nth-child(2){
+      width:130px;
+      min-width:130px;
+      max-width:130px;
+  }
+}
+.team-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.team-summary-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  padding: 20px 16px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  text-align: center;
+}
+
+.summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.summary-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: #d4af37;
+  stroke-width: 2;
+}
+
+.summary-label {
+  margin-bottom: 6px;
+  font-size: 13px;
+  opacity: 0.72;
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+@media (max-width: 700px) {
+  .team-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .team-summary-card {
+    min-height: 125px;
+    padding: 16px 10px;
+  }
+
+  .summary-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 9px;
+  }
+
+  .summary-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .summary-value {
+    font-size: 20px;
+  }
+}
+.team-player-link {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.team-player-link:hover {
+  color: #d4af37;
+  text-decoration: underline;
+}
+
+.team-player-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.team-player-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.team-player-badge svg {
+  width: 12px;
+  height: 12px;
+}
+
+.team-mvp-badge {
+  border-color: rgba(212, 175, 55, 0.65);
+  background: rgba(212, 175, 55, 0.16);
+}
+
+.most-played-badge {
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.team-player-table td,
+.team-player-table th {
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .team-player-table {
+    min-width: 850px;
+  }
+
+  .team-player-badge {
+    padding: 2px 6px;
+    font-size: 9px;
+  }
+}
+.team-player-link{
+  color:inherit;
+  text-decoration:none;
+  font-weight:700;
+  transition:.2s;
+}
+
+.team-player-link:hover{
+  color:#d4af37;
+  text-decoration:underline;
+}
+.team-profile-link,
+.current-team-page-link{
     display:flex;
     justify-content:center;
     align-items:center;
     gap:8px;
 
     width:min(90%,420px);
-    margin:32px auto;
+    margin:24px auto;
     padding:14px 20px;
 
     background:#1c1c1c;
@@ -2361,2929 +2546,2649 @@ select {
         transform .2s ease;
 }
 
-.back-button:hover{
+.team-profile-link:hover,
+.current-team-page-link:hover{
     background:#252525;
     border-color:#d9b638;
     transform:translateY(-2px);
 }
 
-.back-button:active{
-    transform:scale(.98);
-}
-
-.back-button svg{
+.team-profile-link svg,
+.current-team-page-link svg{
     width:20px;
     height:20px;
 
     color:#d9b638;
     stroke-width:2.4;
+}
 
+.team-profile-link:hover svg,
+.current-team-page-link:hover svg{
+    transform:scale(1.08);
     transition:transform .2s ease;
 }
-
-.back-button:hover svg{
-    transform:translateX(-3px);
-}
-/* ========================================
-   選手詳細：試合履歴の列幅
-======================================== */
-
-/* 日付は YYYY-MM-DD を必ず1行表示 */
-.player-matches-section .match-date{
-    width:108px;
-    min-width:108px;
-    max-width:108px;
-
-    white-space:nowrap;
-    text-align:center;
-}
-
-/* 共通（PC・スマホ） */
-.match-team{
-    width:140px;
-    min-width:140px;
-    text-align:center;
-}
-
-/* スマホだけ2行表示 */
-@media (max-width:768px){
-
-    .match-team{
-        width:130px;
-        min-width:130px;
-
-        white-space:normal;
-        word-break:keep-all;
-        overflow-wrap:anywhere;
-        line-height:1.3;
-    }
-
-}
-/* ========================================
-   試合履歴：チーム名の表示を最終調整
-======================================== */
-
-/* PC版：チーム名は必ず1行 */
-.player-matches-section td.match-team{
-    width:180px;
-    min-width:180px;
-    max-width:180px;
-
-    white-space:nowrap;
-    word-break:keep-all;
-    overflow-wrap:normal;
-
-    text-align:center;
-    vertical-align:middle;
-}
-
-/* PC版：チーム列の見出しも同じ幅 */
-.player-matches-section th:nth-child(2){
-    width:180px;
-    min-width:180px;
-    max-width:180px;
-    white-space:nowrap;
-}
-
-/* スマホ版：長いチーム名だけ折り返す */
-@media (max-width:768px){
-
-    .player-matches-section td.match-team{
-        width:130px;
-        min-width:130px;
-        max-width:130px;
-
-        white-space:normal;
-        word-break:keep-all;
-        overflow-wrap:normal;
-
-        line-height:1.3;
-    }
-
-    .player-matches-section th:nth-child(2){
-        width:130px;
-        min-width:130px;
-        max-width:130px;
-    }
-}
-.team-summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-  }
-  
-  .team-summary-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 150px;
-    padding: 20px 16px;
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.04);
-    text-align: center;
-  }
-  
-  .summary-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    margin-bottom: 12px;
-    border-radius: 50%;
-    background: rgba(212, 175, 55, 0.12);
-  }
-  
-  .summary-icon svg {
-    width: 24px;
-    height: 24px;
-    stroke: #d4af37;
-    stroke-width: 2;
-  }
-  
-  .summary-label {
-    margin-bottom: 6px;
-    font-size: 13px;
-    opacity: 0.72;
-  }
-  
-  .summary-value {
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-  
-  @media (max-width: 700px) {
-    .team-summary-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-  
-    .team-summary-card {
-      min-height: 125px;
-      padding: 16px 10px;
-    }
-  
-    .summary-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 9px;
-    }
-  
-    .summary-icon svg {
-      width: 21px;
-      height: 21px;
-    }
-  
-    .summary-value {
-      font-size: 20px;
-    }
-  }
-  .team-player-link {
-    color: inherit;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  
-  .team-player-link:hover {
-    color: #d4af37;
-    text-decoration: underline;
-  }
-  
-  .team-player-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 6px;
-  }
-  
-  .team-player-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 7px;
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    border-radius: 999px;
-    background: rgba(212, 175, 55, 0.1);
-    color: #d4af37;
-    font-size: 10px;
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  
-  .team-player-badge svg {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .team-mvp-badge {
-    border-color: rgba(212, 175, 55, 0.65);
-    background: rgba(212, 175, 55, 0.16);
-  }
-  
-  .most-played-badge {
-    border-color: rgba(212, 175, 55, 0.4);
-  }
-  
-  .team-player-table td,
-  .team-player-table th {
-    vertical-align: middle;
-  }
-  
-  @media (max-width: 700px) {
-    .team-player-table {
-      min-width: 850px;
-    }
-  
-    .team-player-badge {
-      padding: 2px 6px;
-      font-size: 9px;
-    }
-  }
-  .team-player-link{
-    color:inherit;
-    text-decoration:none;
-    font-weight:700;
-    transition:.2s;
-  }
-  
-  .team-player-link:hover{
-    color:#d4af37;
-    text-decoration:underline;
-  }
-  .team-profile-link,
-  .current-team-page-link{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:8px;
-  
-      width:min(90%,420px);
-      margin:24px auto;
-      padding:14px 20px;
-  
-      background:#1c1c1c;
-      border:1px solid rgba(217,182,56,.5);
-      border-radius:12px;
-  
-      color:#fff;
-      text-decoration:none;
-      font-size:15px;
-      font-weight:700;
-  
-      cursor:pointer;
-  
-      transition:
-          background .2s ease,
-          border-color .2s ease,
-          transform .2s ease;
-  }
-  
-  .team-profile-link:hover,
-  .current-team-page-link:hover{
-      background:#252525;
-      border-color:#d9b638;
-      transform:translateY(-2px);
-  }
-  
-  .team-profile-link svg,
-  .current-team-page-link svg{
-      width:20px;
-      height:20px;
-  
-      color:#d9b638;
-      stroke-width:2.4;
-  }
-  
-  .team-profile-link:hover svg,
-  .current-team-page-link:hover svg{
-      transform:scale(1.08);
-      transition:transform .2s ease;
-  }
 .team-subtitle{
-    margin-top:8px;
-    color:#bdbdbd;
-    font-size:15px;
-    letter-spacing:.08em;
+  margin-top:8px;
+  color:#bdbdbd;
+  font-size:15px;
+  letter-spacing:.08em;
 }
 .current-team-page-link{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
 
-    padding:6px 12px;
-    margin-top:10px;
+  padding:6px 12px;
+  margin-top:10px;
 
-    font-size:13px;
-    font-weight:600;
+  font-size:13px;
+  font-weight:600;
 
-    border-radius:999px;
+  border-radius:999px;
 
-    width:auto;
-    max-width:max-content;
+  width:auto;
+  max-width:max-content;
 }.current-team-page-link svg{
-    width:15px;
-    height:15px;
+  width:15px;
+  height:15px;
 }
 .team-subtitle{
-    display:flex;
-    align-items:center;
-    gap:6px;
+  display:flex;
+  align-items:center;
+  gap:6px;
 
-    margin-top:4px;
-    margin-bottom:18px;
+  margin-top:4px;
+  margin-bottom:18px;
 
-    font-size:14px;
-    font-weight:500;
-    color:#9a9a9a;
+  font-size:14px;
+  font-weight:500;
+  color:#9a9a9a;
 
-    letter-spacing:.02em;
-    line-height:1.2;
+  letter-spacing:.02em;
+  line-height:1.2;
 }
 /* =========================
-   総合チームデータ 上段をコンパクト化
+ 総合チームデータ 上段をコンパクト化
 ========================= */
 
 .team-profile-header {
-    padding: 18px 20px 14px !important;
+  padding: 18px 20px 14px !important;
+}
+
+.team-profile-header h1 {
+  margin: 0 !important;
+  font-size: clamp(26px, 4vw, 38px) !important;
+  line-height: 1.15 !important;
+}
+
+.team-profile-header .team-subtitle {
+  margin: 6px 0 14px !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  color: #999 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.team-profile-header .team-year-tabs {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 0 10px !important;
+}
+
+.team-profile-header .team-year-tabs button {
+  width: auto !important;
+  min-width: 76px !important;
+  height: auto !important;
+
+  margin: 0 !important;
+  padding: 9px 18px !important;
+
+  border-radius: 999px !important;
+
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+}
+
+.team-profile-header .current-team-page-link {
+  display: inline-flex !important;
+  width: auto !important;
+
+  margin: 2px 0 0 !important;
+  padding: 6px 11px !important;
+
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+}
+
+.team-profile-header .current-team-page-link svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* =========================
+   スマホ共通調整
+========================= */
+
+@media (max-width: 600px) {
+  .team-profile-header {
+    padding: 12px 14px 10px !important;
   }
-  
+
   .team-profile-header h1 {
-    margin: 0 !important;
-    font-size: clamp(26px, 4vw, 38px) !important;
-    line-height: 1.15 !important;
+    font-size: 27px !important;
   }
-  
+
   .team-profile-header .team-subtitle {
-    margin: 6px 0 14px !important;
-    font-size: 12px !important;
-    font-weight: 400 !important;
-    line-height: 1.2 !important;
-    color: #999 !important;
-    letter-spacing: 0.04em !important;
+    margin: 5px 0 11px !important;
+    font-size: 11px !important;
   }
-  
+
   .team-profile-header .team-year-tabs {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    margin: 0 0 10px !important;
+    gap: 6px !important;
   }
-  
+
   .team-profile-header .team-year-tabs button {
-    width: auto !important;
-    min-width: 76px !important;
-    height: auto !important;
-  
-    margin: 0 !important;
-    padding: 9px 18px !important;
-  
-    border-radius: 999px !important;
-  
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    line-height: 1.2 !important;
+    min-width: 66px !important;
+    padding: 8px 14px !important;
+    font-size: 14px !important;
   }
-  
-  .team-profile-header .current-team-page-link {
-    display: inline-flex !important;
-    width: auto !important;
-  
-    margin: 2px 0 0 !important;
-    padding: 6px 11px !important;
-  
-    font-size: 12px !important;
-    line-height: 1.2 !important;
-  }
-  
-  .team-profile-header .current-team-page-link svg {
-    width: 14px !important;
-    height: 14px !important;
-  }
-  
+
   /* =========================
-     スマホ共通調整
+     年度別成績テーブル
   ========================= */
-  
-  @media (max-width: 600px) {
-    .team-profile-header {
-      padding: 12px 14px 10px !important;
-    }
-  
-    .team-profile-header h1 {
-      font-size: 27px !important;
-    }
-  
-    .team-profile-header .team-subtitle {
-      margin: 5px 0 11px !important;
-      font-size: 11px !important;
-    }
-  
-    .team-profile-header .team-year-tabs {
-      gap: 6px !important;
-    }
-  
-    .team-profile-header .team-year-tabs button {
-      min-width: 66px !important;
-      padding: 8px 14px !important;
-      font-size: 14px !important;
-    }
-  
-    /* =========================
-       年度別成績テーブル
-    ========================= */
-  
-    .team-history-table {
-      table-layout: fixed;
-      width: 100%;
-      min-width: 0;
-    }
-  
-    .team-history-table th,
-    .team-history-table td {
-      padding: 10px 4px;
-      font-size: 12px;
-      line-height: 1.35;
-      text-align: center;
-      vertical-align: middle;
-      word-break: normal;
-      overflow-wrap: normal;
-    }
-  
-    .team-history-table th:nth-child(1),
-    .team-history-table td:nth-child(1) {
-      width: 16%;
-      white-space: nowrap;
-    }
-  
-    .team-history-table th:nth-child(2),
-    .team-history-table td:nth-child(2) {
-      width: 30%;
-    }
-  
-    .team-history-table th:nth-child(3),
-    .team-history-table td:nth-child(3) {
-      width: 12%;
-      white-space: nowrap;
-    }
-  
-    .team-history-table th:nth-child(4),
-    .team-history-table td:nth-child(4) {
-      width: 18%;
-      white-space: nowrap;
-    }
-  
-    .team-history-table th:nth-child(5),
-    .team-history-table td:nth-child(5) {
-      width: 24%;
-      white-space: nowrap;
-    }
-  
-    .team-history-table td:nth-child(2) {
-      font-size: 11px;
-      line-height: 1.45;
-    }
-  
-    /* =========================
-       歴代選手一覧
-    ========================= */
-  
-    .team-player-table {
-      table-layout: fixed;
-      width: 100%;
-      min-width: 0;
-    }
-  
-    .team-player-table th,
-    .team-player-table td {
-      padding: 10px 4px;
-      font-size: 12px;
-      line-height: 1.35;
-      text-align: center;
-      vertical-align: middle;
-      word-break: normal;
-      overflow-wrap: normal;
-    }
-  
-    /* 黄色ヘッダーを上の表と同じ高さにする */
-    .team-history-table thead th,
-    .team-player-table thead th {
-      height: auto !important;
-      min-height: 0 !important;
-      padding: 10px 4px !important;
-      font-size: 12px !important;
-      line-height: 1.35 !important;
-    }
-  
-    .team-player-table th:nth-child(1),
-    .team-player-table td:nth-child(1) {
-      width: 9em !important;
-      min-width: 9em !important;
-      max-width: 9em !important;
-  padding-left: 6px !important;
-  padding-right: 2px !important;
-  text-align: left !important;
+
+  .team-history-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .team-history-table th,
+  .team-history-table td {
+    padding: 10px 4px;
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: center;
+    vertical-align: middle;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .team-history-table th:nth-child(1),
+  .team-history-table td:nth-child(1) {
+    width: 16%;
+    white-space: nowrap;
+  }
+
+  .team-history-table th:nth-child(2),
+  .team-history-table td:nth-child(2) {
+    width: 30%;
+  }
+
+  .team-history-table th:nth-child(3),
+  .team-history-table td:nth-child(3) {
+    width: 12%;
+    white-space: nowrap;
+  }
+
+  .team-history-table th:nth-child(4),
+  .team-history-table td:nth-child(4) {
+    width: 18%;
+    white-space: nowrap;
+  }
+
+  .team-history-table th:nth-child(5),
+  .team-history-table td:nth-child(5) {
+    width: 24%;
+    white-space: nowrap;
+  }
+
+  .team-history-table td:nth-child(2) {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  /* =========================
+     歴代選手一覧
+  ========================= */
+
+  .team-player-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .team-player-table th,
+  .team-player-table td {
+    padding: 10px 4px;
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: center;
+    vertical-align: middle;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  /* 黄色ヘッダーを上の表と同じ高さにする */
+  .team-history-table thead th,
+  .team-player-table thead th {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 10px 4px !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+  }
+
+  .team-player-table th:nth-child(1),
+  .team-player-table td:nth-child(1) {
+    width: 9em !important;
+    min-width: 9em !important;
+    max-width: 9em !important;
+padding-left: 6px !important;
+padding-right: 2px !important;
+text-align: left !important;
 }
 
 .team-player-table th:nth-child(2),
 .team-player-table td:nth-child(2) {
-  width: 6.5em !important;
-  min-width: 6.5em !important;
-  padding-left: 2px !important;
-  padding-right: 4px !important;
-  text-align: left !important;
+width: 6.5em !important;
+min-width: 6.5em !important;
+padding-left: 2px !important;
+padding-right: 4px !important;
+text-align: left !important;
 }
 
 .team-player-table th:nth-child(3),
 .team-player-table td:nth-child(3) {
-  width: 5em !important;
-  min-width: 5em !important;
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-  white-space: nowrap !important;
+width: 5em !important;
+min-width: 5em !important;
+padding-left: 4px !important;
+padding-right: 4px !important;
+white-space: nowrap !important;
 }
-  
+
 .team-player-link {
-    font-size: 12px;
-    line-height: 1.35;
-    font-weight: 700;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+  .team-player-badges {
+    margin-top: 5px;
   }
-  
-    .team-player-badges {
-      margin-top: 5px;
-    }
-  
-    .team-player-badge {
-      font-size: 9px;
-      padding: 2px 5px;
-      gap: 3px;
-    }
-  
-    .team-player-badge svg {
-      width: 10px;
-      height: 10px;
-    }
+
+  .team-player-badge {
+    font-size: 9px;
+    padding: 2px 5px;
+    gap: 3px;
   }
-  /* ========================================
-   歴代選手一覧：黄色ヘッダーを強制リセット
+
+  .team-player-badge svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+/* ========================================
+ 歴代選手一覧：黄色ヘッダーを強制リセット
 ======================================== */
 
 @media (max-width: 600px) {
-    .team-player-section .table-scroll {
-      margin: 0;
-    }
-  
-    .team-player-section .team-player-table thead {
-      display: table-header-group !important;
-      height: auto !important;
-      min-height: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-  
-    .team-player-section .team-player-table thead tr {
-      display: table-row !important;
-      height: auto !important;
-      min-height: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-  
-    .team-player-section .team-player-table thead th {
-      display: table-cell !important;
-  
-      height: auto !important;
-      min-height: 0 !important;
-  
-      padding: 10px 4px !important;
-      margin: 0 !important;
-  
-      font-size: 12px !important;
-      line-height: 1.35 !important;
-      vertical-align: middle !important;
-    }
+  .team-player-section .table-scroll {
+    margin: 0;
   }
-  /* ========================================
-   歴代選手一覧：スマホ横スクロール
+
+  .team-player-section .team-player-table thead {
+    display: table-header-group !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .team-player-section .team-player-table thead tr {
+    display: table-row !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .team-player-section .team-player-table thead th {
+    display: table-cell !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    padding: 10px 4px !important;
+    margin: 0 !important;
+
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+    vertical-align: middle !important;
+  }
+}
+/* ========================================
+ 歴代選手一覧：スマホ横スクロール
 ======================================== */
 
 @media (max-width: 600px) {
-    .team-player-section .table-scroll {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: auto !important;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-  
-    .team-player-table {
-        width: auto !important;
-        min-width: max-content !important;
-        table-layout: auto !important;
-    }
-  
-    .team-player-table th,
-    .team-player-table td {
-      display: table-cell !important;
-      white-space: nowrap !important;
-    }
-  
-    .team-player-table thead,
-    .team-player-table thead tr {
-      height: auto !important;
-    }
-  
-    .team-player-table thead th {
-      height: auto !important;
-      min-height: 0 !important;
-      padding: 10px 8px !important;
-      line-height: 1.35 !important;
-    }
-    .team-player-table th,
+  .team-player-section .table-scroll {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .team-player-table {
+      width: auto !important;
+      min-width: max-content !important;
+      table-layout: auto !important;
+  }
+
+  .team-player-table th,
+  .team-player-table td {
+    display: table-cell !important;
+    white-space: nowrap !important;
+  }
+
+  .team-player-table thead,
+  .team-player-table thead tr {
+    height: auto !important;
+  }
+
+  .team-player-table thead th {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 10px 8px !important;
+    line-height: 1.35 !important;
+  }
+  .team-player-table th,
 .team-player-table td {
-  padding: 8px 4px !important;
+padding: 8px 4px !important;
 }
 
 .team-player-table th:first-child,
 .team-player-table td:first-child {
-  padding-left: 6px !important;
-  padding-right: 2px !important;
-  text-align: left !important;
+padding-left: 6px !important;
+padding-right: 2px !important;
+text-align: left !important;
 }
 
 .team-player-table th:nth-child(2),
 .team-player-table td:nth-child(2) {
-  padding-left: 2px !important;
-  padding-right: 2px !important;
-  text-align: left !important;
+padding-left: 2px !important;
+padding-right: 2px !important;
+text-align: left !important;
 }
-  }
-  /* ========================================
-   選手詳細：試合履歴（スマホ）
+}
+/* ========================================
+ 選手詳細：試合履歴（スマホ）
 ======================================== */
 
 @media (max-width: 600px) {
 
-    .match-history-table {
-      table-layout: fixed;
-      width: 100%;
-      min-width: 0;
-    }
-  
-    .match-history-table th,
-    .match-history-table td {
-      padding: 10px 4px;
-      font-size: 12px;
-      line-height: 1.35;
-      text-align: center;
-      vertical-align: middle;
-    }
-  
-    .match-history-table thead th {
-      padding: 10px 4px;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-  
+  .match-history-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 0;
   }
+
+  .match-history-table th,
+  .match-history-table td {
+    padding: 10px 4px;
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .match-history-table thead th {
+    padding: 10px 4px;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+}
 /* ========================================
-   選手詳細：試合履歴（スマホ）
+ 選手詳細：試合履歴（スマホ）
 ======================================== */
 
 @media (max-width:600px){
 
-    .match-history-table{
-        table-layout:fixed;
-        width:100%;
-        min-width:0;
-    }
-    
-    .match-history-table th,
-    .match-history-table td{
-        padding:10px 4px;
-        font-size:12px;
-        line-height:1.35;
-        text-align:center;
-        vertical-align:middle;
-    }
-    
-    .match-history-table th:nth-child(1),
-    .match-history-table td:nth-child(1){
-        width:20%;
-    }
-    
-    .match-history-table th:nth-child(2),
-    .match-history-table td:nth-child(2){
-        width:24%;
-    }
-    
-    .match-history-table th:nth-child(3),
-    .match-history-table td:nth-child(3){
-        width:10%;
-        white-space:nowrap;
-    }
-    
-    .match-history-table th:nth-child(4),
-    .match-history-table td:nth-child(4){
-        width:14%;
-        white-space:nowrap;
-    }
-    
-    .match-history-table th:nth-child(5),
-    .match-history-table td:nth-child(5){
-        width:16%;
-        white-space:nowrap;
-    }
-    
-    .match-history-table th:nth-child(6),
-    .match-history-table td:nth-child(6){
-        width:16%;
-    }
-    
-    }
-  /* =========================
-   選手詳細：着順分布
+  .match-history-table{
+      table-layout:fixed;
+      width:100%;
+      min-width:0;
+  }
+  
+  .match-history-table th,
+  .match-history-table td{
+      padding:10px 4px;
+      font-size:12px;
+      line-height:1.35;
+      text-align:center;
+      vertical-align:middle;
+  }
+  
+  .match-history-table th:nth-child(1),
+  .match-history-table td:nth-child(1){
+      width:20%;
+  }
+  
+  .match-history-table th:nth-child(2),
+  .match-history-table td:nth-child(2){
+      width:24%;
+  }
+  
+  .match-history-table th:nth-child(3),
+  .match-history-table td:nth-child(3){
+      width:10%;
+      white-space:nowrap;
+  }
+  
+  .match-history-table th:nth-child(4),
+  .match-history-table td:nth-child(4){
+      width:14%;
+      white-space:nowrap;
+  }
+  
+  .match-history-table th:nth-child(5),
+  .match-history-table td:nth-child(5){
+      width:16%;
+      white-space:nowrap;
+  }
+  
+  .match-history-table th:nth-child(6),
+  .match-history-table td:nth-child(6){
+      width:16%;
+  }
+  
+  }
+/* =========================
+ 選手詳細：着順分布
 ========================= */
 
 .placing-section {
-    margin-top: 28px;
-  }
-  
-  .placing-section h2 {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 14px;
-  }
-  
-  .placing-section h2 svg {
-    width: 21px;
-    height: 21px;
-    color: #d9b52f;
-  }
-  
+  margin-top: 28px;
+}
+
+.placing-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.placing-section h2 svg {
+  width: 21px;
+  height: 21px;
+  color: #d9b52f;
+}
+
+.placing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.placing-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  min-width: 0;
+  padding: 13px 14px;
+
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  background: #1b1b1b;
+}
+
+.placement-name {
+  color: #ccc;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.placing-card strong {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+
+  color: #fff;
+  font-size: 21px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.placing-card strong small {
+  color: #888;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* 古い数字アイコンは非表示 */
+.placement-rank {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
   .placing-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
-  
+
   .placing-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  
-    min-width: 0;
-    padding: 13px 14px;
-  
-    border: 1px solid #3a3a3a;
-    border-radius: 12px;
-    background: #1b1b1b;
+    padding: 11px 12px;
   }
-  
+
   .placement-name {
-    color: #ccc;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.2;
-    white-space: nowrap;
+    font-size: 12px;
   }
-  
+
   .placing-card strong {
-    display: flex;
-    align-items: baseline;
-    gap: 3px;
-  
-    color: #fff;
-    font-size: 21px;
-    line-height: 1;
-    white-space: nowrap;
+    font-size: 18px;
   }
-  
+
   .placing-card strong small {
-    color: #888;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 9px;
   }
-  
-  /* 古い数字アイコンは非表示 */
-  .placement-rank {
-    display: none !important;
-  }
-  
-  @media (max-width: 600px) {
-    .placing-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-  
-    .placing-card {
-      padding: 11px 12px;
-    }
-  
-    .placement-name {
-      font-size: 12px;
-    }
-  
-    .placing-card strong {
-      font-size: 18px;
-    }
-  
-    .placing-card strong small {
-      font-size: 9px;
-    }
-  }
-  /* =========================
-   レギュラーシーズン順位
+}
+/* =========================
+ レギュラーシーズン順位
 ========================= */
 
 .regular-ranking-section{
-    margin-top:32px;
-    padding:18px;
+  margin-top:32px;
+  padding:18px;
 
-    border:1px solid #343434;
-    border-radius:14px;
-    background:#171717;
+  border:1px solid #343434;
+  border-radius:14px;
+  background:#171717;
 }
 
 .regular-ranking-section h2{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin:0 0 16px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 16px;
 }
 
 .regular-ranking-list{
-    display:grid;
-    gap:8px;
-    margin-bottom:14px;
+  display:grid;
+  gap:8px;
+  margin-bottom:14px;
 }
 
 .regular-ranking-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 
-    gap:16px;
+  gap:16px;
 
-    font-size:15px;
+  font-size:15px;
 }
 
 .regular-ranking-label{
-    color:#cfcfcf;
-    white-space:nowrap;
+  color:#cfcfcf;
+  white-space:nowrap;
 }
 
 .regular-ranking-value{
-    color:#fff;
-    font-weight:700;
-    white-space:nowrap;
+  color:#fff;
+  font-weight:700;
+  white-space:nowrap;
 }
 
 .regular-ranking-note{
-    padding-top:12px;
-    border-top:1px solid #303030;
+  padding-top:12px;
+  border-top:1px solid #303030;
 
-    color:#9d9d9d;
-    font-size:12px;
-    line-height:1.6;
+  color:#9d9d9d;
+  font-size:12px;
+  line-height:1.6;
 
-    word-break:keep-all;
-    overflow-wrap:break-word;
+  word-break:keep-all;
+  overflow-wrap:break-word;
 }
 
 @media (max-width:600px){
 
 .regular-ranking-section{
-    padding:14px;
+  padding:14px;
 }
 
 .regular-ranking-row{
-    font-size:14px;
+  font-size:14px;
 }
 
 .regular-ranking-note{
-    font-size:11px;
-    line-height:1.6;
+  font-size:11px;
+  line-height:1.6;
 
-    word-break:keep-all;
-    overflow-wrap:break-word;
+  word-break:keep-all;
+  overflow-wrap:break-word;
 }
 
 }
 /* =========================
-   チーム詳細：試合履歴（スマホ）
+ チーム詳細：試合履歴（スマホ）
 ========================= */
 
 @media (max-width: 600px) {
-    .team-matches-section .matches-table-wrapper {
-      width: 100%;
-      overflow-x: hidden;
-    }
-  
-    .team-matches-section .team-match-table {
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      table-layout: fixed !important;
-      border-collapse: collapse;
-    }
-  
-    .team-match-table th,
-    .team-match-table td {
-      padding: 7px 3px;
-      font-size: 12px;
-      line-height: 1.35;
-      vertical-align: middle;
-    }
-  
-    /* 日付 */
-    .team-match-table th:nth-child(1),
-    .team-match-table td:nth-child(1) {
-      width: 27%;
-      text-align: center;
-      white-space: nowrap;
-    }
-  
-    /* 選手名：最大全角7文字 */
-    .team-match-table th:nth-child(2),
-    .team-match-table td:nth-child(2) {
-      width: 35%;
-      text-align: center;
-      white-space: nowrap;
-    }
-  
-    /* 着順 */
-    .team-match-table th:nth-child(3),
-    .team-match-table td:nth-child(3) {
-      width: 14%;
-      text-align: center;
-      white-space: nowrap;
-    }
-  
-    /* スコア */
-    .team-match-table th:nth-child(4),
-    .team-match-table td:nth-child(4) {
-      width: 24%;
-      text-align: center;
-      white-space: nowrap;
-    }
-  
-    .team-match-table .team-link {
-      font-size: 12px;
-      line-height: 1.35;
-      white-space: nowrap;
-    }
+  .team-matches-section .matches-table-wrapper {
+    width: 100%;
+    overflow-x: hidden;
   }
-  .team-match-row{
-    cursor:pointer;
-    transition:.15s;
+
+  .team-matches-section .team-match-table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse;
+  }
+
+  .team-match-table th,
+  .team-match-table td {
+    padding: 7px 3px;
+    font-size: 12px;
+    line-height: 1.35;
+    vertical-align: middle;
+  }
+
+  /* 日付 */
+  .team-match-table th:nth-child(1),
+  .team-match-table td:nth-child(1) {
+    width: 27%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* 選手名：最大全角7文字 */
+  .team-match-table th:nth-child(2),
+  .team-match-table td:nth-child(2) {
+    width: 35%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* 着順 */
+  .team-match-table th:nth-child(3),
+  .team-match-table td:nth-child(3) {
+    width: 14%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* スコア */
+  .team-match-table th:nth-child(4),
+  .team-match-table td:nth-child(4) {
+    width: 24%;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .team-match-table .team-link {
+    font-size: 12px;
+    line-height: 1.35;
+    white-space: nowrap;
+  }
+}
+.team-match-row{
+  cursor:pointer;
+  transition:.15s;
 }
 
 .team-match-row:hover{
-    background:#2b2b2b;
+  background:#2b2b2b;
 }
 
 .team-match-row:active{
-    background:#333;
+  background:#333;
 }
 /* ========================================
-   下部ナビゲーション
+ 下部ナビゲーション
 ======================================== */
 
 .bottom-navigation {
-    position: fixed !important;
-    left: 50% !important;
-    bottom: 0 !important;
-    z-index: 9000 !important;
-  
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  
-    width: min(100%, 600px) !important;
-    min-height: 64px !important;
-  
-    padding:
-      7px
-      max(6px, env(safe-area-inset-right))
-      calc(7px + env(safe-area-inset-bottom))
-      max(6px, env(safe-area-inset-left)) !important;
-  
-    border-top: 1px solid #343434 !important;
-    background: rgba(15, 15, 15, 0.97) !important;
-    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35) !important;
-  
-    transform: translateX(-50%) !important;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-  
-  .bottom-navigation-item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 4px !important;
-  
-    min-width: 0 !important;
-    min-height: 50px !important;
-    margin: 0 !important;
-    padding: 4px 2px !important;
-  
-    border: 0 !important;
-    border-radius: 10px !important;
-    background: transparent !important;
-  
-    color: #929292 !important;
-    font-family: inherit !important;
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    line-height: 1.2 !important;
-    text-align: center !important;
-    text-decoration: none !important;
-  
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    cursor: pointer !important;
-  }
-  
-  .bottom-navigation-item svg {
-    display: block !important;
-    width: 21px !important;
-    height: 21px !important;
-    flex: 0 0 auto !important;
-  }
-  
-  .bottom-navigation-item span {
-    display: block !important;
-    width: 100% !important;
-  
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-  
-  .bottom-navigation-item:hover,
-  .bottom-navigation-item:focus-visible {
-    background: #242424 !important;
-    color: #fff !important;
-  }
-  
-  .bottom-navigation-item.is-active {
-    color: #d9b52f !important;
-  }
-  
-  .bottom-navigation-button {
-    width: 100% !important;
-  }
-  
-  
-  /* 下部ナビに本文が隠れないようにする */
-  body {
-    padding-bottom: calc(82px + env(safe-area-inset-bottom));
-  }
-  
-  
-  /* ========================================
-     選手検索モーダル
-  ======================================== */
-  
+  position: fixed !important;
+  left: 50% !important;
+  bottom: 0 !important;
+  z-index: 9000 !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+
+  width: min(100%, 600px) !important;
+  min-height: 64px !important;
+
+  padding:
+    7px
+    max(6px, env(safe-area-inset-right))
+    calc(7px + env(safe-area-inset-bottom))
+    max(6px, env(safe-area-inset-left)) !important;
+
+  border-top: 1px solid #343434 !important;
+  background: rgba(15, 15, 15, 0.97) !important;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35) !important;
+
+  transform: translateX(-50%) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bottom-navigation-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+
+  min-width: 0 !important;
+  min-height: 50px !important;
+  margin: 0 !important;
+  padding: 4px 2px !important;
+
+  border: 0 !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+
+  color: #929292 !important;
+  font-family: inherit !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  cursor: pointer !important;
+}
+
+.bottom-navigation-item svg {
+  display: block !important;
+  width: 21px !important;
+  height: 21px !important;
+  flex: 0 0 auto !important;
+}
+
+.bottom-navigation-item span {
+  display: block !important;
+  width: 100% !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.bottom-navigation-item:hover,
+.bottom-navigation-item:focus-visible {
+  background: #242424 !important;
+  color: #fff !important;
+}
+
+.bottom-navigation-item.is-active {
+  color: #d9b52f !important;
+}
+
+.bottom-navigation-button {
+  width: 100% !important;
+}
+
+
+/* 下部ナビに本文が隠れないようにする */
+body {
+  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+}
+
+
+/* ========================================
+   選手検索モーダル
+======================================== */
+
+.player-search-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 10000 !important;
+
+  display: none !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 18px !important;
+}
+
+.player-search-modal.is-open {
+  display: flex !important;
+}
+
+.player-search-modal-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+
+  background: rgba(0, 0, 0, 0.76) !important;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.player-search-modal-panel {
+  position: relative !important;
+  z-index: 1 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  width: min(100%, 520px) !important;
+  max-height: min(78vh, 650px) !important;
+  margin: 0 !important;
+
+  overflow: hidden !important;
+
+  border: 1px solid #444 !important;
+  border-radius: 18px !important;
+  background: #171717 !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65) !important;
+}
+
+.player-search-modal-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+
+  padding: 16px 18px !important;
+  border-bottom: 1px solid #343434 !important;
+}
+
+.player-search-modal-header h2 {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+
+  margin: 0 !important;
+
+  color: #fff !important;
+  font-size: 19px !important;
+  line-height: 1.2 !important;
+}
+
+.player-search-modal-header h2 svg {
+  width: 22px !important;
+  height: 22px !important;
+  color: #d9b52f !important;
+}
+
+.player-search-modal-close {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border: 1px solid #444 !important;
+  border-radius: 50% !important;
+  background: #242424 !important;
+  color: #fff !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  cursor: pointer !important;
+}
+
+.player-search-modal-close svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.player-search-modal-close:hover {
+  background: #333 !important;
+}
+
+.player-search-modal-body {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  padding: 16px !important;
+}
+
+.modal-player-search {
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.modal-player-search-icon {
+  position: absolute !important;
+  left: 14px !important;
+  z-index: 1 !important;
+
+  width: 20px !important;
+  height: 20px !important;
+
+  color: #999 !important;
+  pointer-events: none !important;
+}
+
+#modalPlayerSearchInput {
+  display: block !important;
+
+  width: 100% !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 14px 0 44px !important;
+
+  border: 1px solid #484848 !important;
+  border-radius: 12px !important;
+  outline: none !important;
+
+  background: #222 !important;
+  color: #fff !important;
+
+  font-family: inherit !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+}
+
+#modalPlayerSearchInput::placeholder {
+  color: #858585 !important;
+}
+
+#modalPlayerSearchInput:focus {
+  border-color: #d9b52f !important;
+  box-shadow: 0 0 0 3px rgba(217, 181, 47, 0.14) !important;
+}
+
+.modal-player-search-results {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 7px !important;
+
+  min-height: 110px !important;
+  margin-top: 14px !important;
+
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+.modal-player-search-guide,
+.modal-player-search-empty {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  min-height: 110px !important;
+  margin: 0 !important;
+  padding: 18px !important;
+
+  color: #999 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+}
+
+.modal-player-search-result {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 12px 13px !important;
+
+  border: 1px solid #353535 !important;
+  border-radius: 12px !important;
+  background: #202020 !important;
+
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.modal-player-search-result:hover,
+.modal-player-search-result:focus-visible {
+  border-color: #d9b52f !important;
+  background: #292929 !important;
+  outline: none !important;
+}
+
+.modal-player-search-main {
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+
+  min-width: 0 !important;
+}
+
+.modal-player-search-name {
+  overflow: hidden !important;
+
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.modal-player-search-team {
+  overflow: hidden !important;
+
+  color: #aaa !important;
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.modal-player-search-meta {
+  flex: 0 0 auto !important;
+
+  color: #aaa !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+}
+
+.modal-player-search-result > svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex: 0 0 auto !important;
+
+  color: #d9b52f !important;
+}
+
+body.player-search-modal-open {
+  overflow: hidden !important;
+}
+
+
+/* ========================================
+   スマホ調整
+======================================== */
+
+@media (max-width: 600px) {
   .player-search-modal {
-    position: fixed !important;
-    inset: 0 !important;
-    z-index: 10000 !important;
-  
-    display: none !important;
-    align-items: center !important;
-    justify-content: center !important;
-  
-    padding: 18px !important;
-  }
-  
-  .player-search-modal.is-open {
-    display: flex !important;
-  }
-  
-  .player-search-modal-backdrop {
-    position: absolute !important;
-    inset: 0 !important;
-  
-    background: rgba(0, 0, 0, 0.76) !important;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
-  
-  .player-search-modal-panel {
-    position: relative !important;
-    z-index: 1 !important;
-  
-    display: flex !important;
-    flex-direction: column !important;
-  
-    width: min(100%, 520px) !important;
-    max-height: min(78vh, 650px) !important;
-    margin: 0 !important;
-  
-    overflow: hidden !important;
-  
-    border: 1px solid #444 !important;
-    border-radius: 18px !important;
-    background: #171717 !important;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65) !important;
-  }
-  
-  .player-search-modal-header {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    gap: 12px !important;
-  
-    padding: 16px 18px !important;
-    border-bottom: 1px solid #343434 !important;
-  }
-  
-  .player-search-modal-header h2 {
-    display: flex !important;
-    align-items: center !important;
-    gap: 9px !important;
-  
-    margin: 0 !important;
-  
-    color: #fff !important;
-    font-size: 19px !important;
-    line-height: 1.2 !important;
-  }
-  
-  .player-search-modal-header h2 svg {
-    width: 22px !important;
-    height: 22px !important;
-    color: #d9b52f !important;
-  }
-  
-  .player-search-modal-close {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
-  
-    margin: 0 !important;
+    align-items: flex-end !important;
     padding: 0 !important;
-  
-    border: 1px solid #444 !important;
-    border-radius: 50% !important;
-    background: #242424 !important;
-    color: #fff !important;
-  
-    appearance: none !important;
-    -webkit-appearance: none !important;
-    cursor: pointer !important;
   }
-  
-  .player-search-modal-close svg {
-    width: 20px !important;
-    height: 20px !important;
+
+  .player-search-modal-panel {
+    width: 100% !important;
+    max-height: 82vh !important;
+
+    border-right: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 0 !important;
+    border-radius: 20px 20px 0 0 !important;
   }
-  
-  .player-search-modal-close:hover {
-    background: #333 !important;
+
+  .player-search-modal-header {
+    padding: 15px 16px !important;
   }
-  
+
   .player-search-modal-body {
-    display: flex !important;
-    flex-direction: column !important;
-    min-height: 0 !important;
-    padding: 16px !important;
+    padding:
+      14px
+      14px
+      calc(18px + env(safe-area-inset-bottom)) !important;
   }
-  
-  .modal-player-search {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-  }
-  
-  .modal-player-search-icon {
-    position: absolute !important;
-    left: 14px !important;
-    z-index: 1 !important;
-  
-    width: 20px !important;
-    height: 20px !important;
-  
-    color: #999 !important;
-    pointer-events: none !important;
-  }
-  
-  #modalPlayerSearchInput {
-    display: block !important;
-  
-    width: 100% !important;
-    height: 48px !important;
-    margin: 0 !important;
-    padding: 0 14px 0 44px !important;
-  
-    border: 1px solid #484848 !important;
-    border-radius: 12px !important;
-    outline: none !important;
-  
-    background: #222 !important;
-    color: #fff !important;
-  
-    font-family: inherit !important;
-    font-size: 16px !important;
-    line-height: 1 !important;
-  
-    appearance: none !important;
-    -webkit-appearance: none !important;
-  }
-  
-  #modalPlayerSearchInput::placeholder {
-    color: #858585 !important;
-  }
-  
-  #modalPlayerSearchInput:focus {
-    border-color: #d9b52f !important;
-    box-shadow: 0 0 0 3px rgba(217, 181, 47, 0.14) !important;
-  }
-  
-  .modal-player-search-results {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 7px !important;
-  
-    min-height: 110px !important;
-    margin-top: 14px !important;
-  
-    overflow-y: auto !important;
-    overscroll-behavior: contain;
-  }
-  
-  .modal-player-search-guide,
-  .modal-player-search-empty {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  
-    min-height: 110px !important;
-    margin: 0 !important;
-    padding: 18px !important;
-  
-    color: #999 !important;
-    font-size: 14px !important;
-    line-height: 1.6 !important;
-    text-align: center !important;
-  }
-  
+
   .modal-player-search-result {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-  
-    width: 100% !important;
-    min-width: 0 !important;
-    padding: 12px 13px !important;
-  
-    border: 1px solid #353535 !important;
-    border-radius: 12px !important;
-    background: #202020 !important;
-  
-    color: #fff !important;
-    text-decoration: none !important;
+    padding: 12px !important;
   }
-  
-  .modal-player-search-result:hover,
-  .modal-player-search-result:focus-visible {
-    border-color: #d9b52f !important;
-    background: #292929 !important;
-    outline: none !important;
-  }
-  
-  .modal-player-search-main {
-    display: flex !important;
-    flex: 1 1 auto !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-  
-    min-width: 0 !important;
-  }
-  
-  .modal-player-search-name {
-    overflow: hidden !important;
-  
-    color: #fff !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    line-height: 1.3 !important;
-  
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-  
-  .modal-player-search-team {
-    overflow: hidden !important;
-  
-    color: #aaa !important;
-    font-size: 12px !important;
-    line-height: 1.3 !important;
-  
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-  
+
   .modal-player-search-meta {
-    flex: 0 0 auto !important;
-  
-    color: #aaa !important;
-    font-size: 11px !important;
-    line-height: 1.3 !important;
-    white-space: nowrap !important;
+    display: none !important;
   }
-  
-  .modal-player-search-result > svg {
-    width: 18px !important;
-    height: 18px !important;
-    flex: 0 0 auto !important;
-  
-    color: #d9b52f !important;
-  }
-  
-  body.player-search-modal-open {
-    overflow: hidden !important;
-  }
-  
-  
-  /* ========================================
-     スマホ調整
-  ======================================== */
-  
-  @media (max-width: 600px) {
-    .player-search-modal {
-      align-items: flex-end !important;
-      padding: 0 !important;
-    }
-  
-    .player-search-modal-panel {
-      width: 100% !important;
-      max-height: 82vh !important;
-  
-      border-right: 0 !important;
-      border-bottom: 0 !important;
-      border-left: 0 !important;
-      border-radius: 20px 20px 0 0 !important;
-    }
-  
-    .player-search-modal-header {
-      padding: 15px 16px !important;
-    }
-  
-    .player-search-modal-body {
-      padding:
-        14px
-        14px
-        calc(18px + env(safe-area-inset-bottom)) !important;
-    }
-  
-    .modal-player-search-result {
-      padding: 12px !important;
-    }
-  
-    .modal-player-search-meta {
-      display: none !important;
-    }
-  }
-  /* ========================================
-   下部ナビ・選手検索モーダルはスマホのみ
+}
+/* ========================================
+ 下部ナビ・選手検索モーダルはスマホのみ
 ======================================== */
 
 @media (min-width: 601px) {
-    .bottom-navigation {
-      display: none !important;
-    }
-  
-    .player-search-modal {
-      display: none !important;
-    }
-  
-    body {
-      padding-bottom: 0 !important;
-    }
+  .bottom-navigation {
+    display: none !important;
   }
-  .team-history-league,
+
+  .player-search-modal {
+    display: none !important;
+  }
+
+  body {
+    padding-bottom: 0 !important;
+  }
+}
+.team-history-league,
 .team-history-stage{
-  display:block;
-  white-space:nowrap;
+display:block;
+white-space:nowrap;
 }
 
 .team-history-stage{
-  margin-top:2px;
-  font-size:11px;
-  color:#d0d0d0;
+margin-top:2px;
+font-size:11px;
+color:#d0d0d0;
 }
 /* ========================================
-   チームプロフィール・選手一覧
-   スマホ横スクロール
+ チームプロフィール・選手一覧
+ スマホ横スクロール
 ======================================== */
 
 @media (max-width: 768px) {
-    .main-content,
-    .team-player-section {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-    }
-  
-    .team-player-section {
-      overflow: hidden;
-    }
-  
-    .team-player-section .table-scroll {
-      display: block;
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      overflow-x: scroll !important;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      touch-action: auto;
-    }
-  
-    .team-player-section .team-player-table {
-        width: max-content !important;
-        min-width: 720px !important;
-        table-layout: auto !important;
-      }
-  
-      .team-player-section .team-player-table th,
-      .team-player-section .team-player-table td {
-        white-space: nowrap;
-        padding: 8px 4px;
-      }
+  .main-content,
+  .team-player-section {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
- 
+
+  .team-player-section {
+    overflow: hidden;
+  }
+
+  .team-player-section .table-scroll {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: scroll !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: auto;
+  }
+
+  .team-player-section .team-player-table {
+      width: max-content !important;
+      min-width: 720px !important;
+      table-layout: auto !important;
+    }
+
+    .team-player-section .team-player-table th,
+    .team-player-section .team-player-table td {
+      white-space: nowrap;
+      padding: 8px 4px;
+    }
+}
+
 /* ========================================
-   スマホ：チームバッジ非表示
+ スマホ：チームバッジ非表示
 ======================================== */
 
 @media (max-width: 600px) {
 
-    .team-player-badges {
-      display: none !important;
-    }
-  
+  .team-player-badges {
+    display: none !important;
   }
-  /* ========================================
-   スマホ：歴代選手一覧 左寄せ
-======================================== */
 
-@media (max-width: 600px) {
-
-    /* 選手名 */
-    .team-player-table td:first-child,
-    .team-player-table th:first-child {
-      text-align: left !important;
-      padding-left: 4px !important;
-    }
-  
-    /* 在籍年度 */
-    .team-player-table th:nth-child(2) {
-      text-align: left !important;
-      padding-left: 4px !important;
-    }
-  
-    .team-player-table td:nth-child(2) {
-      text-align: left !important;
-      padding-left: 4px !important;
-      color: #b8b8b8;
-    }
-  
-    /* チーム内1位の数字を金色 */
-.mobile-team-leader {
-    color: #ffd700 !important;
-    font-weight: 700 !important;
-  }
-  }
-  /* 成績カード：最高順位の年度・リーグ・ステージ */
-.summary-detail {
-  display: block;
-  margin-top: 5px;
-  font-size: 11px;
-  line-height: 1.3;
-  color: #b8b8b8;
-  white-space: nowrap;
 }
 /* ========================================
-   お知らせ未読表示
+ スマホ：歴代選手一覧 左寄せ
+======================================== */
+
+@media (max-width: 600px) {
+
+  /* 選手名 */
+  .team-player-table td:first-child,
+  .team-player-table th:first-child {
+    text-align: left !important;
+    padding-left: 4px !important;
+  }
+
+  /* 在籍年度 */
+  .team-player-table th:nth-child(2) {
+    text-align: left !important;
+    padding-left: 4px !important;
+  }
+
+  .team-player-table td:nth-child(2) {
+    text-align: left !important;
+    padding-left: 4px !important;
+    color: #b8b8b8;
+  }
+
+  /* チーム内1位の数字を金色 */
+.mobile-team-leader {
+  color: #ffd700 !important;
+  font-weight: 700 !important;
+}
+}
+/* 成績カード：最高順位の年度・リーグ・ステージ */
+.summary-detail {
+display: block;
+margin-top: 5px;
+font-size: 11px;
+line-height: 1.3;
+color: #b8b8b8;
+white-space: nowrap;
+}
+/* ========================================
+ お知らせ未読表示
 ======================================== */
 
 a[href*="news.html"] {
-  position: relative;
+position: relative;
 }
 
 a[href*="news.html"].has-unread-news {
-  color: #e2bd34 !important;
-  font-weight: 700;
-  animation:
-    newsNavAttention 1.7s
-    ease-in-out infinite;
+color: #e2bd34 !important;
+font-weight: 700;
+animation:
+  newsNavAttention 1.7s
+  ease-in-out infinite;
 }
 
 a[href*="news.html"].has-unread-news svg {
-  color: #e2bd34 !important;
-  stroke: currentColor;
+color: #e2bd34 !important;
+stroke: currentColor;
 }
 
 .news-unread-dot {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #e2bd34;
-  box-shadow:
-    0 0 0 3px
-    rgba(226, 189, 52, 0.18);
-  pointer-events: none;
+position: absolute;
+top: 4px;
+right: 4px;
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: #e2bd34;
+box-shadow:
+  0 0 0 3px
+  rgba(226, 189, 52, 0.18);
+pointer-events: none;
 }
 
 @keyframes newsNavAttention {
-  0%,
-  100% {
-    transform: translateY(0);
-    filter: brightness(1);
-  }
+0%,
+100% {
+  transform: translateY(0);
+  filter: brightness(1);
+}
 
-  50% {
-    transform: translateY(-2px);
-    filter: brightness(1.3);
-  }
+50% {
+  transform: translateY(-2px);
+  filter: brightness(1.3);
+}
 }
 
 @media (prefers-reduced-motion: reduce) {
-  a[href*="news.html"].has-unread-news {
-    animation: none;
-  }
+a[href*="news.html"].has-unread-news {
+  animation: none;
+}
 }
 
 @media (max-width: 600px) {
-  .news-unread-dot {
-    top: 5px;
-    right: calc(50% - 18px);
-  }
+.news-unread-dot {
+  top: 5px;
+  right: calc(50% - 18px);
+}
 
-  a[href*="news.html"].has-unread-news {
-    animation:
-      newsMobileAttention 1.7s
-      ease-in-out infinite;
-  }
+a[href*="news.html"].has-unread-news {
+  animation:
+    newsMobileAttention 1.7s
+    ease-in-out infinite;
+}
 }
 
 @keyframes newsMobileAttention {
-  0%,
-  100% {
-    transform: scale(1);
-  }
+0%,
+100% {
+  transform: scale(1);
+}
 
-  50% {
-    transform: scale(1.06);
-  }
+50% {
+  transform: scale(1.06);
+}
 }
 /* ========================================
-   お知らせページ
+ お知らせページ
 ======================================== */
 
 .news-page {
-  width: min(
-    100% - 20px,
-    920px
-  );
-  margin: 0 auto;
-  padding:
-    48px 0
-    120px;
+width: min(
+  100% - 20px,
+  920px
+);
+margin: 0 auto;
+padding:
+  48px 0
+  120px;
 }
 
 .news-page .page-header {
-  margin-bottom: 32px;
-  text-align: center;
+margin-bottom: 32px;
+text-align: center;
 }
 
 .news-page .page-header h1 {
-  margin: 0 0 12px;
-  font-size: clamp(
-    28px,
-    4vw,
-    40px
-  );
-  line-height: 1.2;
-  color: #ffffff;
+margin: 0 0 12px;
+font-size: clamp(
+  28px,
+  4vw,
+  40px
+);
+line-height: 1.2;
+color: #ffffff;
 }
 
 .news-page .page-description {
-  margin: 0;
-  color: #a8a8a8;
-  font-size: 14px;
-  line-height: 1.8;
-  text-wrap: balance;
+margin: 0;
+color: #a8a8a8;
+font-size: 14px;
+line-height: 1.8;
+text-wrap: balance;
 }
 
 
 /* ========================================
-   お知らせ一覧
+ お知らせ一覧
 ======================================== */
 
 .news-list {
-  display: grid;
-  gap: 20px;
+display: grid;
+gap: 20px;
 }
 
 
 /* ========================================
-   お知らせカード
+ お知らせカード
 ======================================== */
 
 .news-card {
-  position: relative;
-  overflow: hidden;
-  padding: 24px;
-  background: #1f1f1f;
-  border: 1px solid #3a3a3a;
-  border-radius: 16px;
-  transition:
-    border-color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+position: relative;
+overflow: hidden;
+padding: 24px;
+background: #1f1f1f;
+border: 1px solid #3a3a3a;
+border-radius: 16px;
+transition:
+  border-color 0.25s ease,
+  transform 0.25s ease,
+  box-shadow 0.25s ease;
 }
 
 .news-card:hover {
-  border-color: #d4af37;
-  transform: translateY(-3px);
-  box-shadow:
-    0 12px 30px
-    rgba(0, 0, 0, 0.28);
+border-color: #d4af37;
+transform: translateY(-3px);
+box-shadow:
+  0 12px 30px
+  rgba(0, 0, 0, 0.28);
 }
 
 .news-card.is-important {
-  border-color:
-    rgba(212, 175, 55, 0.65);
+border-color:
+  rgba(212, 175, 55, 0.65);
 }
 
 .news-card.is-important::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: #d4af37;
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 4px;
+height: 100%;
+background: #d4af37;
 }
 
 
 /* ========================================
-   カード上部
+ カード上部
 ======================================== */
 
 .news-card-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 16px;
+margin-bottom: 18px;
 }
 
 .news-category {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  color: #d4af37;
-  font-size: 13px;
-  font-weight: 700;
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 8px;
+color: #d4af37;
+font-size: 13px;
+font-weight: 700;
 }
 
 .news-category svg {
-  width: 18px;
-  height: 18px;
-  stroke-width: 2;
+width: 18px;
+height: 18px;
+stroke-width: 2;
 }
 
 .news-date {
-  flex-shrink: 0;
-  color: #888888;
-  font-size: 12px;
-  line-height: 1.5;
+flex-shrink: 0;
+color: #888888;
+font-size: 12px;
+line-height: 1.5;
 }
 
 
 /* ========================================
-   重要バッジ
+ 重要バッジ
 ======================================== */
 
 .news-important-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 24px;
-  padding: 3px 9px;
-  color: #111111;
-  background: #d4af37;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+display: inline-flex;
+align-items: center;
+min-height: 24px;
+padding: 3px 9px;
+color: #111111;
+background: #d4af37;
+border-radius: 999px;
+font-size: 11px;
+font-weight: 800;
+letter-spacing: 0.04em;
 }
 
 
 /* ========================================
-   タイトル・本文
+ タイトル・本文
 ======================================== */
 
 .news-title {
-  margin: 0 0 14px;
-  color: #ffffff;
-  font-size: clamp(
-    20px,
-    3vw,
-    25px
-  );
-  line-height: 1.45;
+margin: 0 0 14px;
+color: #ffffff;
+font-size: clamp(
+  20px,
+  3vw,
+  25px
+);
+line-height: 1.45;
 }
 
 .news-body {
-  color: #d0d0d0;
-  font-size: 15px;
-  line-height: 1.9;
+color: #d0d0d0;
+font-size: 15px;
+line-height: 1.9;
 }
 
 
 /* ========================================
-   ボタン
+ ボタン
 ======================================== */
 
 .news-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 22px;
+display: flex;
+justify-content: flex-end;
+margin-top: 22px;
 }
 
 .news-link-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 42px;
-  padding: 10px 18px;
-  color: #111111;
-  background: #d4af37;
-  border: 1px solid #d4af37;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 800;
-  text-decoration: none;
-  transition:
-    transform 0.2s ease,
-    filter 0.2s ease;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+min-height: 42px;
+padding: 10px 18px;
+color: #111111;
+background: #d4af37;
+border: 1px solid #d4af37;
+border-radius: 10px;
+font-size: 14px;
+font-weight: 800;
+text-decoration: none;
+transition:
+  transform 0.2s ease,
+  filter 0.2s ease;
 }
 
 .news-link-button:hover {
-  color: #111111;
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+color: #111111;
+transform: translateY(-2px);
+filter: brightness(1.1);
 }
 
 .news-link-button svg {
-  width: 16px;
-  height: 16px;
+width: 16px;
+height: 16px;
 }
 
 
 /* ========================================
-   カテゴリ別アクセント
+ カテゴリ別アクセント
 ======================================== */
 
 .news-category-update .news-category {
-  color: #d4af37;
+color: #d4af37;
 }
 
 .news-category-league .news-category {
-  color: #e0c15a;
+color: #e0c15a;
 }
 
 .news-category-youtube .news-category {
-  color: #f0f0f0;
+color: #f0f0f0;
 }
 
 .news-category-note .news-category {
-  color: #c8c8c8;
+color: #c8c8c8;
 }
 
 .news-category-info .news-category {
-  color: #d4af37;
+color: #d4af37;
 }
 
 .news-category-warning .news-category {
-  color: #e8c34c;
+color: #e8c34c;
 }
 
 
 /* ========================================
-   空表示・読み込み
+ 空表示・読み込み
 ======================================== */
 
 .news-empty,
 .news-list .no-data-message,
 .news-list .loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 220px;
-  margin: 0;
-  padding: 32px;
-  color: #999999;
-  background: #1f1f1f;
-  border: 1px solid #3a3a3a;
-  border-radius: 16px;
-  text-align: center;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+gap: 12px;
+min-height: 220px;
+margin: 0;
+padding: 32px;
+color: #999999;
+background: #1f1f1f;
+border: 1px solid #3a3a3a;
+border-radius: 16px;
+text-align: center;
 }
 
 .news-empty svg {
-  width: 30px;
-  height: 30px;
-  color: #d4af37;
+width: 30px;
+height: 30px;
+color: #d4af37;
 }
 
 
 /* ========================================
-   スマホ
+ スマホ
 ======================================== */
 
 @media (max-width: 600px) {
-  .news-page {
-    width: min(
-      100% - 24px,
-      920px
-    );
-    padding:
-      28px 0
-      110px;
-  }
+.news-page {
+  width: min(
+    100% - 24px,
+    920px
+  );
+  padding:
+    28px 0
+    110px;
+}
 
-  .news-page .page-header {
-    margin-bottom: 24px;
-    text-align: left;
-  }
+.news-page .page-header {
+  margin-bottom: 24px;
+  text-align: left;
+}
 
-  .news-page .page-description {
-    width: 100%;
-    max-width: 100%;
-    font-size: 14px;
-    line-height: 1.7;
-    white-space: normal;
-    word-break: keep-all;
-  }
+.news-page .page-description {
+  width: 100%;
+  max-width: 100%;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: normal;
+  word-break: keep-all;
+}
 
-  .news-list {
-    gap: 14px;
-  }
+.news-list {
+  gap: 14px;
+}
 
-  .news-card {
-    padding: 18px;
-    border-radius: 14px;
-  }
+.news-card {
+  padding: 18px;
+  border-radius: 14px;
+}
 
-  .news-card-header {
-    gap: 10px;
-    margin-bottom: 14px;
-  }
+.news-card-header {
+  gap: 10px;
+  margin-bottom: 14px;
+}
 
-  .news-category {
-    gap: 6px;
-    font-size: 12px;
-  }
+.news-category {
+  gap: 6px;
+  font-size: 12px;
+}
 
-  .news-category svg {
-    width: 16px;
-    height: 16px;
-  }
+.news-category svg {
+  width: 16px;
+  height: 16px;
+}
 
-  .news-date {
-    font-size: 11px;
-  }
+.news-date {
+  font-size: 11px;
+}
 
-  .news-title {
-    margin-bottom: 10px;
-    font-size: 19px;
-  }
+.news-title {
+  margin-bottom: 10px;
+  font-size: 19px;
+}
 
-  .news-body {
-    font-size: 14px;
-    line-height: 1.8;
-  }
+.news-body {
+  font-size: 14px;
+  line-height: 1.8;
+}
 
-  .news-actions {
-    justify-content: stretch;
-    margin-top: 18px;
-  }
+.news-actions {
+  justify-content: stretch;
+  margin-top: 18px;
+}
 
-  .news-link-button {
-    width: 100%;
-  }
+.news-link-button {
+  width: 100%;
+}
 }
 /* ========================================
-   お知らせ未読通知
+ お知らせ未読通知
 ======================================== */
 
 a[href*="news.html"].has-unread-news {
-  color: #d4af37 !important;
+color: #d4af37 !important;
 }
 
 a[href*="news.html"].has-unread-news svg {
-  color: #d4af37 !important;
-  stroke: currentColor;
-  transform-origin: 50% 10%;
-  animation:
-    unreadNewsBell 2.8s
-    ease-in-out infinite;
+color: #d4af37 !important;
+stroke: currentColor;
+transform-origin: 50% 10%;
+animation:
+  unreadNewsBell 2.8s
+  ease-in-out infinite;
 }
 
 
 /* ベルが揺れて、少し停止する */
 
 @keyframes unreadNewsBell {
-  0%,
-  10%,
-  45%,
-  100% {
-    transform: rotate(0deg);
-  }
+0%,
+10%,
+45%,
+100% {
+  transform: rotate(0deg);
+}
 
-  15% {
-    transform: rotate(-14deg);
-  }
+15% {
+  transform: rotate(-14deg);
+}
 
-  20% {
-    transform: rotate(14deg);
-  }
+20% {
+  transform: rotate(14deg);
+}
 
-  25% {
-    transform: rotate(-11deg);
-  }
+25% {
+  transform: rotate(-11deg);
+}
 
-  30% {
-    transform: rotate(11deg);
-  }
+30% {
+  transform: rotate(11deg);
+}
 
-  35% {
-    transform: rotate(-6deg);
-  }
+35% {
+  transform: rotate(-6deg);
+}
 
-  40% {
-    transform: rotate(6deg);
-  }
+40% {
+  transform: rotate(6deg);
+}
 }
 
 
 /* 動きを減らす設定の端末 */
 
 @media (prefers-reduced-motion: reduce) {
-  a[href*="news.html"].has-unread-news svg {
-    animation: none;
-  }
+a[href*="news.html"].has-unread-news svg {
+  animation: none;
+}
 }
 /* ========================================
-   YouTube応援ポップアップ
+ YouTube応援ポップアップ
 ======================================== */
 
 body.support-popup-open {
-  overflow: hidden;
+overflow: hidden;
 }
 
 .support-popup-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
+position: fixed;
+inset: 0;
+z-index: 99999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+display: flex;
+align-items: center;
+justify-content: center;
 
-  padding: 20px;
+padding: 20px;
 
-  background:
-    rgba(0, 0, 0, 0.78);
+background:
+  rgba(0, 0, 0, 0.78);
 
-  backdrop-filter: blur(6px);
+backdrop-filter: blur(6px);
 }
 
 .support-popup {
-  position: relative;
+position: relative;
 
-  width: min(100%, 480px);
+width: min(100%, 480px);
 
-  padding: 38px 32px 30px;
+padding: 38px 32px 30px;
 
-  text-align: center;
+text-align: center;
 
-  background:
-    linear-gradient(
-      145deg,
-      #191919,
-      #0d0d0d
-    );
+background:
+  linear-gradient(
+    145deg,
+    #191919,
+    #0d0d0d
+  );
 
-  border:
-    1px solid
-    rgba(212, 175, 55, 0.75);
+border:
+  1px solid
+  rgba(212, 175, 55, 0.75);
 
-  border-radius: 20px;
+border-radius: 20px;
 
-  box-shadow:
-    0 24px 70px
-    rgba(0, 0, 0, 0.7);
+box-shadow:
+  0 24px 70px
+  rgba(0, 0, 0, 0.7);
 }
 
 
 .support-popup-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+display: flex;
+align-items: center;
+justify-content: center;
 
-  width: 68px;
-  height: 68px;
+width: 68px;
+height: 68px;
 
-  margin: 0 auto 16px;
+margin: 0 auto 16px;
 
-  color: #d4af37;
+color: #d4af37;
 
-  background:
-    rgba(212, 175, 55, 0.1);
+background:
+  rgba(212, 175, 55, 0.1);
 
-  border:
-    1px solid
-    rgba(212, 175, 55, 0.45);
+border:
+  1px solid
+  rgba(212, 175, 55, 0.45);
 
-  border-radius: 50%;
+border-radius: 50%;
 }
 
 .support-popup-play {
-  display: block;
+display: block;
 
-  margin-left: 3px;
+margin-left: 3px;
 
-  color: #d4af37;
+color: #d4af37;
 
-  font-size: 30px;
-  line-height: 1;
+font-size: 30px;
+line-height: 1;
 }
 
 .support-popup h2 {
-  margin: 0 0 22px;
+margin: 0 0 22px;
 
-  color: #f4d77b;
+color: #f4d77b;
 
-  font-size: 24px;
+font-size: 24px;
 
-  line-height: 1.35;
-  letter-spacing: 0.03em;
+line-height: 1.35;
+letter-spacing: 0.03em;
 }
 
 .support-popup-message {
-  margin: 0 0 10px;
+margin: 0 0 10px;
 
-  color: #ffffff;
+color: #ffffff;
 
-  font-size: 16px;
-  line-height: 1.8;
+font-size: 16px;
+line-height: 1.8;
 }
 
 .support-popup-sub-message {
-  margin: 0 0 26px;
+margin: 0 0 26px;
 
-  color: #c7c7c7;
+color: #c7c7c7;
 
-  font-size: 14px;
-  line-height: 1.8;
+font-size: 14px;
+line-height: 1.8;
 }
 
 .support-popup-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
+display: flex;
+flex-direction: column;
+gap: 11px;
 }
 
 .support-popup-youtube,
 .support-popup-thanks,
 .support-popup-later {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
 
-  min-height: 48px;
+min-height: 48px;
 
-  padding: 11px 18px;
+padding: 11px 18px;
 
-  border-radius: 11px;
+border-radius: 11px;
 
-  font: inherit;
-  font-weight: 700;
+font: inherit;
+font-weight: 700;
 
-  text-decoration: none;
+text-decoration: none;
 
-  cursor: pointer;
+cursor: pointer;
 }
 
 .support-popup-youtube {
-  color: #ffffff;
+color: #ffffff;
 
-  background: #d72828;
+background: #d72828;
 
-  border:
-    1px solid #e64b4b;
+border:
+  1px solid #e64b4b;
 }
 
 .support-popup-thanks {
-  color: #151515;
+color: #151515;
 
-  background:
-    linear-gradient(
-      135deg,
-      #f1d174,
-      #c99c2c
-    );
+background:
+  linear-gradient(
+    135deg,
+    #f1d174,
+    #c99c2c
+  );
 
-  border:
-    1px solid #f3d675;
+border:
+  1px solid #f3d675;
 }
 
 .support-popup-later {
-  min-height: 42px;
+min-height: 42px;
 
-  color: #bdbdbd;
+color: #bdbdbd;
 
-  background: transparent;
+background: transparent;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.18);
+border:
+  1px solid
+  rgba(255, 255, 255, 0.18);
 }
 
 .support-popup-actions svg {
-  width: 19px;
-  height: 19px;
+width: 19px;
+height: 19px;
 }
 
 @media (max-width: 600px) {
-  .support-popup-overlay {
-    padding: 14px;
-  }
+.support-popup-overlay {
+  padding: 14px;
+}
 
-  .support-popup {
-    padding: 34px 20px 24px;
+.support-popup {
+  padding: 34px 20px 24px;
 
-    border-radius: 17px;
-  }
+  border-radius: 17px;
+}
 
-  .support-popup h2 {
-    padding: 0 24px;
+.support-popup h2 {
+  padding: 0 24px;
 
-    font-size: 20px;
-  }
+  font-size: 20px;
+}
 
-  .support-popup-message {
-    font-size: 15px;
-  }
+.support-popup-message {
+  font-size: 15px;
+}
 
-  .support-popup-sub-message {
-    font-size: 13px;
-  }
+.support-popup-sub-message {
+  font-size: 13px;
+}
 }
 .support-popup-button-play{
-  font-size:18px;
-  line-height:1;
+font-size:18px;
+line-height:1;
 }
 .support-popup-footer{
-  margin-top:18px;
+margin-top:18px;
 
-  color:rgba(255,255,255,.38);
+color:rgba(255,255,255,.38);
 
-  font-size:11px;
+font-size:11px;
 
-  letter-spacing:.22em;
+letter-spacing:.22em;
 
-  text-transform: none;
+text-transform: none;
 
-  text-align:center;
+text-align:center;
 }
 /* ========================================
-   Screenshot Mode
+ Screenshot Mode
 ======================================== */
 
 #screenshot-overlay{
-  position:fixed;
-  inset:0;
-  z-index:99999;
+position:fixed;
+inset:0;
+z-index:99999;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-  background:rgba(0,0,0,.92);
+background:rgba(0,0,0,.92);
 
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
+opacity:0;
+visibility:hidden;
+pointer-events:none;
 
-  transition:
-    opacity .25s ease,
-    visibility .25s ease;
+transition:
+  opacity .25s ease,
+  visibility .25s ease;
 }
 
 #screenshot-overlay.show{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
+opacity:1;
+visibility:visible;
+pointer-events:auto;
 }
 
 /* ========================================
-   Screenshot Builder Layout
+ Screenshot Builder Layout
 ======================================== */
 
 .screenshot-builder{
-  display:block;
+display:block;
 
-  width:100%;
-  height:100%;
+width:100%;
+height:100%;
 
-  padding:24px;
+padding:24px;
 
-  overflow-y:auto;
+overflow-y:auto;
 }
 
 .screenshot-panel{
-  width:min(680px,100%);
-  margin:0 auto;
-  padding:28px;
+width:min(680px,100%);
+margin:0 auto;
+padding:28px;
 
-  color:#fff;
-  text-align:center;
+color:#fff;
+text-align:center;
 
-  background:#111;
+background:#111;
 
-  border:1px solid rgba(212,175,55,.45);
-  border-radius:22px;
+border:1px solid rgba(212,175,55,.45);
+border-radius:22px;
 
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.55),
-    inset 0 1px 0 rgba(255,255,255,.05);
+box-shadow:
+  0 20px 60px rgba(0,0,0,.55),
+  inset 0 1px 0 rgba(255,255,255,.05);
 }
 
 .screenshot-header{
-  margin-bottom:18px;
-  text-align:center;
+margin-bottom:18px;
+text-align:center;
 }
 
 .screenshot-header h2{
-  margin:0;
+margin:0;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:24px;
-  line-height:1.4;
-  letter-spacing:.08em;
+font-size:24px;
+line-height:1.4;
+letter-spacing:.08em;
 }
 
 .screenshot-header p{
-  margin:10px 0 0;
+margin:10px 0 0;
 
-  color:rgba(255,255,255,.65);
+color:rgba(255,255,255,.65);
 
-  font-size:14px;
-  line-height:1.7;
+font-size:14px;
+line-height:1.7;
 }
 
 .screenshot-builder-preview{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-  width:100%;
-  padding:12px;
+width:100%;
+padding:12px;
 
-  background:rgba(255,255,255,.035);
+background:rgba(255,255,255,.035);
 
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
+border:1px solid rgba(255,255,255,.08);
+border-radius:16px;
 
-  overflow:hidden;
+overflow:hidden;
 }
 
 .screenshot-setting{
-  margin-top:18px;
-  padding:17px 18px;
+margin-top:18px;
+padding:17px 18px;
 
-  text-align:left;
+text-align:left;
 
-  background:rgba(255,255,255,.04);
+background:rgba(255,255,255,.04);
 
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
+border:1px solid rgba(255,255,255,.08);
+border-radius:14px;
 }
 
 .screenshot-setting-title{
-  color:#fff;
+color:#fff;
 
-  font-size:15px;
-  font-weight:700;
+font-size:15px;
+font-weight:700;
 }
 
 .screenshot-setting-title::before{
-  content:"▼";
+content:"▼";
 
-  margin-right:9px;
+margin-right:9px;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:11px;
+font-size:11px;
 }
 
 .screenshot-setting-note{
-  margin-top:6px;
+margin-top:6px;
 
-  color:rgba(255,255,255,.42);
+color:rgba(255,255,255,.42);
 
-  font-size:12px;
-  line-height:1.6;
+font-size:12px;
+line-height:1.6;
 }
 
 /* ========================================
-   Screenshot Actions
+ Screenshot Actions
 ======================================== */
 
 .screenshot-actions{
-  display:grid;
-  grid-template-columns:1fr 1.4fr;
-  gap:12px;
+display:grid;
+grid-template-columns:1fr 1.4fr;
+gap:12px;
 
-  margin-top:24px;
+margin-top:24px;
 }
 
 .screenshot-actions button{
-  min-height:48px;
+min-height:48px;
 
-  padding:12px 16px;
+padding:12px 16px;
 
-  border:none;
-  border-radius:12px;
+border:none;
+border-radius:12px;
 
-  font:inherit;
-  font-size:14px;
-  font-weight:700;
+font:inherit;
+font-size:14px;
+font-weight:700;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-cancel-button{
-  color:#fff;
+color:#fff;
 
-  background:rgba(255,255,255,.09);
+background:rgba(255,255,255,.09);
 
-  border:1px solid rgba(255,255,255,.12) !important;
+border:1px solid rgba(255,255,255,.12) !important;
 }
 
 .screenshot-create-button{
-  color:#111;
+color:#111;
 
-  background:#d4af37;
+background:#d4af37;
 }
 
 .screenshot-cancel-button:hover,
 .screenshot-create-button:hover{
-  filter:brightness(1.08);
+filter:brightness(1.08);
 }
 /* ========================================
-   Screenshot Card
-   準備画面・完成画面・保存画像で共通
+ Screenshot Card
+ 準備画面・完成画面・保存画像で共通
 ======================================== */
 
 .screenshot-card-stage{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-  width:100%;
+width:100%;
 }
 
 .screenshot-builder-preview .screenshot-card-stage{
-  width:100%;
+width:100%;
 }
 
 .screenshot-card{
-  position:relative;
+position:relative;
 
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 
-  width:100%;
-  aspect-ratio:16 / 9;
+width:100%;
+aspect-ratio:16 / 9;
 
-  padding:7%;
+padding:7%;
 
-  color:#fff;
-  text-align:center;
+color:#fff;
+text-align:center;
 
-  background-image:url("../assets/themes/001.png");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
+background-image:url("../assets/themes/001.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 
-  border:none;
-  border-radius:3%;
+border:none;
+border-radius:3%;
 
-  box-shadow:none;
+box-shadow:none;
 
-  overflow:hidden;
+overflow:hidden;
 }
 
 .screenshot-card::before,
 .screenshot-card::after{
-  display:none;
+display:none;
 }
 
 .screenshot-card-header,
 .screenshot-card-stats,
 .screenshot-card-placements{
-  position:relative;
-  z-index:1;
+position:relative;
+z-index:1;
 }
 
 .screenshot-card-header{
-  width:100%;
-  margin-top:1%;
+width:100%;
+margin-top:1%;
 }
 
 .screenshot-card-title{
-  width:100%;
-  max-width:88%;
-  margin:0 auto;
+width:100%;
+max-width:88%;
+margin:0 auto;
 
-  color:#fff;
+color:#fff;
 
-  font-size:clamp(22px,5.5vw,52px);
-  font-weight:800;
-  line-height:1.2;
-  letter-spacing:.04em;
+font-size:clamp(22px,5.5vw,52px);
+font-weight:800;
+line-height:1.2;
+letter-spacing:.04em;
 
-  overflow-wrap:anywhere;
-  word-break:break-word;
+overflow-wrap:anywhere;
+word-break:break-word;
 }
 
 .screenshot-card-subtitle{
-  margin-top:3%;
+margin-top:3%;
 
-  color:rgba(255,255,255,.62);
+color:rgba(255,255,255,.62);
 
-  font-size:clamp(10px,1.8vw,18px);
-  line-height:1.4;
-  letter-spacing:.1em;
+font-size:clamp(10px,1.8vw,18px);
+line-height:1.4;
+letter-spacing:.1em;
 }
 
 .screenshot-card-stats{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-  width:72%;
+width:72%;
 
-  gap:7%;
+gap:7%;
 
-  margin-top:5%;
-  margin-bottom:2%;
+margin-top:5%;
+margin-bottom:2%;
 }
 
 .screenshot-card-stat{
-  flex:1 1 0;
+flex:1 1 0;
 
-  min-width:0;
+min-width:0;
 
-  text-align:center;
+text-align:center;
 }
 
 .screenshot-card-label{
-  display:block;
+display:block;
 
-  margin-bottom:8%;
+margin-bottom:8%;
 
-  color:rgba(255,255,255,.55);
+color:rgba(255,255,255,.55);
 
-  font-size:clamp(10px,1.6vw,16px);
-  line-height:1.3;
-  letter-spacing:.12em;
+font-size:clamp(10px,1.6vw,16px);
+line-height:1.3;
+letter-spacing:.12em;
 }
 
 .screenshot-card-stat strong{
-  display:block;
+display:block;
 
-  max-width:100%;
+max-width:100%;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:clamp(24px,5vw,48px);
-  line-height:1;
+font-size:clamp(24px,5vw,48px);
+line-height:1;
 
-  white-space:nowrap;
+white-space:nowrap;
 }
 
 .screenshot-card-divider{
-  flex:0 0 1px;
+flex:0 0 1px;
 
-  width:1px;
-  height:clamp(42px,8vw,80px);
+width:1px;
+height:clamp(42px,8vw,80px);
 
-  background:rgba(212,175,55,.55);
+background:rgba(212,175,55,.55);
 }
 
 .screenshot-card-placements{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
 
-  width:72%;
+width:72%;
 
-  margin-top:2%;
+margin-top:2%;
 
-  border-top:1px solid rgba(212,175,55,.24);
-  border-bottom:1px solid rgba(212,175,55,.16);
+border-top:1px solid rgba(212,175,55,.24);
+border-bottom:1px solid rgba(212,175,55,.16);
 }
 
 .screenshot-card-placement{
-  min-width:0;
+min-width:0;
 
-  padding:2.5% 2%;
+padding:2.5% 2%;
 
-  text-align:center;
+text-align:center;
 }
 
 .screenshot-card-placement + .screenshot-card-placement{
-  border-left:1px solid rgba(255,255,255,.08);
+border-left:1px solid rgba(255,255,255,.08);
 }
 
 .screenshot-card-placement span{
-  display:block;
+display:block;
 
-  color:rgba(255,255,255,.52);
+color:rgba(255,255,255,.52);
 
-  font-size:clamp(9px,1.4vw,14px);
-  line-height:1.3;
-  letter-spacing:.08em;
+font-size:clamp(9px,1.4vw,14px);
+line-height:1.3;
+letter-spacing:.08em;
 }
 
 .screenshot-card-placement strong{
-  display:block;
+display:block;
 
-  margin-top:8%;
+margin-top:8%;
 
-  color:#fff;
+color:#fff;
 
-  font-size:clamp(17px,3vw,28px);
-  line-height:1;
+font-size:clamp(17px,3vw,28px);
+line-height:1;
 
-  white-space:nowrap;
+white-space:nowrap;
 }
 
 .screenshot-card-logo{
-  position:absolute;
+position:absolute;
 
-  right:2%;
-  bottom:2%;
+right:2%;
+bottom:2%;
 
-  width:clamp(58px,15%,135px);
-  height:auto;
-  max-height:28%;
+width:clamp(58px,15%,135px);
+height:auto;
+max-height:28%;
 
-  z-index:2;
+z-index:2;
 
-  object-fit:contain;
+object-fit:contain;
 
-  pointer-events:none;
+pointer-events:none;
 
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));
+filter:drop-shadow(0 4px 10px rgba(0,0,0,.35));
 }
 
 /* ========================================
-   Builder内のカード
+ Builder内のカード
 ======================================== */
 
 .screenshot-builder-preview .screenshot-card{
-  width:100%;
-  margin:0;
+width:100%;
+margin:0;
 }
 
 /* ========================================
-   完成画面のカード
+ 完成画面のカード
 ======================================== */
 
 .screenshot-card-stage-final{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+display:flex;
+justify-content:center;
+align-items:center;
 
-  width:min(100%,960px);
+width:min(100%,960px);
 }
 
 .screenshot-card-stage-final .screenshot-card{
-  width:100%;
-  margin:0;
+width:100%;
+margin:0;
 }
 /* ========================================
-   Screenshot Preview
+ Screenshot Preview
 ======================================== */
 
 .screenshot-preview{
-  position:fixed;
-  inset:0;
-  z-index:100000;
+position:fixed;
+inset:0;
+z-index:100000;
 
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
 
-  gap:24px;
+gap:24px;
 
-  width:100%;
-  height:100%;
-  padding:24px;
+width:100%;
+height:100%;
+padding:24px;
 
-  background:rgba(0,0,0,.94);
+background:rgba(0,0,0,.94);
 
-  overflow:auto;
+overflow:auto;
 }
 
 .screenshot-preview.show{
-  display:flex;
+display:flex;
 }
 
 .screenshot-preview .screenshot-card-stage-final{
-  width:min(100%,960px);
+width:min(100%,960px);
 
-  flex-shrink:0;
+flex-shrink:0;
 }
 
 .screenshot-preview .screenshot-card-stage{
-  width:100%;
+width:100%;
 }
 
 .screenshot-preview .screenshot-card{
-  width:100%;
-  margin:0;
+width:100%;
+margin:0;
 
-  transform:none;
+transform:none;
 }
 
 .screenshot-preview-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
 
-  width:min(100%,960px);
+width:min(100%,960px);
 
-  flex-shrink:0;
+flex-shrink:0;
 }
 
 .screenshot-back-button,
 .screenshot-save-button{
-  min-height:56px;
+min-height:56px;
 
-  padding:12px 18px;
+padding:12px 18px;
 
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:16px;
+border:1px solid rgba(255,255,255,.18);
+border-radius:16px;
 
-  font:inherit;
-  font-size:18px;
-  font-weight:700;
+font:inherit;
+font-size:18px;
+font-weight:700;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-back-button{
-  color:#fff;
-  background:#292929;
+color:#fff;
+background:#292929;
 }
 
 .screenshot-save-button{
-  color:#111;
+color:#111;
 
-  background:#d4af37;
-  border-color:#d5ad2d;
+background:#d4af37;
+border-color:#d5ad2d;
 }
 
 .screenshot-back-button:hover,
 .screenshot-save-button:hover{
-  filter:brightness(1.08);
+filter:brightness(1.08);
 }
 
 .screenshot-back-button:disabled,
 .screenshot-save-button:disabled{
-  opacity:.55;
-  cursor:wait;
+opacity:.55;
+cursor:wait;
 }
 /* ========================================
-   Screenshot Theme List
+ Screenshot Theme List
 ======================================== */
 
 .screenshot-theme-list{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px;
 
-  margin-top:14px;
+margin-top:14px;
 }
 
 .screenshot-theme-item{
-  display:block;
+display:block;
 
-  width:100%;
-  aspect-ratio:16 / 9;
+width:100%;
+aspect-ratio:16 / 9;
 
-  object-fit:cover;
+object-fit:cover;
 
-  background:#222;
+background:#222;
 
-  border:2px solid transparent;
-  border-radius:10px;
+border:2px solid transparent;
+border-radius:10px;
 
-  cursor:pointer;
+cursor:pointer;
 
-  opacity:.72;
+opacity:.72;
 
-  transition:
-    opacity .2s ease,
-    transform .2s ease,
-    border-color .2s ease;
+transition:
+  opacity .2s ease,
+  transform .2s ease,
+  border-color .2s ease;
 }
 
 .screenshot-theme-item:hover{
-  opacity:1;
+opacity:1;
 
-  transform:translateY(-2px);
+transform:translateY(-2px);
 }
 
 .screenshot-theme-item.active{
-  opacity:1;
+opacity:1;
 
-  border-color:#d4af37;
+border-color:#d4af37;
 
-  box-shadow:0 0 0 2px rgba(212,175,55,.18);
+box-shadow:0 0 0 2px rgba(212,175,55,.18);
 }
 /* ========================================
-   Screenshot Mobile
+ Screenshot Mobile
 ======================================== */
 
 @media (max-width:600px){
 
-  #screenshot-overlay{
-    align-items:flex-start;
-  }
-
-  .screenshot-builder{
-    padding:14px;
-  }
-
-  .screenshot-panel{
-    padding:20px 16px;
-
-    border-radius:18px;
-  }
-
-  .screenshot-header{
-    margin-bottom:14px;
-  }
-
-  .screenshot-header h2{
-    font-size:21px;
-  }
-
-  .screenshot-header p{
-    font-size:13px;
-  }
-
-  .screenshot-builder-preview{
-    padding:8px;
-
-    border-radius:12px;
-  }
-
-  .screenshot-setting{
-    padding:15px 14px;
-  }
-
-  .screenshot-actions{
-    grid-template-columns:1fr;
-  }
-
-  .screenshot-create-button{
-    order:-1;
-  }
-
-  .screenshot-preview{
-    justify-content:flex-start;
-
-    padding:24px 14px;
-  }
-
-  .screenshot-preview .screenshot-card-stage-final{
-    width:100%;
-
-    margin-top:auto;
-  }
-
-  .screenshot-preview-actions{
-    grid-template-columns:1fr;
-
-    width:100%;
-
-    margin-bottom:auto;
-  }
-
-  .screenshot-save-button{
-    order:-1;
-  }
-
-  .screenshot-back-button,
-  .screenshot-save-button{
-    min-height:52px;
-
-    font-size:16px;
-  }
-
-  .screenshot-theme-list{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-
-    gap:10px;
-    margin-top:12px;
-  }
-
-  .screenshot-theme-item{
-    border-radius:8px;
-  }
-
-  .screenshot-theme-item:hover{
-    transform:none;
-  }
-}
-/* ========================================
-   Screenshot Card Size Fix
-   Builderは完成カードをそのまま縮小表示
-======================================== */
-
-.screenshot-card-stage{
-  position:relative;
-
-  width:960px;
-  height:540px;
-
-  flex:0 0 auto;
+#screenshot-overlay{
+  align-items:flex-start;
 }
 
-.screenshot-card{
-  width:960px;
-  height:540px;
-  aspect-ratio:auto;
+.screenshot-builder{
+  padding:14px;
+}
 
-  flex:0 0 auto;
+.screenshot-panel{
+  padding:20px 16px;
+
+  border-radius:18px;
+}
+
+.screenshot-header{
+  margin-bottom:14px;
+}
+
+.screenshot-header h2{
+  font-size:21px;
+}
+
+.screenshot-header p{
+  font-size:13px;
 }
 
 .screenshot-builder-preview{
-  position:relative;
+  padding:8px;
 
-  height:auto;
-  min-height:0;
+  border-radius:12px;
+}
 
-  padding:12px;
+.screenshot-setting{
+  padding:15px 14px;
+}
 
-  overflow:hidden;
+.screenshot-actions{
+  grid-template-columns:1fr;
+}
+
+.screenshot-create-button{
+  order:-1;
+}
+
+.screenshot-preview{
+  justify-content:flex-start;
+
+  padding:24px 14px;
+}
+
+.screenshot-preview .screenshot-card-stage-final{
+  width:100%;
+
+  margin-top:auto;
+}
+
+.screenshot-preview-actions{
+  grid-template-columns:1fr;
+
+  width:100%;
+
+  margin-bottom:auto;
+}
+
+.screenshot-save-button{
+  order:-1;
+}
+
+.screenshot-back-button,
+.screenshot-save-button{
+  min-height:52px;
+
+  font-size:16px;
+}
+
+.screenshot-theme-list{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+
+  gap:10px;
+  margin-top:12px;
+}
+
+.screenshot-theme-item{
+  border-radius:8px;
+}
+
+.screenshot-theme-item:hover{
+  transform:none;
+}
+}
+/* ========================================
+ Screenshot Card Size Fix
+ Builderは完成カードをそのまま縮小表示
+======================================== */
+
+.screenshot-card-stage{
+position:relative;
+
+width:960px;
+height:540px;
+
+flex:0 0 auto;
+}
+
+.screenshot-card{
+width:960px;
+height:540px;
+aspect-ratio:auto;
+
+flex:0 0 auto;
+}
+
+.screenshot-builder-preview{
+position:relative;
+
+height:auto;
+min-height:0;
+
+padding:12px;
+
+overflow:hidden;
 }
 
 .screenshot-builder-preview .screenshot-card-stage{
-  width:960px;
-  height:540px;
+width:960px;
+height:540px;
 
-  transform-origin:top left;
+transform-origin:top left;
 }
 
 .screenshot-card-stage-final{
   display:flex;
-  justify-content:center;
+  justify-content:flex-start;
   align-items:flex-start;
 
   width:100%;
@@ -5297,558 +5202,567 @@ body.support-popup-open {
 .screenshot-card-stage-final .screenshot-card-stage{
   width:960px;
   height:540px;
-
-  margin:0;
-
-  transform-origin:top center;
-}
+  
+  margin:0 auto;
+  
+  flex:0 0 auto;
+  
+  transform-origin:top left;
+  }
 /* Builder縮小カードの位置修正 */
 .screenshot-builder-preview{
-  display:flex;
-  justify-content:flex-start;
-  align-items:flex-start;
+display:flex;
+justify-content:flex-start;
+align-items:flex-start;
 }
 
 .screenshot-builder-preview .screenshot-card-stage{
-  margin:0;
+margin:0;
 }
 /* ========================================
-   Screenshot Detail Setting
+ Screenshot Detail Setting
 ======================================== */
 
 .screenshot-detail-setting{
-  margin-top:18px;
+margin-top:18px;
 
-  color:#fff;
-  text-align:left;
+color:#fff;
+text-align:left;
 
-  background:rgba(255,255,255,.04);
+background:rgba(255,255,255,.04);
 
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
+border:1px solid rgba(255,255,255,.08);
+border-radius:14px;
 
-  overflow:hidden;
+overflow:hidden;
 }
 
 .screenshot-detail-summary{
-  position:relative;
+position:relative;
 
-  padding:17px 46px 17px 18px;
+padding:17px 46px 17px 18px;
 
-  color:#fff;
+color:#fff;
 
-  font-size:15px;
-  font-weight:700;
+font-size:15px;
+font-weight:700;
 
-  cursor:pointer;
+cursor:pointer;
 
-  list-style:none;
+list-style:none;
 }
 
 .screenshot-detail-summary::-webkit-details-marker{
-  display:none;
+display:none;
 }
 
 .screenshot-detail-summary::after{
-  content:"＋";
+content:"＋";
 
-  position:absolute;
+position:absolute;
 
-  top:50%;
-  right:18px;
+top:50%;
+right:18px;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:22px;
-  line-height:1;
+font-size:22px;
+line-height:1;
 
-  transform:translateY(-50%);
+transform:translateY(-50%);
 }
 
 .screenshot-detail-setting[open]
 .screenshot-detail-summary::after{
-  content:"−";
+content:"−";
 }
 
 .screenshot-detail-content{
-  padding:0 18px 18px;
+padding:0 18px 18px;
 }
 
 .screenshot-detail-label{
-  display:block;
+display:block;
 
-  margin-bottom:8px;
+margin-bottom:8px;
 
-  color:rgba(255,255,255,.68);
+color:rgba(255,255,255,.68);
 
-  font-size:13px;
-  font-weight:700;
+font-size:13px;
+font-weight:700;
 }
 
 .screenshot-font-select{
-  width:100%;
-  min-height:46px;
+width:100%;
+min-height:46px;
 
-  padding:10px 42px 10px 13px;
+padding:10px 42px 10px 13px;
 
-  color:#fff;
+color:#fff;
 
-  background:#202020;
+background:#202020;
 
-  border:1px solid rgba(212,175,55,.4);
-  border-radius:10px;
+border:1px solid rgba(212,175,55,.4);
+border-radius:10px;
 
-  font-size:15px;
+font-size:15px;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-font-select:focus{
-  border-color:#d4af37;
+border-color:#d4af37;
 
-  outline:none;
+outline:none;
 
-  box-shadow:
-    0 0 0 3px rgba(212,175,55,.14);
+box-shadow:
+  0 0 0 3px rgba(212,175,55,.14);
 }
 
 .screenshot-font-select option{
-  color:#fff;
-  background:#202020;
+color:#fff;
+background:#202020;
 }
 /* ========================================
-   Screenshot Setting Groups
+ Screenshot Setting Groups
 ======================================== */
 
 .screenshot-setting-group{
-  padding-top:18px;
+padding-top:18px;
 }
 
 .screenshot-setting-group:first-child{
-  padding-top:0;
+padding-top:0;
 }
 
 .screenshot-setting-group + .screenshot-setting-group{
-  margin-top:22px;
-  padding-top:22px;
+margin-top:22px;
+padding-top:22px;
 
-  border-top:1px solid rgba(212,175,55,.22);
+border-top:1px solid rgba(212,175,55,.22);
 }
 
 .screenshot-setting-group-title{
-  margin-bottom:16px;
-  padding-bottom:10px;
+margin-bottom:16px;
+padding-bottom:10px;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:14px;
-  font-weight:800;
-  line-height:1.4;
-  letter-spacing:.08em;
+font-size:14px;
+font-weight:800;
+line-height:1.4;
+letter-spacing:.08em;
 
-  border-bottom:1px solid rgba(212,175,55,.3);
+border-bottom:1px solid rgba(212,175,55,.3);
 }
 
 .screenshot-setting-group
 .screenshot-detail-label:not(:first-of-type){
-  margin-top:16px;
+margin-top:16px;
 }
 
 /* ========================================
-   Screenshot Selects
+ Screenshot Selects
 ======================================== */
 
 .screenshot-title-color-select,
 .screenshot-subtitle-color-select,
 .screenshot-stats-color-select,
 .screenshot-placements-color-select{
-  width:100%;
-  min-height:46px;
+width:100%;
+min-height:46px;
 
-  padding:10px 42px 10px 13px;
+padding:10px 42px 10px 13px;
 
-  color:#fff;
+color:#fff;
 
-  background:#202020;
+background:#202020;
 
-  border:1px solid rgba(212,175,55,.4);
-  border-radius:10px;
+border:1px solid rgba(212,175,55,.4);
+border-radius:10px;
 
-  font-size:15px;
+font-size:15px;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-title-color-select:focus,
 .screenshot-subtitle-color-select:focus,
 .screenshot-stats-color-select:focus,
 .screenshot-placements-color-select:focus{
-  border-color:#d4af37;
+border-color:#d4af37;
 
-  outline:none;
+outline:none;
 
-  box-shadow:
-    0 0 0 3px rgba(212,175,55,.14);
+box-shadow:
+  0 0 0 3px rgba(212,175,55,.14);
 }
 
 .screenshot-title-color-select option,
 .screenshot-subtitle-color-select option,
 .screenshot-stats-color-select option,
 .screenshot-placements-color-select option{
-  color:#fff;
-  background:#202020;
+color:#fff;
+background:#202020;
 }
 /* ========================================
-   Screenshot Theme Accordion
+ Screenshot Theme Accordion
 ======================================== */
 
 .screenshot-theme-setting{
-  margin-bottom:18px;
+margin-bottom:18px;
 
-  background:rgba(255,255,255,.04);
+background:rgba(255,255,255,.04);
 
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;
+border:1px solid rgba(255,255,255,.08);
+border-radius:14px;
 
-  overflow:hidden;
+overflow:hidden;
 }
 
 .screenshot-theme-summary{
-  position:relative;
+position:relative;
 
-  padding:16px 44px 16px 18px;
+padding:16px 44px 16px 18px;
 
-  color:#fff;
+color:#fff;
 
-  font-size:15px;
-  font-weight:700;
+font-size:15px;
+font-weight:700;
 
-  cursor:pointer;
+cursor:pointer;
 
-  list-style:none;
+list-style:none;
 }
 
 .screenshot-theme-summary::-webkit-details-marker{
-  display:none;
+display:none;
 }
 
 .screenshot-theme-summary::before{
-  content:"▼";
+content:"▼";
 
-  margin-right:9px;
+margin-right:9px;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:11px;
+font-size:11px;
 }
 
 .screenshot-theme-summary::after{
-  content:"＋";
+content:"＋";
 
-  position:absolute;
+position:absolute;
 
-  top:50%;
-  right:18px;
+top:50%;
+right:18px;
 
-  color:#d4af37;
+color:#d4af37;
 
-  font-size:20px;
-  line-height:1;
+font-size:20px;
+line-height:1;
 
-  transform:translateY(-50%);
+transform:translateY(-50%);
 }
 
 .screenshot-theme-setting[open]
 .screenshot-theme-summary::after{
-  content:"−";
+content:"−";
 }
 
 .screenshot-theme-content{
-  padding:0 18px 18px;
+padding:0 18px 18px;
 }
 /* ========================================
-   Screenshot Color Picker
+ Screenshot Color Picker
 ======================================== */
 
 .screenshot-color-picker-row{
-  display:flex;
-  align-items:center;
-  gap:12px;
+display:flex;
+align-items:center;
+gap:12px;
 }
 
 .screenshot-color-picker{
-  width:54px;
-  height:42px;
+width:54px;
+height:42px;
 
-  padding:3px;
+padding:3px;
 
-  background:#202020;
+background:#202020;
 
-  border:1px solid rgba(212,175,55,.45);
-  border-radius:10px;
+border:1px solid rgba(212,175,55,.45);
+border-radius:10px;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-color-picker::-webkit-color-swatch-wrapper{
-  padding:0;
+padding:0;
 }
 
 .screenshot-color-picker::-webkit-color-swatch{
-  border:none;
-  border-radius:6px;
+border:none;
+border-radius:6px;
 }
 
 .screenshot-color-picker-help{
-  color:rgba(255,255,255,.55);
+color:rgba(255,255,255,.55);
 
-  font-size:12px;
-  line-height:1.5;
+font-size:12px;
+line-height:1.5;
 }
 /* ========================================
-   カスタムカラーの案内
+ カスタムカラーの案内
 ======================================== */
 
 .screenshot-color-control-row:has(
-  .screenshot-color-select
+.screenshot-color-select
 ){
-  display:grid;
+display:grid;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    54px;
+grid-template-columns:
+  minmax(0, 1fr)
+  54px;
 
-  align-items:center;
-  gap:8px 10px;
+align-items:center;
+gap:8px 10px;
 }
 
 /* プルダウンは1段目いっぱい */
 .screenshot-color-control-row
 .screenshot-color-select{
-  grid-column:1 / -1;
+grid-column:1 / -1;
 }
 
 /* 色の四角の左に説明を表示 */
 .screenshot-color-control-row:has(
-  .screenshot-color-select
+.screenshot-color-select
 )::before{
-  content:"テンプレート以外の色に変えるならここ →";
+content:"テンプレート以外の色に変えるならここ →";
 
-  grid-column:1;
-  grid-row:2;
+grid-column:1;
+grid-row:2;
 
-  color:rgba(255,255,255,.58);
+color:rgba(255,255,255,.58);
 
-  font-size:12px;
-  line-height:1.5;
+font-size:12px;
+line-height:1.5;
 
-  text-align:right;
+text-align:right;
 }
 
 /* 色の四角は説明の右側 */
 .screenshot-color-control-row:has(
-  .screenshot-color-select
+.screenshot-color-select
 )
 .screenshot-color-picker{
-  grid-column:2;
-  grid-row:2;
+grid-column:2;
+grid-row:2;
 }
 /* ========================================
-   背景一覧をコンパクト表示
+ 背景一覧をコンパクト表示
 ======================================== */
 
 .screenshot-theme-content{
-  padding:14px;
-  overflow:hidden;
+padding:14px;
+overflow:hidden;
 }
 
 .screenshot-theme-list{
-  display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:10px;
+display:grid;
+grid-template-columns:repeat(4, minmax(0, 1fr));
+gap:10px;
 }
 
 .screenshot-theme-item{
-  width:100%;
-  min-width:0;
-  padding:0;
+width:100%;
+min-width:0;
+padding:0;
 
-  aspect-ratio:16 / 9;
+aspect-ratio:16 / 9;
 
-  overflow:hidden;
+overflow:hidden;
 
-  background:#151515;
+background:#151515;
 
-  border:2px solid transparent;
-  border-radius:10px;
+border:2px solid transparent;
+border-radius:10px;
 
-  cursor:pointer;
+cursor:pointer;
 }
 
 .screenshot-theme-item img{
-  display:block;
+display:block;
 
-  width:100%;
-  height:100%;
+width:100%;
+height:100%;
 
-  object-fit:cover;
+object-fit:cover;
 }
 
 .screenshot-theme-item:hover{
-  border-color:rgba(212,175,55,.65);
+border-color:rgba(212,175,55,.65);
 }
 
 .screenshot-theme-item.active{
-  border-color:#d4af37;
+border-color:#d4af37;
 
-  box-shadow:
-    0 0 0 3px rgba(212,175,55,.15);
+box-shadow:
+  0 0 0 3px rgba(212,175,55,.15);
 }
 /* ========================================
-   画像メーカー・スマホ表示の再調整
+ 画像メーカー・スマホ表示の再調整
 ======================================== */
 
 @media screen and (max-width:600px){
 
-  #screenshot-overlay{
-    box-sizing:border-box;
+#screenshot-overlay{
+  box-sizing:border-box;
 
-    padding:8px;
+  padding:8px;
 
-    align-items:flex-start;
-    justify-content:center;
+  align-items:flex-start;
+  justify-content:center;
 
-    overflow-y:auto;
-  }
+  overflow-y:auto;
+}
 
-  .screenshot-builder{
-    box-sizing:border-box;
+.screenshot-builder{
+  box-sizing:border-box;
 
-    width:100%;
-    max-width:100%;
+  width:100%;
+  max-width:100%;
 
-    margin:0;
-  }
+  margin:0;
+  padding:0;
+}
 
-  .screenshot-panel{
-    box-sizing:border-box;
+.screenshot-panel{
+  box-sizing:border-box;
 
-    width:100%;
-    max-width:none;
+  width:100%;
+  max-width:none;
 
-    padding:18px 12px;
+  padding:18px 12px;
 
-    border-radius:18px;
-  }
+  border-radius:18px;
+}
 
-  .screenshot-header{
-    margin-bottom:16px;
-  }
+.screenshot-header{
+  margin-bottom:16px;
+}
 
-  .screenshot-header h2{
-    margin:0 0 8px;
+.screenshot-header h2{
+  margin:0 0 8px;
 
-    font-size:24px;
-    line-height:1.3;
-  }
+  font-size:24px;
+  line-height:1.3;
+}
 
-  .screenshot-header p{
-    margin:0;
+.screenshot-header p{
+  margin:0;
 
-    font-size:13px;
-    line-height:1.6;
-  }
+  font-size:13px;
+  line-height:1.6;
+}
 
-  .screenshot-builder-preview{
-    box-sizing:border-box;
+.screenshot-builder-preview{
+  box-sizing:border-box;
 
-    width:100%;
+  width:100%;
 
-    margin:0 0 16px;
-    padding:8px;
+  margin:0 0 16px;
+  padding:8px;
 
-    overflow:hidden;
-  }
+  overflow:hidden;
+}
 
-  .screenshot-builder-preview
+.screenshot-builder-preview
 .screenshot-card-stage{
   display:flex;
   justify-content:center;
   align-items:flex-start;
 
-  width:100%;
+  width:960px;
+  height:540px;
+
   margin:0;
+
+  flex:0 0 auto;
+
+  transform-origin:top left;
 }
 
-  .screenshot-detail-setting{
-    width:100%;
+.screenshot-detail-setting{
+  width:100%;
 
-    margin:0 0 16px;
-  }
+  margin:0 0 16px;
+}
 
-  .screenshot-detail-summary{
-    min-height:56px;
+.screenshot-detail-summary{
+  min-height:56px;
 
-    padding:0 16px;
+  padding:0 16px;
 
-    font-size:16px;
-  }
+  font-size:16px;
+}
 
-  .screenshot-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+.screenshot-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
 
-    gap:10px;
+  gap:10px;
 
-    width:100%;
-  }
+  width:100%;
+}
 
-  .screenshot-cancel-button,
-  .screenshot-create-button{
-    width:100%;
-    min-height:50px;
+.screenshot-cancel-button,
+.screenshot-create-button{
+  width:100%;
+  min-height:50px;
 
-    margin:0;
+  margin:0;
 
-    font-size:15px;
-  }
+  font-size:15px;
+}
 }/* ========================================
-   スマホで文字が二重縮小される問題を修正
-   カードは960×540px固定で作り、全体を縮小表示する
+ スマホで文字が二重縮小される問題を修正
+ カードは960×540px固定で作り、全体を縮小表示する
 ======================================== */
 
 .screenshot-card{
-  container-type:inline-size;
+container-type:inline-size;
 }
 
 .screenshot-card-title{
-  font-size:52px !important;
+font-size:52px !important;
 }
 
 .screenshot-card-subtitle{
-  font-size:18px !important;
+font-size:18px !important;
 }
 
 .screenshot-card-label{
-  font-size:16px !important;
+font-size:16px !important;
 }
 
 .screenshot-card-stat strong{
-  font-size:48px !important;
+font-size:48px !important;
 }
 
 .screenshot-card-divider{
-  height:80px !important;
+height:80px !important;
 }
 
 .screenshot-card-placement span{
-  font-size:14px !important;
+font-size:14px !important;
 }
 
 .screenshot-card-placement strong{
-  font-size:28px !important;
+font-size:28px !important;
 }
 
 .screenshot-card-logo{
-  width:135px !important;
+width:135px !important;
 }
