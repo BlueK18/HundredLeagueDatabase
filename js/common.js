@@ -2681,6 +2681,29 @@ HLDB.isIOSDevice = function () {
 
 
 /*
+  iPhone判定だけに依存せず、
+  タッチ端末で共有機能が使える場合も
+  モバイル用保存画面を使用する
+*/
+HLDB.shouldUseMobileScreenshotSave =
+  function () {
+
+    return (
+      HLDB.isIOSDevice() ||
+      window.innerWidth <= 900 ||
+      window.matchMedia?.(
+        "(pointer: coarse)"
+      )?.matches ||
+      (
+        navigator.maxTouchPoints > 0 &&
+        typeof navigator.share === "function"
+      )
+    );
+
+  };
+
+
+/*
   Webフォント待ちが終わらない場合でも
   保存処理を継続できるようにする
 */
@@ -2750,7 +2773,7 @@ HLDB.withScreenshotTimeout =
 HLDB.prepareIOSImagesForScreenshot =
   async function () {
 
-    if (!HLDB.isIOSDevice()) {
+    if (!HLDB.shouldUseMobileScreenshotSave()) {
       return;
     }
 
@@ -2890,7 +2913,7 @@ HLDB.showIOSScreenshotSaveDialog =
       {
         position: "fixed",
         inset: "0",
-        zIndex: "20000",
+        zIndex: "2147483647",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -3066,7 +3089,7 @@ HLDB.saveScreenshotCanvas =
 
       );
 
-    if (HLDB.isIOSDevice()) {
+    if (HLDB.shouldUseMobileScreenshotSave()) {
 
       HLDB.showIOSScreenshotSaveDialog({
         blob,
@@ -5029,7 +5052,7 @@ HLDB.openScreenshotMode = function () {
                       "#090909",
   
                     scale:
-                      HLDB.isIOSDevice()
+                      HLDB.shouldUseMobileScreenshotSave()
                         ? 1
                         : 2,
   
@@ -8025,7 +8048,7 @@ const createScreenshotCard = () => {
                       "#090909",
   
                     scale:
-                      HLDB.isIOSDevice()
+                      HLDB.shouldUseMobileScreenshotSave()
                         ? 1
                         : 2,
   
