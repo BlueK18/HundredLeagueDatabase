@@ -2743,6 +2743,42 @@ HLDB.withScreenshotTimeout =
 
 
 /*
+  html2canvas 1.4.1はiOS Safariで
+  loading="lazy"の画像がページ内にあると
+  DOM複製が止まる場合があるため解除する
+*/
+HLDB.prepareIOSImagesForScreenshot =
+  async function () {
+
+    if (!HLDB.isIOSDevice()) {
+      return;
+    }
+
+    document
+      .querySelectorAll(
+        'img[loading="lazy"]'
+      )
+      .forEach(image => {
+
+        image.loading = "eager";
+        image.removeAttribute("loading");
+
+      });
+
+    await new Promise(resolve => {
+
+      requestAnimationFrame(() => {
+
+        requestAnimationFrame(resolve);
+
+      });
+
+    });
+
+  };
+
+
+/*
   CanvasをPNGのBlobへ変換する
 */
 HLDB.createScreenshotBlob =
@@ -3466,7 +3502,7 @@ HLDB.openScreenshotMode = function () {
                             <img
                               src="assets/themes/${themeNo}.png"
                               alt="背景 ${themeNo}"
-                              loading="lazy">
+                              loading="eager">
 
                           </button>
 
@@ -4845,6 +4881,8 @@ HLDB.openScreenshotMode = function () {
             */
             saveButton.textContent =
               "フォント読込中...";
+
+            await HLDB.prepareIOSImagesForScreenshot();
 
             await HLDB.waitForScreenshotFonts();
   
@@ -6247,7 +6285,7 @@ const createScreenshotCard = () => {
                             <img
                               src="assets/themes/${themeNo}.png"
                               alt="背景 ${themeNo}"
-                              loading="lazy">
+                              loading="eager">
 
                           </button>
 
@@ -7827,6 +7865,8 @@ const createScreenshotCard = () => {
             */
             saveButton.textContent =
               "フォント読込中...";
+
+            await HLDB.prepareIOSImagesForScreenshot();
 
             await HLDB.waitForScreenshotFonts();
   
