@@ -135,9 +135,9 @@ function getCategoryTitle(type) {
 ======================================== */
 
 function getRankDisplay(rank) {
-  if (rank === 1) return "🥇";
-  if (rank === 2) return "🥈";
-  if (rank === 3) return "🥉";
+  if (rank >= 1 && rank <= 3) {
+    return `<span class="rank-medal-badge rank-medal-${rank}" aria-label="${rank}位">${rank}</span>`;
+  }
 
   return `${rank}位`;
 }
@@ -458,7 +458,8 @@ function renderRanking() {
   ? `
       <em>
         <span class="not-eligible-title">
-          🔒 受賞条件未達
+          <i data-lucide="lock" class="ui-icon"></i>
+          受賞条件未達
         </span>
         <span class="not-eligible-detail">
           あと${7 - games}試合で対象

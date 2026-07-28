@@ -27,13 +27,13 @@ function normalizeRank(value) {
 
 /* 部門アイコン */
 function getAwardIcon(category) {
-    if (category.includes("ポイント")) return "👑";
-    if (category.includes("ラス回避率")) return "🛡️";
-    if (category.includes("最多勝利")) return "🥇";
-    if (category.includes("最高得点")) return "🎯";
-    if (category.includes("トップ率")) return "⚡";
+    if (category.includes("ポイント")) return '<i data-lucide="crown"></i>';
+    if (category.includes("ラス回避率")) return '<i data-lucide="shield-check"></i>';
+    if (category.includes("最多勝利")) return '<i data-lucide="medal"></i>';
+    if (category.includes("最高得点")) return '<i data-lucide="target"></i>';
+    if (category.includes("トップ率")) return '<i data-lucide="zap"></i>';
   
-    return "🏅";
+    return '<i data-lucide="award"></i>';
   }
   
   
@@ -101,9 +101,9 @@ function getAwardIcon(category) {
 function getMedal(rank) {
   const number = normalizeRank(rank);
 
-  if (number === 1) return "🥇";
-  if (number === 2) return "🥈";
-  if (number === 3) return "🥉";
+  if (number >= 1 && number <= 3) {
+    return `<span class="rank-medal-badge rank-medal-${number}" aria-label="${number}位">${number}</span>`;
+  }
 
   return `${number}位`;
 }
@@ -382,7 +382,8 @@ function renderAwards() {
                 noWinner
                   ? `
                     <div class="award-no-winner">
-                      🏅 該当者なし
+                      <i data-lucide="award" class="ui-icon"></i>
+                      該当者なし
                     </div>
                   `
                   : categoryRows.map(row => `
@@ -457,7 +458,10 @@ function renderAwards() {
     `
     : `
       <div>
-        <strong>📈 全ランキングを見る</strong>
+        <strong>
+          <i data-lucide="chart-no-axes-column-increasing" class="ui-icon"></i>
+          全ランキングを見る
+        </strong>
       </div>
     `
 }

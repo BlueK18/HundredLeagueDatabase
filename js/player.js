@@ -27,6 +27,26 @@ const playerInfo =
 const playerMatches =
   document.getElementById("playerMatches");
 
+const headToHeadSearchInput =
+  document.getElementById(
+    "headToHeadSearchInput"
+  );
+
+const headToHeadSearchResults =
+  document.getElementById(
+    "headToHeadSearchResults"
+  );
+
+const headToHeadResult =
+  document.getElementById(
+    "headToHeadResult"
+  );
+
+const headToHeadTapNote =
+  document.getElementById(
+    "headToHeadTapNote"
+  );
+
 const favoriteButton =
   document.getElementById("favoriteButton");
 
@@ -696,7 +716,7 @@ function renderRegularRanking(
       <section class="regular-ranking-section">
 
         <h2>
-          <i data-lucide="ranking"></i>
+          <i data-lucide="chart-no-axes-column-increasing"></i>
           レギュラーシーズン順位
         </h2>
 
@@ -713,7 +733,7 @@ function renderRegularRanking(
     <section class="regular-ranking-section">
 
       <h2>
-        <i data-lucide="ranking"></i>
+        <i data-lucide="chart-no-axes-column-increasing"></i>
         レギュラーシーズン順位
       </h2>
 
@@ -882,12 +902,17 @@ function renderPlayerInfo() {
             : "";
 
 
+  const activeLeagueDisplay =
+    displayLeagueName(activeLeague);
+
   const periodDisplay =
     activeYear === "ALL"
       ? "全年度・全リーグ・歴代通算"
-      : `${escapeHtml(activeYear)}年・${escapeHtml(
-          displayLeagueName(activeLeague)
-        )}`;
+      : activeLeagueDisplay === "単一リーグ"
+        ? `${escapeHtml(activeYear)}年`
+        : `${escapeHtml(activeYear)}年・${escapeHtml(
+            activeLeagueDisplay
+          )}`;
         const playerScreenshotButton =
   document.getElementById(
     "playerScreenshotButton"
@@ -1359,26 +1384,26 @@ function attachFilterEvents() {
   
   function getAwardIcon(category) {
     if (category.includes("ポイント")) {
-      return "👑";
+      return '<i data-lucide="crown"></i>';
     }
   
     if (category.includes("ラス回避率")) {
-      return "🛡️";
+      return '<i data-lucide="shield-check"></i>';
     }
   
     if (category.includes("最多勝利")) {
-      return "🥇";
+      return '<i data-lucide="medal"></i>';
     }
   
     if (category.includes("最高得点")) {
-      return "🎯";
+      return '<i data-lucide="target"></i>';
     }
   
     if (category.includes("トップ率")) {
-      return "⚡";
+      return '<i data-lucide="zap"></i>';
     }
   
-    return "🏅";
+    return '<i data-lucide="award"></i>';
   }
   
   
@@ -1567,6 +1592,476 @@ function attachFilterEvents() {
   
   
   /* ========================================
+     直接対決
+  ======================================== */
+
+  function getHeadToHeadMatchKey(match) {
+    const matchNo =
+      getMatchNo(match);
+
+    return [
+      normalizeYear(match["年度"]),
+      normalizeLeague(match["リーグ"]),
+      normalizeStage(match["ステージ"]),
+      matchNo || String(match["日付"] || "").trim(),
+      matchNo ? "" : String(match["時間"] || "").trim()
+    ].join("|");
+  }
+
+
+  function getHeadToHeadPlayers() {
+    const playerMap =
+      new Map();
+
+    matchesData.forEach(match => {
+      const opponentId =
+        String(match["選手ID"] || "").trim();
+
+      const opponentName =
+        String(match["選手名"] || "").trim();
+
+      if (
+        !opponentId ||
+        !opponentName ||
+        opponentId === currentPlayerId
+      ) {
+        return;
+      }
+
+      const year =
+        Number(
+          normalizeYear(match["年度"])
+        ) || 0;
+
+      const existing =
+        playerMap.get(opponentId);
+
+      if (!existing) {
+        playerMap.set(opponentId, {
+          id: opponentId,
+          name: opponentName,
+          latestYear: year,
+          searchNames: new Set([
+            opponentName
+          ])
+        });
+
+        return;
+      }
+
+      existing.searchNames.add(
+        opponentName
+      );
+
+      if (year >= existing.latestYear) {
+        existing.name = opponentName;
+        existing.latestYear = year;
+      }
+    });
+
+    return [...playerMap.values()]
+      .sort((a, b) =>
+        a.name.localeCompare(
+          b.name,
+          "ja"
+        )
+      );
+  }
+
+
+  function getHeadToHeadMatches(
+    opponentId
+  ) {
+    const opponentMatchMap =
+      new Map();
+
+    matchesData.forEach(match => {
+      if (
+        String(match["選手ID"] || "").trim() !==
+        opponentId
+      ) {
+        return;
+      }
+
+      opponentMatchMap.set(
+        getHeadToHeadMatchKey(match),
+        match
+      );
+    });
+
+    return matchesData
+      .filter(match =>
+        String(match["選手ID"] || "").trim() ===
+        currentPlayerId
+      )
+      .map(selfMatch => {
+        const opponentMatch =
+          opponentMatchMap.get(
+            getHeadToHeadMatchKey(
+              selfMatch
+            )
+          );
+
+        return opponentMatch
+          ? {
+              selfMatch,
+              opponentMatch
+            }
+          : null;
+      })
+      .filter(Boolean)
+      .sort((a, b) => {
+        const dateCompare =
+          String(
+            b.selfMatch["日付"] || ""
+          ).localeCompare(
+            String(
+              a.selfMatch["日付"] || ""
+            )
+          );
+
+        if (dateCompare !== 0) {
+          return dateCompare;
+        }
+
+        return (
+          Number(
+            getMatchNo(b.selfMatch)
+          ) || 0
+        ) - (
+          Number(
+            getMatchNo(a.selfMatch)
+          ) || 0
+        );
+      });
+  }
+
+
+  function renderHeadToHeadResult(
+    opponent
+  ) {
+    if (!headToHeadResult) {
+      return;
+    }
+
+    const directMatches =
+      getHeadToHeadMatches(
+        opponent.id
+      );
+
+    if (headToHeadTapNote) {
+      headToHeadTapNote.hidden =
+        directMatches.length === 0;
+    }
+
+    let wins = 0;
+    let losses = 0;
+    let draws = 0;
+
+    directMatches.forEach(item => {
+      const selfScore =
+        toNumber(
+          item.selfMatch["スコア"]
+        );
+
+      const opponentScore =
+        toNumber(
+          item.opponentMatch["スコア"]
+        );
+
+      if (
+        selfScore === null ||
+        opponentScore === null ||
+        selfScore === opponentScore
+      ) {
+        draws++;
+      } else if (selfScore > opponentScore) {
+        wins++;
+      } else {
+        losses++;
+      }
+    });
+
+    headToHeadResult.innerHTML = `
+      <div class="player-head-to-head-summary">
+
+        <div class="player-head-to-head-versus">
+          <strong>${escapeHtml(displayPlayerName)}</strong>
+          <span>VS</span>
+          <strong>${escapeHtml(opponent.name)}</strong>
+        </div>
+
+        <div class="player-head-to-head-record">
+          <span>${directMatches.length}戦</span>
+          <strong>${wins}勝</strong>
+          <span>${losses}敗</span>
+          ${
+            draws > 0
+              ? `<span>${draws}分</span>`
+              : ""
+          }
+        </div>
+
+      </div>
+
+      ${
+        directMatches.length === 0
+          ? `
+            <p class="player-head-to-head-empty">
+              ${escapeHtml(opponent.name)}選手との対戦記録はありません。
+            </p>
+          `
+          : `
+            <div class="player-head-to-head-list">
+              ${directMatches.map((item, index) => {
+                const selfScore =
+                  toNumber(
+                    item.selfMatch["スコア"]
+                  );
+
+                const opponentScore =
+                  toNumber(
+                    item.opponentMatch["スコア"]
+                  );
+
+                const resultClass =
+                  selfScore === null ||
+                  opponentScore === null ||
+                  selfScore === opponentScore
+                    ? "is-draw"
+                    : selfScore > opponentScore
+                      ? "is-win"
+                      : "is-loss";
+
+                const resultText =
+                  resultClass === "is-win"
+                    ? "勝"
+                    : resultClass === "is-loss"
+                      ? "負"
+                      : "分";
+
+                return `
+                  <button
+                    type="button"
+                    class="player-head-to-head-match ${resultClass}"
+                    data-head-to-head-index="${index}"
+                  >
+                    <span class="player-head-to-head-date">
+                      ${escapeHtml(
+                        item.selfMatch["日付"] || "日付不明"
+                      )}
+                    </span>
+
+                    <span class="player-head-to-head-result">
+                      ${resultText}
+                    </span>
+
+                    <span class="player-head-to-head-score">
+                      <span>
+                        <span class="player-head-to-head-name">
+                          ${escapeHtml(displayPlayerName)}
+                        </span>
+                        <b>${formatPlacement(item.selfMatch["着順"])}</b>
+                        <strong>${formatScore(item.selfMatch["スコア"])}</strong>
+                      </span>
+
+                      <span class="player-head-to-head-score-divider">
+                        VS
+                      </span>
+
+                      <span>
+                        <span class="player-head-to-head-name">
+                          ${escapeHtml(opponent.name)}
+                        </span>
+                        <b>${formatPlacement(item.opponentMatch["着順"])}</b>
+                        <strong>${formatScore(item.opponentMatch["スコア"])}</strong>
+                      </span>
+                    </span>
+                  </button>
+                `;
+              }).join("")}
+            </div>
+          `
+      }
+    `;
+
+    headToHeadResult
+      .querySelectorAll(
+        ".player-head-to-head-match"
+      )
+      .forEach(button => {
+        button.addEventListener(
+          "click",
+          () => {
+            const index =
+              Number(
+                button.dataset
+                  .headToHeadIndex
+              );
+
+            const selected =
+              directMatches[index];
+
+            if (selected) {
+              openMatchDetail(
+                selected.selfMatch
+              );
+            }
+          }
+        );
+      });
+  }
+
+
+  function initializeHeadToHeadSearch() {
+    if (
+      !headToHeadSearchInput ||
+      !headToHeadSearchResults ||
+      headToHeadSearchInput.dataset
+        .initialized === "true"
+    ) {
+      return;
+    }
+
+    headToHeadSearchInput.dataset
+      .initialized = "true";
+
+    const opponents =
+      getHeadToHeadPlayers();
+
+    let visibleOpponents = [];
+
+    const closeSearchResults = () => {
+      headToHeadSearchResults.innerHTML = "";
+      headToHeadSearchResults.classList.remove(
+        "is-open"
+      );
+      visibleOpponents = [];
+    };
+
+    const selectOpponent = opponent => {
+      headToHeadSearchInput.value =
+        opponent.name;
+
+      closeSearchResults();
+      renderHeadToHeadResult(opponent);
+    };
+
+    const showSearchResults = keyword => {
+      const searchText =
+        HLDB.normalizeSearchText(
+          keyword
+        );
+
+      if (!searchText) {
+        closeSearchResults();
+        return;
+      }
+
+      visibleOpponents =
+        opponents
+          .filter(opponent => {
+            return [...opponent.searchNames]
+              .some(name =>
+                HLDB.normalizeSearchText(
+                  name
+                ).includes(searchText)
+              );
+          })
+          .slice(0, 10);
+
+      headToHeadSearchResults.innerHTML =
+        visibleOpponents.length > 0
+          ? visibleOpponents.map((opponent, index) => `
+              <button
+                type="button"
+                data-opponent-index="${index}"
+              >
+                ${escapeHtml(opponent.name)}
+              </button>
+            `).join("")
+          : `
+              <p>該当する選手がいません。</p>
+            `;
+
+      headToHeadSearchResults.classList.add(
+        "is-open"
+      );
+    };
+
+    headToHeadSearchInput.addEventListener(
+      "input",
+      event => {
+        showSearchResults(
+          event.target.value
+        );
+      }
+    );
+
+    headToHeadSearchInput.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter" &&
+          visibleOpponents[0]
+        ) {
+          event.preventDefault();
+          selectOpponent(
+            visibleOpponents[0]
+          );
+        }
+
+        if (event.key === "Escape") {
+          closeSearchResults();
+        }
+      }
+    );
+
+    headToHeadSearchResults.addEventListener(
+      "click",
+      event => {
+        const button =
+          event.target.closest(
+            "[data-opponent-index]"
+          );
+
+        if (!button) {
+          return;
+        }
+
+        const opponent =
+          visibleOpponents[
+            Number(
+              button.dataset.opponentIndex
+            )
+          ];
+
+        if (opponent) {
+          selectOpponent(opponent);
+        }
+      }
+    );
+
+    document.addEventListener(
+      "click",
+      event => {
+        if (
+          event.target ===
+            headToHeadSearchInput ||
+          headToHeadSearchResults.contains(
+            event.target
+          )
+        ) {
+          return;
+        }
+
+        closeSearchResults();
+      }
+    );
+  }
+
+
+  /* ========================================
      試合履歴
   ======================================== */
   
@@ -1753,6 +2248,11 @@ function attachFilterEvents() {
       normalizeLeague(
         selectedMatch["リーグ"]
       );
+
+    const selectedStage =
+      normalizeStage(
+        selectedMatch["ステージ"]
+      );
   
     return matchesData
       .filter(match => {
@@ -1766,6 +2266,12 @@ function attachFilterEvents() {
           normalizeLeague(
             match["リーグ"]
           ) === selectedLeague;
+
+        const sameStage =
+          !selectedStage ||
+          normalizeStage(
+            match["ステージ"]
+          ) === selectedStage;
   
         const matchNo =
           getMatchNo(match);
@@ -1777,6 +2283,7 @@ function attachFilterEvents() {
           return (
             sameYear &&
             sameLeague &&
+            sameStage &&
             matchNo === selectedMatchNo
           );
         }
@@ -1784,6 +2291,7 @@ function attachFilterEvents() {
         return (
           sameYear &&
           sameLeague &&
+          sameStage &&
           String(
             match["日付"] || ""
           ).trim() === selectedDate &&
@@ -1805,10 +2313,9 @@ function attachFilterEvents() {
     const number =
       toNumber(placement);
   
-    if (number === 1) return "🥇";
-    if (number === 2) return "🥈";
-    if (number === 3) return "🥉";
-    if (number === 4) return "4着";
+    if (number >= 1 && number <= 4) {
+      return `<span class="rank-medal-badge rank-medal-${number}" aria-label="${number}着">${number}</span>`;
+    }
   
     return "―";
   }
@@ -2072,6 +2579,7 @@ function attachFilterEvents() {
   function renderPlayerPage() {
     renderPlayerInfo();
     renderPlayerAwards();
+    initializeHeadToHeadSearch();
     renderPlayerMatches();
   }
 
@@ -2387,15 +2895,23 @@ function updateFavoriteButton() {
   const isFavorite =
     isFavoritePlayer();
 
-  favoriteButton.textContent =
-    isFavorite
-      ? "★ お気に入り登録済み"
-      : "☆ お気に入りに追加";
+  favoriteButton.innerHTML = `
+    <i data-lucide="star" class="ui-icon"></i>
+    ${
+      isFavorite
+        ? "お気に入り登録済み"
+        : "お気に入りに追加"
+    }
+  `;
 
   favoriteButton.classList.toggle(
     "is-favorite",
     isFavorite
   );
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
 }
 
 

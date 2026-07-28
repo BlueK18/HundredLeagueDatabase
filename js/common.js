@@ -1946,27 +1946,23 @@ HLDB.createBottomNavigation = function () {
 
 HLDB.initializeHorizontalScrollHints =
   function () {
+    const scrollContainerSelector = `
+      .table-scroll,
+      .table-scroll-container,
+      .ranking-table-scroll,
+      .horizontal-scroll,
+      .players-table-wrapper,
+      .matches-table-wrapper,
+      #teamTable
+    `;
+
     const scrollContainers =
       document.querySelectorAll(
-        `
-          .table-scroll,
-          .table-scroll-container,
-          .ranking-table-scroll,
-          .horizontal-scroll
-        `
+        scrollContainerSelector
       );
 
     scrollContainers.forEach(
       container => {
-      
-        const historyTable =
-  container.querySelector(
-    "#teamHistoryTable, #teamHistoryBody"
-  );
-
-if (historyTable) {
-  return;
-}
         if (
           container.dataset
             .scrollHintInitialized ===
@@ -2068,6 +2064,84 @@ if (historyTable) {
           "stroke-width": 2
         }
       });
+    }
+
+    if (
+      !HLDB.horizontalScrollHintObserver &&
+      document.body
+    ) {
+      HLDB.horizontalScrollHintObserver =
+        new MutationObserver(mutations => {
+          const hasNewScrollContainer =
+            mutations.some(mutation => {
+              const mutationTarget =
+                mutation.target instanceof Element
+                  ? mutation.target
+                  : mutation.target.parentElement;
+
+              if (
+                mutationTarget &&
+                (
+                  mutationTarget.matches(
+                    scrollContainerSelector
+                  ) ||
+                  Boolean(
+                    mutationTarget.closest(
+                      scrollContainerSelector
+                    )
+                  ) ||
+                  Boolean(
+                    mutationTarget.querySelector(
+                      scrollContainerSelector
+                    )
+                  )
+                )
+              ) {
+                return true;
+              }
+
+              return Array.from(
+                mutation.addedNodes
+              ).some(node => {
+                if (!(node instanceof Element)) {
+                  return false;
+                }
+
+                return (
+                  node.matches(
+                    scrollContainerSelector
+                  ) ||
+                  Boolean(
+                    node.querySelector(
+                      scrollContainerSelector
+                    )
+                  )
+                );
+              });
+            });
+
+          if (!hasNewScrollContainer) {
+            return;
+          }
+
+          requestAnimationFrame(() => {
+            HLDB
+              .initializeHorizontalScrollHints();
+
+            window.dispatchEvent(
+              new Event("resize")
+            );
+          });
+        });
+
+      HLDB.horizontalScrollHintObserver
+        .observe(
+          document.body,
+          {
+            childList: true,
+            subtree: true
+          }
+        );
     }
   };
 
@@ -2347,6 +2421,8 @@ HLDB.showSupportPopup =
     document.body.appendChild(
       overlay
     );
+
+    HLDB.initializeIcons();
 
     document.body.classList.add(
       "support-popup-open"
@@ -3493,7 +3569,8 @@ HLDB.openScreenshotMode = function () {
             <div class="screenshot-setting-group">
 
               <div class="screenshot-setting-group-title">
-                🎨 デザイン
+                <i data-lucide="palette" class="ui-icon"></i>
+                デザイン
               </div>
 
               <details class="screenshot-theme-setting">
@@ -3643,8 +3720,10 @@ HLDB.openScreenshotMode = function () {
             <div class="screenshot-setting-group">
 
               <div class="screenshot-setting-group-title">
-                📝 文字色
+                <i data-lucide="type" class="ui-icon"></i>
+                文字色
               </div>
+
               <div class="screenshot-setting-card">
 
               <p class="screenshot-color-guide">
@@ -4185,6 +4264,13 @@ HLDB.openScreenshotMode = function () {
     currentFont =
       fontFamily || currentFont;
 
+    if (fontSelect) {
+
+      fontSelect.style.fontFamily =
+        currentFont;
+
+    }
+
     getScreenshotCards().forEach(card => {
 
       card.style.fontFamily =
@@ -4193,6 +4279,18 @@ HLDB.openScreenshotMode = function () {
     });
 
   };
+
+  if (fontSelect) {
+
+    Array.from(fontSelect.options)
+      .forEach(option => {
+
+        option.style.fontFamily =
+          option.value;
+
+      });
+
+  }
 
   const applyTitleColor = color => {
 
@@ -5368,6 +5466,8 @@ HLDB.openScreenshotMode = function () {
     document.body.appendChild(
       overlay
     );
+
+    HLDB.initializeIcons();
   
     overlay.setAttribute(
       "tabindex",
@@ -6231,7 +6331,7 @@ const createScreenshotCard = () => {
 
         </div>
 
-        <details class="screenshot-detail-setting">
+        <details class="screenshot-detail-setting player-screenshot-detail-setting">
 
           <summary class="screenshot-detail-summary">
             詳細設定
@@ -6276,7 +6376,8 @@ const createScreenshotCard = () => {
             <div class="screenshot-setting-group">
 
               <div class="screenshot-setting-group-title">
-                🎨 デザイン
+                <i data-lucide="palette" class="ui-icon"></i>
+                デザイン
               </div>
 
               <details class="screenshot-theme-setting">
@@ -6423,11 +6524,14 @@ const createScreenshotCard = () => {
 
             </div>
 
-            <div class="screenshot-setting-group">
+            <details class="screenshot-setting-group screenshot-text-color-setting">
 
-              <div class="screenshot-setting-group-title">
-                📝 文字色
-              </div>
+              <summary class="screenshot-text-color-summary">
+                <i data-lucide="type" class="ui-icon"></i>
+                文字色
+              </summary>
+
+              <div class="screenshot-text-color-content">
 
               <p class="screenshot-color-guide">
                 テンプレートの色はプルダウンから選択できます。
@@ -6762,7 +6866,9 @@ const createScreenshotCard = () => {
                 ariaLabel: "下段成績のカスタムカラー"
               })}
 
-            </div>
+              </div>
+
+            </details>
 
           </div>
 
@@ -7029,6 +7135,13 @@ const createScreenshotCard = () => {
     currentFont =
       fontFamily || currentFont;
 
+    if (fontSelect) {
+
+      fontSelect.style.fontFamily =
+        currentFont;
+
+    }
+
     getScreenshotCards().forEach(card => {
 
       card.style.fontFamily =
@@ -7037,6 +7150,18 @@ const createScreenshotCard = () => {
     });
 
   };
+
+  if (fontSelect) {
+
+    Array.from(fontSelect.options)
+      .forEach(option => {
+
+        option.style.fontFamily =
+          option.value;
+
+      });
+
+  }
 
   const applyTitleColor = color => {
 
@@ -8373,8 +8498,10 @@ const createScreenshotCard = () => {
     );
     const playerHighlightSelect =
   overlay.querySelector(
-    "#playerHighlightSelect"
-  );
+      "#playerHighlightSelect"
+    );
+
+    HLDB.initializeIcons();
 
   if (playerHighlightSelect) {
 

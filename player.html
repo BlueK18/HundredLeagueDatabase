@@ -27,7 +27,12 @@
       href="index.html"
       class="site-brand"
     >
-    🏆 ハンドレッドリーグ データベース
+    <img
+      src="apple-touch-icon.png"
+      class="site-brand-logo"
+      alt=""
+      aria-hidden="true">
+    ハンドレッドリーグ データベース
   </a>
   
   <div class="site-nav-links">
@@ -89,7 +94,8 @@
       class="favorite-button"
       type="button"
     >
-      ☆ お気に入りに追加
+      <i data-lucide="star" class="ui-icon"></i>
+      お気に入りに追加
     </button>
   
     <button
@@ -117,11 +123,63 @@
     <section class="player-awards-section">
 
       <h2>
-        🏆 受賞歴
+        <i data-lucide="trophy" class="ui-icon"></i>
+        受賞歴
       </h2>
 
       <div id="playerAwards">
         読み込み中...
+      </div>
+
+    </section>
+
+
+    <section class="player-head-to-head-section">
+
+      <div class="player-head-to-head-header">
+
+        <div class="player-head-to-head-title-row">
+          <h2>
+            <i data-lucide="swords" class="ui-icon"></i>
+            直接対決選手検索
+          </h2>
+
+          <div
+            id="headToHeadTapNote"
+            class="player-head-to-head-tap-note"
+            hidden
+          >
+            <i data-lucide="hand"></i>
+            <span>タップで試合詳細</span>
+          </div>
+        </div>
+
+        <p>
+          相手選手を検索すると、歴代の直接対決成績を確認できます。
+        </p>
+      </div>
+
+      <div class="player-head-to-head-search">
+
+        <input
+          id="headToHeadSearchInput"
+          type="search"
+          placeholder="対戦相手の選手名を検索"
+          autocomplete="off"
+          aria-label="直接対決する選手を検索"
+        >
+
+        <div
+          id="headToHeadSearchResults"
+          class="player-head-to-head-search-results"
+        ></div>
+
+      </div>
+
+      <div id="headToHeadResult">
+        <p class="player-head-to-head-empty">
+          選手名を入力してください。
+        </p>
       </div>
 
     </section>

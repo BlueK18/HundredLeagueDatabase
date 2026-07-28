@@ -268,13 +268,9 @@ function renderTeams() {
             ).trim();
 
           const rankDisplay =
-            rank === "1"
-              ? "🥇 1"
-              : rank === "2"
-                ? "🥈 2"
-                : rank === "3"
-                  ? "🥉 3"
-                  : rank || "―";
+            ["1", "2", "3"].includes(rank)
+              ? `<span class="rank-medal-badge rank-medal-${rank}" aria-label="${rank}位">${rank}</span>`
+              : rank || "―";
 
           const pointNumber =
             HLDB.toNumber(
@@ -691,16 +687,8 @@ function getRankDisplay(rank) {
   const number =
     Number(rank);
 
-  if (number === 1) {
-    return "🥇 1位";
-  }
-
-  if (number === 2) {
-    return "🥈 2位";
-  }
-
-  if (number === 3) {
-    return "🥉 3位";
+  if (number >= 1 && number <= 3) {
+    return `<span class="rank-medal-badge rank-medal-${number}" aria-label="${number}位">${number}</span>`;
   }
 
   return Number.isFinite(number)
@@ -759,7 +747,7 @@ async function renderFavoritePlayers() {
             <div
               class="favorite-player-card favorite-player-missing"
             >
-              <span>⭐</span>
+              <i data-lucide="star" class="favorite-card-star"></i>
 
               <div>
                 <strong>
@@ -805,7 +793,7 @@ async function renderFavoritePlayers() {
             class="favorite-player-card favorite-player-card-detail"
             href="${playerUrl}"
           >
-            <span>⭐</span>
+            <i data-lucide="star" class="favorite-card-star"></i>
 
             <div class="favorite-player-main">
               <strong>
@@ -850,6 +838,10 @@ async function renderFavoritePlayers() {
         ${cards.join("")}
       </div>
     `;
+
+    if (HLDB.initializeIcons) {
+      HLDB.initializeIcons();
+    }
 
   } catch (error) {
     console.error(

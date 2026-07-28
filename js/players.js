@@ -20,9 +20,9 @@ function normalizeYear(value) {
 function displayRank(rank) {
   const number = Number(rank);
 
-  if (number === 1) return "🥇 1";
-  if (number === 2) return "🥈 2";
-  if (number === 3) return "🥉 3";
+  if (number >= 1 && number <= 3) {
+    return `<span class="rank-medal-badge rank-medal-${number}" aria-label="${number}位">${number}</span>`;
+  }
 
   return String(rank || "―");
 }
