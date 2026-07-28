@@ -130,22 +130,29 @@ function normalizeStage(value) {
   const text =
     String(value || "").trim();
 
+  const stagePart =
+    text.includes("1st")
+      ? " 1st"
+      : text.includes("2nd")
+        ? " 2nd"
+        : "";
+
   if (
     text.includes("Semi") ||
     text.includes("セミファイナル") ||
     text.includes("セミ")
   ) {
-    return "Semi-Final";
+    return `Semi-Final${stagePart}`;
   }
 
   if (
     text.includes("Final") ||
     text.includes("ファイナル")
   ) {
-    return "Final";
+    return `Final${stagePart}`;
   }
 
-  return "レギュラー";
+  return `レギュラー${stagePart}`;
 }
 
 
@@ -178,7 +185,9 @@ function renderTeams() {
   const selectedYear =
     normalizeYearValue(yearSelect.value);
 
-    const isSingleLeagueYear =
+  const isSingleLeagueYear =
+    selectedYear === "2021" ||
+    selectedYear === "2022" ||
     selectedYear === "2023" ||
     selectedYear === "2024";
   
@@ -358,6 +367,8 @@ function updateLeagueControl() {
   }
 
   if (
+    yearSelect.value === "2021" ||
+    yearSelect.value === "2022" ||
     yearSelect.value === "2023" ||
     yearSelect.value === "2024"
   ) {
@@ -401,6 +412,79 @@ function updateLeagueControl() {
 
 
 /* ========================================
+   年度に応じてステージ欄を変更
+======================================== */
+
+function updateStageControl() {
+  const yearSelect =
+    document.getElementById("yearSelect");
+
+  const stageSelect =
+    document.getElementById("stageSelect");
+
+  if (!yearSelect || !stageSelect) {
+    return;
+  }
+
+  const selectedYear =
+    normalizeYearValue(yearSelect.value);
+
+  const previousStage =
+    normalizeStage(stageSelect.value);
+
+  const stageOrder = [
+    "レギュラー 1st",
+    "レギュラー 2nd",
+    "レギュラー",
+    "Semi-Final 1st",
+    "Semi-Final 2nd",
+    "Semi-Final",
+    "Final"
+  ];
+
+  const stages = [
+    ...new Set(
+      teamsData
+        .filter(row =>
+          normalizeYearValue(row["年度"]) ===
+          selectedYear
+        )
+        .map(row =>
+          normalizeStage(row["ステージ"])
+        )
+        .filter(Boolean)
+    )
+  ].sort((a, b) => {
+    const aIndex = stageOrder.indexOf(a);
+    const bIndex = stageOrder.indexOf(b);
+
+    return (
+      (aIndex === -1 ? 999 : aIndex) -
+      (bIndex === -1 ? 999 : bIndex)
+    );
+  });
+
+  const getStageLabel = stage => {
+    return stage
+      .replace("Semi-Final", "セミファイナル")
+      .replace("Final", "ファイナル");
+  };
+
+  stageSelect.innerHTML =
+    stages.map(stage => `
+      <option value="${stage}">
+        ${getStageLabel(stage)}
+      </option>
+    `).join("");
+
+  stageSelect.value =
+    stages.includes(previousStage)
+      ? previousStage
+      : stages[0] || "";
+}
+
+
+/* ========================================
    チームCSV読込
 ======================================== */
 
@@ -427,6 +511,7 @@ console.log(
 
 initializeYearSelect();
 updateLeagueControl();
+updateStageControl();
 renderTeams();
 
   } catch (error) {
@@ -838,6 +923,7 @@ function initializeHome() {
     "change",
     () => {
       updateLeagueControl();
+      updateStageControl();
       renderTeams();
     }
   );

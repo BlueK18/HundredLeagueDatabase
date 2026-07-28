@@ -214,6 +214,8 @@ function updateLeagueControl() {
   HLDB.normalizeYear(yearSelect.value);
 
   const isSingleLeagueYear =
+    selectedYear === "2021" ||
+    selectedYear === "2022" ||
     selectedYear === "2023" ||
     selectedYear === "2024";
 
@@ -259,6 +261,8 @@ function renderAwards() {
   HLDB.normalizeYear(yearSelect.value);
 
   const isSingleLeagueYear =
+    selectedYear === "2021" ||
+    selectedYear === "2022" ||
     selectedYear === "2023" ||
     selectedYear === "2024";
 

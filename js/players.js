@@ -60,6 +60,8 @@ function renderPlayers() {
     normalizeYear(yearSelect.value);
 
   const isSingleLeagueYear =
+    selectedYear === "2021" ||
+    selectedYear === "2022" ||
     selectedYear === "2023" ||
     selectedYear === "2024";
 
@@ -222,6 +224,8 @@ function updateLeagueOptions() {
     normalizeYear(yearSelect.value);
 
   const isSingleLeagueYear =
+    selectedYear === "2021" ||
+    selectedYear === "2022" ||
     selectedYear === "2023" ||
     selectedYear === "2024";
 
