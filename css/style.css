@@ -170,6 +170,15 @@ tr:hover{
   color:#d4af37;
 }
 
+/* 着順分布は端末幅に合わせて縮小し、必ず1行で表示 */
+.team-stats .placement-stat strong{
+  font-size:clamp(15px,4.3vw,24px);
+  line-height:1.2;
+  letter-spacing:-.04em;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
 .team-detail a{
   display:inline-block;
   color:#d4af37;
@@ -189,6 +198,10 @@ tr:hover{
 
   .team-stats strong{
       font-size:20px;
+  }
+
+  .team-stats .placement-stat strong{
+      font-size:clamp(15px,4.3vw,20px);
   }
 }
 .team-matches-section{
