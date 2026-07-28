@@ -2705,6 +2705,44 @@ HLDB.waitForScreenshotFonts =
 
 
 /*
+  iPhone Safariで処理が止まり続けないように
+  制限時間を設ける
+*/
+HLDB.withScreenshotTimeout =
+  function (
+    promise,
+    timeoutMs,
+    processName
+  ) {
+
+    return Promise.race([
+
+      promise,
+
+      new Promise((
+        resolve,
+        reject
+      ) => {
+
+        window.setTimeout(
+          () => {
+            reject(
+              new Error(
+                `${processName}が時間内に完了しませんでした。`
+              )
+            );
+          },
+          timeoutMs
+        );
+
+      })
+
+    ]);
+
+  };
+
+
+/*
   CanvasをPNGのBlobへ変換する
 */
 HLDB.createScreenshotBlob =
@@ -2981,8 +3019,15 @@ HLDB.saveScreenshotCanvas =
   }) {
 
     const blob =
-      await HLDB.createScreenshotBlob(
-        canvas
+      await HLDB.withScreenshotTimeout(
+
+        HLDB.createScreenshotBlob(
+          canvas
+        ),
+
+        15000,
+        "PNGファイルの変換"
+
       );
 
     if (HLDB.isIOSDevice()) {
@@ -4798,11 +4843,17 @@ HLDB.openScreenshotMode = function () {
             /*
               Webフォントの読み込み完了を待つ
             */
+            saveButton.textContent =
+              "フォント読込中...";
+
             await HLDB.waitForScreenshotFonts();
   
             /*
               カード内画像の読み込み完了を待つ
             */
+            saveButton.textContent =
+              "画像読込中...";
+
             const images =
               Array.from(
                 screenshotCard.querySelectorAll(
@@ -4810,7 +4861,9 @@ HLDB.openScreenshotMode = function () {
                 )
               );
   
-            await Promise.all(
+            await HLDB.withScreenshotTimeout(
+
+              Promise.all(
   
               images.map(image => {
   
@@ -4838,6 +4891,11 @@ HLDB.openScreenshotMode = function () {
   
               })
   
+              ),
+
+              8000,
+              "カード内画像の読み込み"
+
             );
   
             /*
@@ -4919,8 +4977,13 @@ HLDB.openScreenshotMode = function () {
   
               }
   
+              saveButton.textContent =
+                "PNG作成中...";
+
               const canvas =
-                await window.html2canvas(
+                await HLDB.withScreenshotTimeout(
+
+                  window.html2canvas(
                   screenshotCard,
                   {
   
@@ -4929,7 +4992,7 @@ HLDB.openScreenshotMode = function () {
   
                     scale:
                       HLDB.isIOSDevice()
-                        ? 1.5
+                        ? 1
                         : 2,
   
                     useCORS:
@@ -5094,7 +5157,12 @@ HLDB.openScreenshotMode = function () {
                       }
   
                   }
-                );
+                ),
+
+                30000,
+                "PNG画像の作成"
+
+              );
   
               const safeTeamName =
                 createSafeFileName(
@@ -5119,6 +5187,9 @@ HLDB.openScreenshotMode = function () {
   
               ].filter(Boolean);
   
+              saveButton.textContent =
+                "共有準備中...";
+
               await HLDB.saveScreenshotCanvas({
                 canvas,
                 fileName:
@@ -5152,7 +5223,8 @@ HLDB.openScreenshotMode = function () {
             );
   
             alert(
-              "画像の保存に失敗しました。"
+              "画像の保存に失敗しました。\n" +
+              (error?.message || "原因不明のエラー")
             );
   
           } finally {
@@ -7753,11 +7825,17 @@ const createScreenshotCard = () => {
             /*
               Webフォントの読み込み完了を待つ
             */
+            saveButton.textContent =
+              "フォント読込中...";
+
             await HLDB.waitForScreenshotFonts();
   
             /*
               カード内画像の読み込み完了を待つ
             */
+            saveButton.textContent =
+              "画像読込中...";
+
             const images =
               Array.from(
                 screenshotCard.querySelectorAll(
@@ -7765,7 +7843,9 @@ const createScreenshotCard = () => {
                 )
               );
   
-            await Promise.all(
+            await HLDB.withScreenshotTimeout(
+
+              Promise.all(
   
               images.map(image => {
   
@@ -7793,6 +7873,11 @@ const createScreenshotCard = () => {
   
               })
   
+              ),
+
+              8000,
+              "カード内画像の読み込み"
+
             );
   
             /*
@@ -7886,8 +7971,13 @@ const createScreenshotCard = () => {
   
               }
   
+              saveButton.textContent =
+                "PNG作成中...";
+
               const canvas =
-                await window.html2canvas(
+                await HLDB.withScreenshotTimeout(
+
+                  window.html2canvas(
                   screenshotCard,
                   {
   
@@ -7896,7 +7986,7 @@ const createScreenshotCard = () => {
   
                     scale:
                       HLDB.isIOSDevice()
-                        ? 1.5
+                        ? 1
                         : 2,
   
                     useCORS:
@@ -8068,7 +8158,12 @@ const createScreenshotCard = () => {
                       }
   
                   }
-                );
+                ),
+
+                30000,
+                "PNG画像の作成"
+
+              );
   
               const safeTeamName =
                 createSafeFileName(
@@ -8093,6 +8188,9 @@ const createScreenshotCard = () => {
   
               ].filter(Boolean);
   
+              saveButton.textContent =
+                "共有準備中...";
+
               await HLDB.saveScreenshotCanvas({
                 canvas,
                 fileName:
@@ -8126,7 +8224,8 @@ const createScreenshotCard = () => {
             );
   
             alert(
-              "画像の保存に失敗しました。"
+              "画像の保存に失敗しました。\n" +
+              (error?.message || "原因不明のエラー")
             );
   
           } finally {
