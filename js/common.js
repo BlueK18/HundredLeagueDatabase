@@ -3336,8 +3336,16 @@ HLDB.openScreenshotMode = function () {
       ? `${escapeHtml(rawPoint)}pt`
       : "―";
 
+  const isSingleLeague =
+    String(rawLeague)
+      .replace(/\s+/g, "") ===
+      "単一リーグ" ||
+    ["2021", "2022"].includes(
+      String(rawYear).trim()
+    );
+
   const leagueText =
-    rawLeague === "単一リーグ"
+    isSingleLeague
       ? ""
       : (
           rawLeague &&
@@ -5686,7 +5694,12 @@ HLDB.openPlayerScreenshotMode= function () {
       : "―";
 
   const leagueText =
-    rawLeague === "単一リーグ"
+    String(rawLeague)
+      .replace(/\s+/g, "") ===
+      "単一リーグ" ||
+    ["2021", "2022"].includes(
+      String(rawYear).trim()
+    )
       ? ""
       : (
           rawLeague &&
@@ -6126,7 +6139,7 @@ const createScreenshotCard = () => {
                   ? "全年度・歴代通算"
                   : `
                     ${data.year || ""}
-                    ${data.league ? ` / ${data.league}` : ""}
+                    ${leagueText ? ` / ${leagueText}` : ""}
                     ${data.stage ? ` / ${data.stage}` : ""}
                   `
               }
