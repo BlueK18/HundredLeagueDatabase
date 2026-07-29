@@ -2156,7 +2156,8 @@ HLDB.initializeBackButtons =
       document.querySelectorAll(
         `
           [data-back-button],
-          .js-back-button
+          .js-back-button,
+          .back-button
         `
       );
 

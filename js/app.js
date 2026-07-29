@@ -6,6 +6,80 @@
 
 let teamsData = [];
 
+const TEAM_RANKING_STATE_KEY =
+  "hldbTeamRankingState";
+
+
+function getTeamRankingState() {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(
+        TEAM_RANKING_STATE_KEY
+      ) || "{}"
+    );
+  } catch {
+    return {};
+  }
+}
+
+
+function saveTeamRankingState(
+  restoreOnReturn = false
+) {
+  const yearSelect =
+    document.getElementById("yearSelect");
+
+  const leagueSelect =
+    document.getElementById("leagueSelect");
+
+  const stageSelect =
+    document.getElementById("stageSelect");
+
+  if (
+    !yearSelect ||
+    !leagueSelect ||
+    !stageSelect
+  ) {
+    return;
+  }
+
+  try {
+    sessionStorage.setItem(
+      TEAM_RANKING_STATE_KEY,
+      JSON.stringify({
+        year: yearSelect.value,
+        league: leagueSelect.value,
+        stage: stageSelect.value,
+        scrollY: window.scrollY,
+        restoreOnReturn
+      })
+    );
+  } catch {
+    /* 保存できない環境でも順位表は通常どおり表示する */
+  }
+}
+
+
+function restoreTeamRankingScroll() {
+  const state =
+    getTeamRankingState();
+
+  if (!state.restoreOnReturn) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      window.scrollTo(
+        0,
+        Number(state.scrollY) || 0
+      );
+
+      saveTeamRankingState(false);
+    });
+  });
+}
+
 
 /* ========================================
    CSV解析
@@ -411,7 +485,9 @@ function updateLeagueControl() {
    年度に応じてステージ欄を変更
 ======================================== */
 
-function updateStageControl() {
+function updateStageControl(
+  preferLatest = false
+) {
   const yearSelect =
     document.getElementById("yearSelect");
 
@@ -474,9 +550,11 @@ function updateStageControl() {
     `).join("");
 
   stageSelect.value =
-    stages.includes(previousStage)
-      ? previousStage
-      : stages[0] || "";
+    preferLatest
+      ? stages[stages.length - 1] || ""
+      : stages.includes(previousStage)
+        ? previousStage
+        : stages[stages.length - 1] || "";
 }
 
 
@@ -506,9 +584,66 @@ console.log(
 );
 
 initializeYearSelect();
+
+const savedRankingState =
+  getTeamRankingState();
+
+const shouldRestoreRankingState =
+  savedRankingState.restoreOnReturn ===
+  true;
+
+if (
+  shouldRestoreRankingState &&
+  savedRankingState.year &&
+  Array.from(
+    document.getElementById("yearSelect")
+      ?.options || []
+  ).some(option =>
+    option.value === savedRankingState.year
+  )
+) {
+  document.getElementById("yearSelect").value =
+    savedRankingState.year;
+}
+
 updateLeagueControl();
-updateStageControl();
+
+const leagueSelect =
+  document.getElementById("leagueSelect");
+
+if (
+  shouldRestoreRankingState &&
+  savedRankingState.league &&
+  Array.from(leagueSelect?.options || [])
+    .some(option =>
+      option.value === savedRankingState.league
+    )
+) {
+  leagueSelect.value =
+    savedRankingState.league;
+}
+
+updateStageControl(
+  !shouldRestoreRankingState
+);
+
+const stageSelect =
+  document.getElementById("stageSelect");
+
+if (
+  shouldRestoreRankingState &&
+  savedRankingState.stage &&
+  Array.from(stageSelect?.options || [])
+    .some(option =>
+      option.value === savedRankingState.stage
+    )
+) {
+  stageSelect.value =
+    savedRankingState.stage;
+}
+
 renderTeams();
+restoreTeamRankingScroll();
 
   } catch (error) {
     console.error(
@@ -915,20 +1050,42 @@ function initializeHome() {
     "change",
     () => {
       updateLeagueControl();
-      updateStageControl();
+      updateStageControl(true);
       renderTeams();
+      saveTeamRankingState(false);
     }
   );
 
   leagueSelect?.addEventListener(
     "change",
-    renderTeams
+    () => {
+      renderTeams();
+      saveTeamRankingState(false);
+    }
   );
 
   stageSelect?.addEventListener(
     "change",
-    renderTeams
+    () => {
+      renderTeams();
+      saveTeamRankingState(false);
+    }
   );
+
+  document
+    .getElementById("teamTable")
+    ?.addEventListener(
+      "click",
+      event => {
+        if (
+          event.target.closest(
+            ".team-link"
+          )
+        ) {
+          saveTeamRankingState(true);
+        }
+      }
+    );
 
   loadTeams();
   renderFavoritePlayers();

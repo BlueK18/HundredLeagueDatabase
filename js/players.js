@@ -7,6 +7,63 @@ const stageSelect = document.getElementById("stageSelect");
 
 let playersData = [];
 
+const PLAYER_RANKING_STATE_KEY =
+  "hldbPlayerRankingState";
+
+
+function getPlayerRankingState() {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(
+        PLAYER_RANKING_STATE_KEY
+      ) || "{}"
+    );
+  } catch {
+    return {};
+  }
+}
+
+
+function savePlayerRankingState(
+  restoreOnReturn = false
+) {
+  try {
+    sessionStorage.setItem(
+      PLAYER_RANKING_STATE_KEY,
+      JSON.stringify({
+        year: yearSelect.value,
+        league: leagueSelect.value,
+        stage: stageSelect.value,
+        scrollY: window.scrollY,
+        restoreOnReturn
+      })
+    );
+  } catch {
+    /* 保存できない環境でも通常どおり表示する */
+  }
+}
+
+
+function restorePlayerRankingScroll() {
+  const state =
+    getPlayerRankingState();
+
+  if (!state.restoreOnReturn) {
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo(
+        0,
+        Number(state.scrollY) || 0
+      );
+
+      savePlayerRankingState(false);
+    });
+  });
+}
+
 
 /* 年度を2025形式に統一 */
 function normalizeYear(value) {
@@ -284,11 +341,51 @@ async function loadPlayers() {
       playersData
     );
 
+    const savedState =
+      getPlayerRankingState();
+
+    const shouldRestoreState =
+      savedState.restoreOnReturn === true;
+
+    if (
+      shouldRestoreState &&
+      savedState.year &&
+      Array.from(yearSelect.options)
+        .some(option =>
+          option.value === savedState.year
+        )
+    ) {
+      yearSelect.value = savedState.year;
+    }
+
     // 年度に応じてリーグを切り替え
     updateLeagueOptions();
 
+    if (
+      shouldRestoreState &&
+      savedState.league &&
+      Array.from(leagueSelect.options)
+        .some(option =>
+          option.value === savedState.league
+        )
+    ) {
+      leagueSelect.value = savedState.league;
+    }
+
+    if (
+      shouldRestoreState &&
+      savedState.stage &&
+      Array.from(stageSelect.options)
+        .some(option =>
+          option.value === savedState.stage
+        )
+    ) {
+      stageSelect.value = savedState.stage;
+    }
+
     // ランキング表示
     renderPlayers();
+    restorePlayerRankingScroll();
 
   } catch (error) {
     console.error(
@@ -309,18 +406,38 @@ async function loadPlayers() {
   yearSelect.addEventListener("change", () => {
     updateLeagueOptions();
     renderPlayers();
+    savePlayerRankingState(false);
   });
   
   
   /* リーグ・ステージを変更したとき */
   leagueSelect.addEventListener(
     "change",
-    renderPlayers
+    () => {
+      renderPlayers();
+      savePlayerRankingState(false);
+    }
   );
   
   stageSelect.addEventListener(
     "change",
-    renderPlayers
+    () => {
+      renderPlayers();
+      savePlayerRankingState(false);
+    }
+  );
+
+  playersArea.addEventListener(
+    "click",
+    event => {
+      if (
+        event.target.closest(
+          ".player-ranking-link"
+        )
+      ) {
+        savePlayerRankingState(true);
+      }
+    }
   );
   
   

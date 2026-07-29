@@ -8,6 +8,62 @@ const yearSelect =
 const leagueSelect =
   document.getElementById("leagueSelect");
 
+const AWARDS_STATE_KEY =
+  "hldbAwardsState";
+
+
+function getAwardsState() {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(
+        AWARDS_STATE_KEY
+      ) || "{}"
+    );
+  } catch {
+    return {};
+  }
+}
+
+
+function saveAwardsState(
+  restoreOnReturn = false
+) {
+  try {
+    sessionStorage.setItem(
+      AWARDS_STATE_KEY,
+      JSON.stringify({
+        year: yearSelect.value,
+        league: leagueSelect.value,
+        scrollY: window.scrollY,
+        restoreOnReturn
+      })
+    );
+  } catch {
+    /* 保存できない環境でも通常どおり表示する */
+  }
+}
+
+
+function restoreAwardsScroll() {
+  const state =
+    getAwardsState();
+
+  if (!state.restoreOnReturn) {
+    return;
+  }
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      window.scrollTo(
+        0,
+        Number(state.scrollY) || 0
+      );
+
+      saveAwardsState(false);
+    });
+  });
+}
+
 const leagueControl =
   document.getElementById("leagueControl");
 
@@ -505,9 +561,39 @@ async function loadAwards() {
     );
     console.log("populate後", yearSelect.value);
 
+    const savedState =
+      getAwardsState();
+
+    const shouldRestoreState =
+      savedState.restoreOnReturn === true;
+
+    if (
+      shouldRestoreState &&
+      savedState.year &&
+      Array.from(yearSelect.options)
+        .some(option =>
+          option.value === savedState.year
+        )
+    ) {
+      yearSelect.value = savedState.year;
+    }
+
 
     updateLeagueControl();
+
+    if (
+      shouldRestoreState &&
+      savedState.league &&
+      Array.from(leagueSelect.options)
+        .some(option =>
+          option.value === savedState.league
+        )
+    ) {
+      leagueSelect.value = savedState.league;
+    }
+
     renderAwards();
+    restoreAwardsScroll();
 
   } catch (error) {
     console.error(error);
@@ -530,12 +616,30 @@ yearSelect.addEventListener(
   () => {
     updateLeagueControl();
     renderAwards();
+    saveAwardsState(false);
   }
 );
 
 leagueSelect.addEventListener(
   "change",
-  renderAwards
+  () => {
+    renderAwards();
+    saveAwardsState(false);
+  }
+);
+
+awardsArea.addEventListener(
+  "click",
+  event => {
+    if (
+      event.target.closest(
+        ".award-ranking-card, " +
+        ".award-player-row"
+      )
+    ) {
+      saveAwardsState(true);
+    }
+  }
 );
 
 
