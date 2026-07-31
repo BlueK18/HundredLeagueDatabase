@@ -428,6 +428,20 @@ tr:hover{
   white-space:nowrap;
 }
 
+.award-result{
+  display:flex;
+  align-items:baseline;
+  justify-content:flex-end;
+  gap:10px;
+  white-space:nowrap;
+}
+
+.award-game-count{
+  color:#d0d0d0;
+  font-size:13px;
+  font-weight:700;
+}
+
 .no-data-message{
   text-align:center;
   padding:40px 20px;
@@ -449,9 +463,10 @@ tr:hover{
       grid-template-columns:42px 1fr;
   }
 
-  .award-value{
+  .award-result{
       grid-column:2;
       margin-top:4px;
+      justify-content:flex-start;
   }
 }
 .players-page{

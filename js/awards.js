@@ -71,6 +71,7 @@ const awardsSeasonTitle =
   document.getElementById("awardsSeasonTitle");
 
 let awardsData = [];
+let playersData = [];
 
 
 /* 順位を数値化 */
@@ -208,6 +209,57 @@ function formatAwardValue(row) {
   }
 
   return `${number.toFixed(1)}${unit || "pt"}`;
+}
+
+
+/* ラス回避率賞・最多勝利賞の試合数 */
+function getAwardGameCount(row) {
+  const category =
+    String(row["部門"] || "").trim();
+
+  if (
+    category !== "ラス回避率賞" &&
+    category !== "最多勝利賞"
+  ) {
+    return null;
+  }
+
+  const playerId =
+    String(row["選手ID"] || "").trim();
+
+  const playerName =
+    String(row["選手名"] || "").trim();
+
+  const year =
+    HLDB.normalizeYear(row["年度"]);
+
+  const league =
+    normalizeAwardLeague(row["リーグ"]);
+
+  const playerRow =
+    playersData.find(player => {
+      const samePlayer =
+        playerId
+          ? String(player["選手ID"] || "").trim() ===
+            playerId
+          : String(player["選手名"] || "").trim() ===
+            playerName;
+
+      return (
+        samePlayer &&
+        HLDB.normalizeYear(player["年度"]) === year &&
+        normalizeAwardLeague(player["リーグ"]) === league &&
+        String(player["ステージ"] || "").trim() ===
+          "レギュラー"
+      );
+    });
+
+  const gameCount =
+    HLDB.toNumber(playerRow?.["試合数"]);
+
+  return gameCount === null
+    ? null
+    : Math.round(gameCount);
 }
 
 
@@ -472,8 +524,22 @@ function renderAwards() {
 
                       </div>
 
-                      <div class="award-value">
-                        ${formatAwardValue(row)}
+                      <div class="award-result">
+
+                        <div class="award-value">
+                          ${formatAwardValue(row)}
+                        </div>
+
+                        ${
+                          getAwardGameCount(row) !== null
+                            ? `
+                              <span class="award-game-count">
+                                ${getAwardGameCount(row)}試合
+                              </span>
+                            `
+                            : ""
+                        }
+
                       </div>
 
                     </a>
@@ -552,8 +618,13 @@ async function loadAwards() {
       lucide.createIcons();
     }
 
-    awardsData =
-      await HLDB.loadData("awards");
+    [
+      awardsData,
+      playersData
+    ] = await Promise.all([
+      HLDB.loadData("awards"),
+      HLDB.loadData("players")
+    ]);
 
     HLDB.populateYearSelect(
       "yearSelect",
