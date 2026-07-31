@@ -6865,3 +6865,81 @@ th:nth-child(2),
 td:nth-child(2){
   display:none !important;
 }
+
+/* ========================================
+   歴代選手一覧：表示項目の切り替え
+======================================== */
+
+.team-player-column-controls{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin:0 0 12px;
+}
+
+.team-player-column-controls-label{
+  width:100%;
+  color:#aaa;
+  font-size:12px;
+  font-weight:700;
+}
+
+.team-player-column-controls button,
+.team-player-column-fixed{
+  min-height:32px;
+  padding:6px 10px;
+  border:1px solid rgba(212,175,55,.35);
+  border-radius:999px;
+  color:#888;
+  background:#171717;
+  font-size:12px;
+  font-weight:700;
+  line-height:1;
+}
+
+.team-player-column-controls button{
+  cursor:pointer;
+}
+
+.team-player-column-controls button.is-visible,
+.team-player-column-fixed{
+  color:#111;
+  background:#d4af37;
+  border-color:#d4af37;
+}
+
+.team-player-column-controls button:disabled{
+  opacity:.35;
+  cursor:not-allowed;
+}
+
+.team-player-table.hide-player-column-2 th:nth-child(2),
+.team-player-table.hide-player-column-2 td:nth-child(2),
+.team-player-table.hide-player-column-3 th:nth-child(3),
+.team-player-table.hide-player-column-3 td:nth-child(3),
+.team-player-table.hide-player-column-4 th:nth-child(4),
+.team-player-table.hide-player-column-4 td:nth-child(4),
+.team-player-table.hide-player-column-5 th:nth-child(5),
+.team-player-table.hide-player-column-5 td:nth-child(5),
+.team-player-table.hide-player-column-6 th:nth-child(6),
+.team-player-table.hide-player-column-6 td:nth-child(6),
+.team-player-table.hide-player-column-7 th:nth-child(7),
+.team-player-table.hide-player-column-7 td:nth-child(7),
+.team-player-table.hide-player-column-8 th:nth-child(8),
+.team-player-table.hide-player-column-8 td:nth-child(8){
+  display:none !important;
+}
+
+@media (max-width:600px){
+  .team-player-column-controls{
+    gap:6px;
+  }
+
+  .team-player-column-controls button,
+  .team-player-column-fixed{
+    min-height:30px;
+    padding:6px 9px;
+    font-size:11px;
+  }
+}

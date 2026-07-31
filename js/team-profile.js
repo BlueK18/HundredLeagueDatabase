@@ -32,6 +32,7 @@ async function init() {
   try {
     await loadData();
 
+    setupPlayerColumnControls();
     renderYearTabs();
     renderPage();
   } catch (error) {
@@ -602,6 +603,8 @@ function renderTeamPlayers() {
     );
   }
 
+  updatePlayerColumnControls();
+
   const targetRows =
     playersData.filter(row => {
       const rowTeamName =
@@ -948,6 +951,103 @@ function renderTeamPlayers() {
         `;
       })
       .join("");
+}
+
+/* =========================
+   選手一覧の表示項目切り替え
+========================= */
+
+function setupPlayerColumnControls() {
+  const table =
+    document.querySelector(
+      ".team-player-table"
+    );
+
+  const buttons =
+    document.querySelectorAll(
+      ".team-player-column-controls button[data-column]"
+    );
+
+  if (!table || !buttons.length) {
+    return;
+  }
+
+  buttons.forEach(button => {
+    button.classList.add("is-visible");
+
+    button.addEventListener("click", () => {
+      const column =
+        button.dataset.column;
+
+      if (!column || button.disabled) {
+        return;
+      }
+
+      const className =
+        `hide-player-column-${column}`;
+
+      const willHide =
+        !table.classList.contains(className);
+
+      table.classList.toggle(
+        className,
+        willHide
+      );
+
+      button.classList.toggle(
+        "is-visible",
+        !willHide
+      );
+
+      button.setAttribute(
+        "aria-pressed",
+        String(!willHide)
+      );
+    });
+  });
+}
+
+function updatePlayerColumnControls() {
+  const table =
+    document.querySelector(
+      ".team-player-table"
+    );
+
+  const yearButton =
+    document.querySelector(
+      '.team-player-column-controls button[data-column="2"]'
+    );
+
+  if (!yearButton) {
+    return;
+  }
+
+  const isSingleYear =
+    selectedYear !== "total";
+
+  yearButton.disabled =
+    isSingleYear;
+
+  const isVisible =
+    !isSingleYear &&
+    !table?.classList.contains(
+      "hide-player-column-2"
+    );
+
+  yearButton.classList.toggle(
+    "is-visible",
+    isVisible
+  );
+
+  yearButton.setAttribute(
+    "aria-pressed",
+    String(isVisible)
+  );
+
+  yearButton.title =
+    isSingleYear
+      ? "年度別表示では在籍年度を省略しています"
+      : "";
 }
 
 /* =========================

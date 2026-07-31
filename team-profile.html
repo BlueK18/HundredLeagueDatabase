@@ -6,7 +6,7 @@
 
   <title>チーム情報｜ハンドレッドリーグ データベース</title>
   
-  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 
 <body>
@@ -127,6 +127,47 @@
             <i data-lucide="users"></i>
             歴代選手一覧
           </h2>
+
+          <div
+            class="team-player-column-controls"
+            aria-label="一覧に表示する項目"
+          >
+            <span class="team-player-column-controls-label">
+              表示項目
+            </span>
+
+            <span class="team-player-column-fixed">
+              選手名
+            </span>
+
+            <button type="button" data-column="2" aria-pressed="true">
+              在籍年度
+            </button>
+
+            <button type="button" data-column="3" aria-pressed="true">
+              試合数
+            </button>
+
+            <button type="button" data-column="4" aria-pressed="true">
+              ポイント
+            </button>
+
+            <button type="button" data-column="5" aria-pressed="true">
+              トップ
+            </button>
+
+            <button type="button" data-column="6" aria-pressed="true">
+              トップ率
+            </button>
+
+            <button type="button" data-column="7" aria-pressed="true">
+              ラス回避率
+            </button>
+
+            <button type="button" data-column="8" aria-pressed="true">
+              最高得点
+            </button>
+          </div>
       
           <div class="table-scroll">
             <table class="team-player-table">
@@ -167,6 +208,6 @@
 </main>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/common.js?v=9"></script>
-<script src="js/team-profile.js?v=5"></script>
+<script src="js/team-profile.js?v=6"></script>
 </body>
 </html>
