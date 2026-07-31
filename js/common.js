@@ -119,10 +119,6 @@ HLDB.fetchCsv = async function (url) {
    CSVデータキャッシュ
 ======================================== */
 
-HLDB.DATA_CACHE_TIME =
-  10 * 60 * 1000; // 10分
-
-
 HLDB.memoryDataCache =
   HLDB.memoryDataCache || {};
 
@@ -130,8 +126,8 @@ HLDB.memoryDataCache =
 /*
   データを読み込む
 
-  通常：
-  10分以内のキャッシュがあれば再利用
+  ページを開くたびに最新CSVを取得する。
+  同じページ内で取得済みの場合だけ再利用する。
 
   強制更新：
   HLDB.loadData("players", true)
@@ -167,9 +163,7 @@ HLDB.loadData = async function (
 
   if (
     !forceRefresh &&
-    memoryCache &&
-    now - memoryCache.savedAt <
-      HLDB.DATA_CACHE_TIME
+    memoryCache
   ) {
     console.log(
       `${dataName}: メモリキャッシュを使用`
@@ -180,57 +174,7 @@ HLDB.loadData = async function (
 
 
   /*
-    ② ブラウザ保存済みキャッシュ
-  */
-  if (!forceRefresh) {
-    try {
-      const savedAt =
-        Number(
-          localStorage.getItem(
-            cacheTimeKey
-          )
-        );
-
-      const cachedText =
-        localStorage.getItem(
-          cacheKey
-        );
-
-      const cacheIsValid =
-        cachedText &&
-        Number.isFinite(savedAt) &&
-        now - savedAt <
-          HLDB.DATA_CACHE_TIME;
-
-      if (cacheIsValid) {
-        const cachedData =
-          JSON.parse(cachedText);
-
-        HLDB.memoryDataCache[
-          dataName
-        ] = {
-          data: cachedData,
-          savedAt
-        };
-
-        console.log(
-          `${dataName}: ブラウザキャッシュを使用`
-        );
-
-        return cachedData;
-      }
-
-    } catch (error) {
-      console.warn(
-        `${dataName}: キャッシュ読込失敗`,
-        error
-      );
-    }
-  }
-
-
-  /*
-    ③ Google Sheetsから最新データ取得
+    ② 最新CSVを取得
   */
   try {
     console.log(
@@ -334,7 +278,7 @@ HLDB.memoryDataCache[
 
 
     /*
-      ④ 通信失敗時は期限切れキャッシュを使う
+      ③ 通信失敗時だけ保存済みキャッシュを使う
     */
     try {
       const oldCacheText =
@@ -345,6 +289,13 @@ HLDB.memoryDataCache[
       if (oldCacheText) {
         const oldData =
           JSON.parse(oldCacheText);
+
+        HLDB.memoryDataCache[
+          dataName
+        ] = {
+          data: oldData,
+          savedAt: now
+        };
 
         console.warn(
           `${dataName}: 古いキャッシュを代用`
