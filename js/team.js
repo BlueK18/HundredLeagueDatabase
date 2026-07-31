@@ -108,6 +108,8 @@ function renderTeamInfo(
     const isPastSingleLeague =
     normalizedLeague === "単一リーグ" &&
     (
+      normalizedYear === "2021" ||
+      normalizedYear === "2022" ||
       normalizedYear === "2023" ||
       normalizedYear === "2024"
     );
@@ -318,8 +320,13 @@ teamInfo.innerHTML = `
     <div class="team-detail">
 
       <p>
-        ${team["年度"]}年・
-        ${HLDB.normalizeLeague(team["リーグ"])}リーグ
+        ${team["年度"]}年${
+          isPastSingleLeague
+            ? ""
+            : `・${HLDB.normalizeLeague(
+                team["リーグ"]
+              )}リーグ`
+        }
       </p>
 
       <p>

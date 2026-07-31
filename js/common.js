@@ -1915,6 +1915,15 @@ HLDB.initializeHorizontalScrollHints =
     scrollContainers.forEach(
       container => {
         if (
+          container.closest(
+            "#teamMatches, " +
+            ".team-season-history-section"
+          )
+        ) {
+          return;
+        }
+
+        if (
           container.dataset
             .scrollHintInitialized ===
           "true"

@@ -6857,3 +6857,11 @@ width:135px !important;
   margin-bottom:0;
 
 }
+
+/* 年度別表示では在籍年度が全員同じため列を省略 */
+.team-player-table.is-single-year
+th:nth-child(2),
+.team-player-table.is-single-year
+td:nth-child(2){
+  display:none !important;
+}

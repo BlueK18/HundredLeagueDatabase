@@ -447,11 +447,38 @@ function renderTeamHistory(teamRows) {
     return;
   }
 
-  const stageOrder = {
-    Regular: 1,
-    レギュラー: 1,
-    "Semi-Final": 2,
-    Final: 3
+  const getStageOrder = value => {
+    const stageText =
+      String(value || "")
+        .trim()
+        .toLowerCase();
+
+    if (
+      stageText.includes("レギュラー") ||
+      stageText.includes("regular")
+    ) {
+      return stageText.includes("2nd")
+        ? 2
+        : 1;
+    }
+
+    if (
+      stageText.includes("semi") ||
+      stageText.includes("セミ")
+    ) {
+      return stageText.includes("2nd")
+        ? 4
+        : 3;
+    }
+
+    if (
+      stageText.includes("final") ||
+      stageText.includes("ファイナル")
+    ) {
+      return 5;
+    }
+
+    return 99;
   };
 
   const historyRows =
@@ -464,15 +491,9 @@ function renderTeamHistory(teamRows) {
         return yearDiff;
       }
 
-      const stageA =
-        HLDB.normalizeStage(a["ステージ"]);
-
-      const stageB =
-        HLDB.normalizeStage(b["ステージ"]);
-
       return (
-        (stageOrder[stageA] || 99) -
-        (stageOrder[stageB] || 99)
+        getStageOrder(a["ステージ"]) -
+        getStageOrder(b["ステージ"])
       );
     });
 
@@ -492,10 +513,17 @@ function renderTeamHistory(teamRows) {
             ? ""
             : league;
 
+        const rawStage =
+          String(
+            row["ステージ"] || ""
+          ).trim();
+
         const stage =
-          HLDB.normalizeStage(
-            row["ステージ"]
-          ) || "－";
+          String(year) === "2021"
+            ? rawStage || "－"
+            : HLDB.normalizeStage(
+                rawStage
+              ) || "－";
 
         const rank =
           toNullableNumber(row["順位"]);
@@ -555,11 +583,23 @@ function renderTeamPlayers() {
   const teamPlayerBody =
     document.getElementById("teamPlayerBody");
 
+  const teamPlayerTable =
+    teamPlayerBody?.closest(
+      ".team-player-table"
+    );
+
   const playerListTitle =
     document.getElementById("playerListTitle");
 
   if (!teamPlayerBody) {
     return;
+  }
+
+  if (teamPlayerTable) {
+    teamPlayerTable.classList.toggle(
+      "is-single-year",
+      selectedYear !== "total"
+    );
   }
 
   const targetRows =
@@ -995,23 +1035,50 @@ function formatPlayerYears(years) {
     return "－";
   }
 
-  if (years.length === 1) {
-    return years[0];
+  const sortedYears =
+    [...new Set(years)]
+      .map(year => Number(year))
+      .filter(Number.isFinite)
+      .sort((a, b) => a - b);
+
+  if (!sortedYears.length) {
+    return "－";
   }
 
-  const firstYear = years[0];
-  const lastYear =
-    years[years.length - 1];
+  const yearRanges = [];
+  let rangeStart = sortedYears[0];
+  let rangeEnd = sortedYears[0];
 
-  const isContinuous =
-    years.every((year, index) =>
-      Number(year) ===
-      Number(firstYear) + index
+  for (
+    let index = 1;
+    index < sortedYears.length;
+    index += 1
+  ) {
+    const currentYear =
+      sortedYears[index];
+
+    if (currentYear === rangeEnd + 1) {
+      rangeEnd = currentYear;
+      continue;
+    }
+
+    yearRanges.push(
+      rangeStart === rangeEnd
+        ? `${rangeStart}`
+        : `${rangeStart}〜${rangeEnd}`
     );
 
-  return isContinuous
-    ? `${firstYear}〜${lastYear}`
-    : years.join("・");
+    rangeStart = currentYear;
+    rangeEnd = currentYear;
+  }
+
+  yearRanges.push(
+    rangeStart === rangeEnd
+      ? `${rangeStart}`
+      : `${rangeStart}〜${rangeEnd}`
+  );
+
+  return yearRanges.join("・");
 }
 
 function createPlayerUrl(player) {
