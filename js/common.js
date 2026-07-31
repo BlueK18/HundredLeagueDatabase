@@ -23,6 +23,20 @@ HLDB.DATA_URLS = {
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1687688944&single=true&output=csv"
 };
 
+/*
+  開催中シーズン用CSV。
+
+  通常CSVはこれまでどおり読み込み、
+  current CSVにデータがある場合だけ後ろへ結合する。
+  シーズン終了後はcurrent側を通常CSVへ移し、
+  current側を次年度用の見出しだけに戻す。
+*/
+HLDB.CURRENT_DATA_URLS = {
+  teams: "data/teams-current.csv",
+  players: "data/players-current.csv",
+  matches: "data/matches-current.csv"
+};
+
 
 /* ========================================
    CSV解析
@@ -234,6 +248,67 @@ if (dataName === "news") {
 } else {
   freshData =
     await HLDB.fetchCsv(url);
+
+  const currentUrl =
+    HLDB.CURRENT_DATA_URLS?.[
+      dataName
+    ];
+
+  if (currentUrl) {
+    try {
+      const currentData =
+        await HLDB.fetchCsv(
+          currentUrl
+        );
+
+      if (
+        Array.isArray(currentData) &&
+        currentData.length > 0
+      ) {
+        const currentYears =
+          new Set(
+            currentData
+              .map(row =>
+                String(
+                  row["年度"] || ""
+                ).trim()
+              )
+              .filter(Boolean)
+          );
+
+        const historyData =
+          freshData.filter(row => {
+            const year =
+              String(
+                row["年度"] || ""
+              ).trim();
+
+            return (
+              !year ||
+              !currentYears.has(year)
+            );
+          });
+
+        freshData = [
+          ...historyData,
+          ...currentData
+        ];
+
+        console.log(
+          `${dataName}: 開催中シーズンCSVを結合（${currentData.length}件・同年度はcurrentを優先）`
+        );
+      }
+    } catch (currentDataError) {
+      /*
+        current CSVは追加データなので、
+        読み込めなくても従来CSVだけで表示を続ける。
+      */
+      console.warn(
+        `${dataName}: 開催中シーズンCSVを読み込めないため従来CSVのみ使用`,
+        currentDataError
+      );
+    }
+  }
 }
 
 HLDB.memoryDataCache[
