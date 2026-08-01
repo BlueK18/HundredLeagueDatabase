@@ -16,7 +16,15 @@ body{
 
 header{
 
-  background:#d4af37;
+  position:relative;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #f3ca2e 0%,
+      #e2b51f 72%,
+      #d4a91d 100%
+    );
 
   color:black;
 
@@ -24,9 +32,41 @@ header{
 
   padding:30px;
 
+  overflow:hidden;
+
+}
+
+header::before,
+header::after{
+  content:"";
+
+  position:absolute;
+  top:0;
+  bottom:0;
+
+  width:clamp(52px, 7vw, 110px);
+
+  background-image:url("../hero-mahjong-honor-tiles.png");
+  background-repeat:no-repeat;
+  background-size:auto 100%;
+
+  pointer-events:none;
+}
+
+header::before{
+  left:0;
+  background-position:left center;
+}
+
+header::after{
+  right:0;
+  background-position:right center;
 }
 
 header h1{
+
+  position:relative;
+  z-index:1;
 
   font-size:40px;
 
@@ -34,8 +74,77 @@ header h1{
 
 header p{
 
+  position:relative;
+  z-index:1;
+
   margin-top:10px;
 
+}
+
+/* ========================================
+ HOME ヒーロー
+======================================== */
+.home-hero{
+  position:relative;
+
+  display:flex;
+  min-height:220px;
+  padding:40px 24px;
+
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #f3ca2e 0%,
+      #e2b51f 72%,
+      #d4a91d 100%
+    );
+
+  overflow:hidden;
+}
+
+.home-hero::before,
+.home-hero::after{
+  content:"";
+
+  position:absolute;
+  top:0;
+  bottom:0;
+
+  width:clamp(52px, 7vw, 110px);
+
+  background-image:url("../hero-mahjong-honor-tiles.png");
+  background-repeat:no-repeat;
+  background-size:auto 100%;
+
+  pointer-events:none;
+}
+
+.home-hero::before{
+  left:0;
+  background-position:left center;
+}
+
+.home-hero::after{
+  right:0;
+  background-position:right center;
+}
+
+.home-hero h1,
+.home-hero p{
+  position:relative;
+  z-index:1;
+
+  max-width:min(72%, 900px);
+
+  text-wrap:balance;
+}
+
+.home-hero h1{
+  text-shadow:0 1px 1px rgba(255,255,255,.22);
 }
 
 .menu{
@@ -1997,6 +2106,38 @@ white-space: nowrap;
     margin-top: 14px;
     font-size: 16px;
     line-height: 1.4;
+  }
+
+  .home-hero {
+    min-height:0;
+    aspect-ratio:1983 / 793;
+    padding:20px 54px;
+
+    background-color:#d4af37;
+    background-image:url("../hero-mahjong-honor-tiles.png");
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:cover;
+  }
+
+  .home-hero::before,
+  .home-hero::after {
+    display:none;
+  }
+
+  .home-hero h1,
+  .home-hero p {
+    max-width:100%;
+  }
+
+  .home-hero h1 {
+    font-size:clamp(22px, 6.6vw, 28px);
+    line-height:1.25;
+  }
+
+  .home-hero p {
+    margin-top:8px;
+    font-size:14px;
   }
 
 }
