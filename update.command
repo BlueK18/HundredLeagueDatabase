@@ -52,6 +52,37 @@ download_csv() {
       rm -f "$temp_file"
       return 1
     fi
+
+    if ! awk '
+      index($0, "#N/A") { invalid = 1 }
+      END { exit(invalid ? 1 : 0) }
+    ' "$temp_file"
+    then
+      echo "❌ $filename の取得データが不正です。"
+      echo "   #N/A を含むため上書きしません。"
+      rm -f "$temp_file"
+      return 1
+    fi
+
+    data_row_count="$(awk '
+      NR > 1 && $0 !~ /^[[:space:]]*$/ { count += 1 }
+      END { print count + 0 }
+    ' "$temp_file")"
+
+    if [ "$data_row_count" -eq 0 ]; then
+      case "$filename" in
+        *current*)
+          echo "ℹ️ $filename は見出しのみです。currentデータなしとして更新します。"
+          ;;
+        *)
+          echo "❌ $filename の取得データが見出しだけです。"
+          echo "   mainデータは上書きしません。"
+          rm -f "$temp_file"
+          return 1
+          ;;
+      esac
+    fi
+
     mv "$temp_file" "$output"
     echo "✅ $filename 完了"
     echo ""
