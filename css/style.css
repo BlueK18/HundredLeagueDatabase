@@ -313,6 +313,37 @@ tr:hover{
       font-size:clamp(15px,4.3vw,20px);
   }
 }
+
+/* 数値・順位の意味色 */
+.data-positive{
+  color:var(--hldb-positive) !important;
+  font-weight:800;
+}
+
+.data-negative{
+  color:var(--hldb-negative) !important;
+  font-weight:800;
+}
+
+.data-rank-1{
+  color:#e8b90e !important;
+  font-weight:800;
+}
+
+.data-rank-2{
+  color:#9aafd2 !important;
+  font-weight:800;
+}
+
+.data-rank-3{
+  color:#71b846 !important;
+  font-weight:800;
+}
+
+.data-rank-4{
+  color:#ad7bd5 !important;
+  font-weight:800;
+}
 .team-matches-section{
   max-width:1100px;
   margin:20px auto 60px;
@@ -7025,3 +7056,230 @@ td:nth-child(2){
   }
 }
 .detailed-stats-section{--stats-gold:#d7aa13}.detailed-filter{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.detailed-filter button,.detailed-filter select{min-height:40px;padding:8px 22px;border:1px solid #59606a;border-radius:6px;background:#17191c;color:#eef1f6;font:inherit}.detailed-filter button.is-active{border-color:var(--stats-gold);background:linear-gradient(135deg,#e1b820,#a97b00);color:#111;font-weight:700}.detailed-block{margin-top:12px;border:1px solid #3b4048;border-radius:8px;background:linear-gradient(135deg,#141619,#1b1d20);overflow:hidden}.detailed-block-title{margin:0;padding:10px 14px;border-bottom:1px solid #3b4048;font-size:1.05rem}.detailed-block-title:before{content:"";display:inline-block;width:4px;height:22px;margin-right:10px;border-radius:3px;background:var(--stats-gold);vertical-align:middle}.placement-grid,.summary-grid,.detailed-panels{display:grid;gap:12px;padding:14px}.placement-grid{grid-template-columns:repeat(4,1fr)}.placement-card,.detailed-metric,.detailed-panel{border:1px solid #3b4048;border-radius:6px;background:linear-gradient(135deg,#1d2024,#15171a)}.placement-card{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:13px 18px;text-align:center}.placement-card strong{font-size:1.45rem}.placement-card.rank-1 strong{color:#e8b90e}.placement-card.rank-2 strong{color:#9aafd2}.placement-card.rank-3 strong{color:#71b846}.placement-card.rank-4 strong{color:#ad7bd5}.summary-grid{grid-template-columns:repeat(5,1fr)}.detailed-metric{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}.detailed-metric span{color:#c9ced7}.detailed-metric strong{font-size:1.05rem;white-space:nowrap}.detailed-metric .is-positive{color:#e8b90e}.detailed-metric .is-negative{color:#f06a62}.detailed-panels{grid-template-columns:repeat(4,1fr)}.detailed-panel{padding:10px}.detailed-panel h3{display:flex;align-items:center;gap:8px;margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid #30343a;font-size:1rem}.detailed-panel h3 svg{width:18px}.detailed-panel-list .detailed-metric{border:0;border-bottom:1px solid #30343a;border-radius:0;background:none;padding:5px 2px}.role-table-wrap{overflow-x:auto;padding:0 14px 12px}.role-table{width:100%;border-collapse:collapse}.role-table th,.role-table td;padding:9px 12px;border-bottom:1px solid #30343a;text-align:center}.role-table th:first-child,.role-table td:first-child{text-align:left}.detailed-empty{padding:24px;text-align:center;color:#aeb5c0}@media(max-width:900px){.placement-grid{grid-template-columns:repeat(2,1fr)}.summary-grid{grid-template-columns:repeat(2,1fr)}.detailed-panels{grid-template-columns:1fr 1fr}}@media(max-width:600px){.placement-grid,.summary-grid,.detailed-panels{grid-template-columns:1fr}.detailed-filter button,.detailed-filter select{flex:1;padding-inline:10px}.role-table{min-width:650px}}
+
+/* ========================================
+   COLOR THEME TRIAL 2026-08-10
+   詳細成績ページを基準にした全体配色
+======================================== */
+:root{
+  --hldb-bg:#0d0f11;
+  --hldb-surface:#15181b;
+  --hldb-surface-2:#1a1d21;
+  --hldb-surface-3:#20242a;
+  --hldb-border:#363c45;
+  --hldb-border-soft:#2b3037;
+  --hldb-text:#f2f4f7;
+  --hldb-muted:#aeb5c0;
+  --hldb-gold:#e0b510;
+  --hldb-gold-soft:#8f7210;
+  --hldb-positive:#e8b90e;
+  --hldb-negative:#f06a62;
+}
+
+body{
+  background:
+    radial-gradient(circle at 50% -15%,rgba(224,181,16,.07),transparent 38%),
+    var(--hldb-bg);
+  color:var(--hldb-text);
+}
+
+.site-nav{
+  background:rgba(8,9,10,.96);
+  border-bottom:1px solid var(--hldb-border);
+  box-shadow:0 8px 28px rgba(0,0,0,.26);
+}
+
+.site-nav-links a{
+  color:#d9dde4;
+}
+
+.site-nav-links a:hover{
+  color:var(--hldb-gold);
+}
+
+.site-search input,
+select,
+.filter-field select,
+.ranking-controls select,
+.player-filter-section select{
+  border:1px solid var(--hldb-border);
+  background:var(--hldb-surface);
+  color:var(--hldb-text);
+  box-shadow:none;
+}
+
+.site-search input:focus,
+select:focus{
+  border-color:var(--hldb-gold);
+  outline:none;
+  box-shadow:0 0 0 3px rgba(224,181,16,.12);
+}
+
+.home-menu-card,
+.favorite-player-card,
+.player-card,
+.award-category-card,
+.award-ranking-card,
+.news-card,
+.team-summary-card,
+.regular-ranking-section,
+.player-awards-section,
+.player-head-to-head-section,
+.player-matches-section,
+.filter-panel{
+  border:1px solid var(--hldb-border);
+  background:linear-gradient(135deg,var(--hldb-surface-2),var(--hldb-surface));
+  box-shadow:0 12px 28px rgba(0,0,0,.18);
+}
+
+.home-menu-card:hover,
+.favorite-player-card:hover,
+.player-card:hover,
+.award-ranking-card:hover,
+.news-card:hover{
+  border-color:var(--hldb-gold-soft);
+  background:linear-gradient(135deg,#202329,#17191c);
+  box-shadow:0 14px 34px rgba(0,0,0,.3);
+}
+
+.ranking,
+.favorites-section,
+.team-detail,
+.team-players-section,
+.team-matches-section{
+  color:var(--hldb-text);
+}
+
+.ranking > h2,
+.favorites-section > h2,
+.team-players-section > h2,
+.team-matches-section > h2,
+.player-awards-section > h2,
+.player-head-to-head-header h2,
+.matches-header h2,
+.regular-ranking-section > h2,
+.award-category-header h2,
+.filter-panel-title{
+  position:relative;
+  padding-left:14px;
+  text-align:left;
+}
+
+.ranking > h2::before,
+.favorites-section > h2::before,
+.team-players-section > h2::before,
+.team-matches-section > h2::before,
+.player-awards-section > h2::before,
+.matches-header h2::before,
+.regular-ranking-section > h2::before,
+.award-category-header h2::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:4px;
+  height:1.15em;
+  border-radius:999px;
+  background:var(--hldb-gold);
+  transform:translateY(-50%);
+}
+
+table,
+.matches-table-wrapper,
+.table-scroll{
+  background:var(--hldb-surface);
+}
+
+.matches-table-wrapper,
+.table-scroll{
+  border:1px solid var(--hldb-border);
+  border-radius:10px;
+  box-shadow:0 12px 26px rgba(0,0,0,.16);
+}
+
+th{
+  border-bottom:1px solid var(--hldb-border);
+  background:var(--hldb-surface-3);
+  color:#dfe3e9;
+}
+
+td{
+  border-bottom:1px solid var(--hldb-border-soft);
+}
+
+tbody tr:hover,
+.player-match-row:hover,
+.team-match-row:hover{
+  background:#242930;
+}
+
+.team-stats > div,
+.regular-ranking-row,
+.player-award-card,
+.player-head-to-head-summary,
+.player-head-to-head-match{
+  border:1px solid var(--hldb-border);
+  background:linear-gradient(135deg,var(--hldb-surface-2),var(--hldb-surface));
+  box-shadow:none;
+}
+
+.team-stats span,
+.player-card-stats span,
+.home-menu-card small,
+.news-date,
+.news-body,
+.regular-ranking-note,
+.no-data-message{
+  color:var(--hldb-muted);
+}
+
+.team-stats strong,
+.player-card-name,
+.award-value,
+.regular-ranking-value,
+.home-menu-icon,
+.player-award-rank{
+  color:var(--hldb-gold);
+}
+
+.favorite-button,
+.player-screenshot-button,
+.player-detailed-stats-button,
+.back-button,
+.news-link-button,
+.team-profile-link{
+  border-color:var(--hldb-gold-soft);
+  background:var(--hldb-surface);
+  color:var(--hldb-gold);
+}
+
+.favorite-button:hover,
+.player-screenshot-button:hover,
+.player-detailed-stats-button:hover,
+.back-button:hover,
+.news-link-button:hover,
+.team-profile-link:hover{
+  border-color:var(--hldb-gold);
+  background:var(--hldb-gold);
+  color:#101113;
+}
+
+.stage-badge,
+.team-player-badge,
+.news-category{
+  border:1px solid var(--hldb-border);
+  background:#24282e;
+}
+
+@media(max-width:600px){
+  .home-menu-card,
+  .favorite-player-card,
+  .award-category-card,
+  .news-card,
+  .regular-ranking-section,
+  .player-awards-section,
+  .player-head-to-head-section,
+  .player-matches-section{
+    border-radius:10px;
+  }
+}

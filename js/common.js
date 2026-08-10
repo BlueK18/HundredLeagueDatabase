@@ -2256,6 +2256,134 @@ HLDB.initializeIcons = function () {
 
 
 /* ========================================
+   数値・順位の共通カラー表示
+======================================== */
+
+HLDB.applyDataColors = function (
+  root = document
+) {
+  const tables =
+    root.querySelectorAll?.("table") || [];
+
+  tables.forEach(table => {
+    const headers = [
+      ...table.querySelectorAll("thead th")
+    ].map(header =>
+      String(header.textContent || "").trim()
+    );
+
+    table.querySelectorAll("tbody tr")
+      .forEach(row => {
+        [...row.children].forEach(
+          (cell, index) => {
+            const header = headers[index] || "";
+            const text = String(
+              cell.textContent || ""
+            ).trim();
+
+            cell.classList.remove(
+              "data-positive",
+              "data-negative",
+              "data-rank-1",
+              "data-rank-2",
+              "data-rank-3",
+              "data-rank-4"
+            );
+
+            if (
+              /(スコア|ポイント|収支|ポイント差)/
+                .test(header)
+            ) {
+              if (/^[+＋]/.test(text)) {
+                cell.classList.add(
+                  "data-positive"
+                );
+              } else if (/^[-−]/.test(text)) {
+                cell.classList.add(
+                  "data-negative"
+                );
+              }
+            }
+
+            if (
+              header === "順位" ||
+              header === "着順"
+            ) {
+              const rankMatch =
+                text.match(/^([1-4])(?:位|着)?/);
+
+              if (rankMatch) {
+                cell.classList.add(
+                  `data-rank-${rankMatch[1]}`
+                );
+              }
+            }
+          }
+        );
+      });
+  });
+
+  root.querySelectorAll?.(
+    "main strong, main b"
+  ).forEach(element => {
+    const text = String(
+      element.textContent || ""
+    ).trim();
+
+    element.classList.remove(
+      "data-positive",
+      "data-negative"
+    );
+
+    if (/^[+＋]/.test(text)) {
+      element.classList.add("data-positive");
+    } else if (/^[-−]/.test(text)) {
+      element.classList.add("data-negative");
+    }
+  });
+};
+
+
+HLDB.initializeDataColors = function () {
+  let updateScheduled = false;
+
+  const scheduleUpdate = () => {
+    if (updateScheduled) return;
+
+    updateScheduled = true;
+
+    requestAnimationFrame(() => {
+      updateScheduled = false;
+      HLDB.applyDataColors(document);
+    });
+  };
+
+  scheduleUpdate();
+
+  if (!document.body) return;
+
+  const observer = new MutationObserver(
+    mutations => {
+      const hasNewContent = mutations.some(
+        mutation =>
+          mutation.addedNodes.length > 0 ||
+          mutation.removedNodes.length > 0
+      );
+
+      if (hasNewContent) {
+        scheduleUpdate();
+      }
+    }
+  );
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+};
+
+
+/* ========================================
    共通UI初期化
 ======================================== */
 
@@ -2289,6 +2417,9 @@ HLDB.initializeCommonUi =
 
       HLDB
         .initializeIcons();
+
+      HLDB
+        .initializeDataColors();
 
         await HLDB
   .updateNewsNavigationState();
