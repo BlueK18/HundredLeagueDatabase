@@ -17,6 +17,15 @@ HLDB.DATA_URLS = {
   awards: "data/awards.csv",
   playerAlias: "data/playerAlias.csv",
 
+  detailedPlayersMain:
+    "data/players_main.csv",
+  detailedPlayersCurrent:
+    "data/players_current.csv",
+  detailedRolesMain:
+    "data/roles_main.csv",
+  detailedRolesCurrent:
+    "data/roles_current.csv",
+
   news: "data/news.csv",
 
   newsFallback:

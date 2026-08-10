@@ -2946,74 +2946,6 @@ select option {
   text-align:center;
 }
 
-/* 共通（PC・スマホ） */
-.match-team{
-  width:140px;
-  min-width:140px;
-  text-align:center;
-}
-
-/* スマホだけ2行表示 */
-@media (max-width:768px){
-
-  .match-team{
-      width:130px;
-      min-width:130px;
-
-      white-space:normal;
-      word-break:keep-all;
-      overflow-wrap:anywhere;
-      line-height:1.3;
-  }
-
-}
-/* ========================================
- 試合履歴：チーム名の表示を最終調整
-======================================== */
-
-/* PC版：チーム名は必ず1行 */
-.player-matches-section td.match-team{
-  width:180px;
-  min-width:180px;
-  max-width:180px;
-
-  white-space:nowrap;
-  word-break:keep-all;
-  overflow-wrap:normal;
-
-  text-align:center;
-  vertical-align:middle;
-}
-
-/* PC版：チーム列の見出しも同じ幅 */
-.player-matches-section th:nth-child(2){
-  width:180px;
-  min-width:180px;
-  max-width:180px;
-  white-space:nowrap;
-}
-
-/* スマホ版：長いチーム名だけ折り返す */
-@media (max-width:768px){
-
-  .player-matches-section td.match-team{
-      width:130px;
-      min-width:130px;
-      max-width:130px;
-
-      white-space:normal;
-      word-break:keep-all;
-      overflow-wrap:normal;
-
-      line-height:1.3;
-  }
-
-  .player-matches-section th:nth-child(2){
-      width:130px;
-      min-width:130px;
-      max-width:130px;
-  }
-}
 .team-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -3619,35 +3551,30 @@ text-align: left !important;
   
   .match-history-table th:nth-child(1),
   .match-history-table td:nth-child(1){
-      width:20%;
+      width:24%;
   }
   
   .match-history-table th:nth-child(2),
   .match-history-table td:nth-child(2){
-      width:24%;
+      width:13%;
+      white-space:nowrap;
   }
   
   .match-history-table th:nth-child(3),
   .match-history-table td:nth-child(3){
-      width:10%;
+      width:20%;
       white-space:nowrap;
   }
   
   .match-history-table th:nth-child(4),
   .match-history-table td:nth-child(4){
-      width:14%;
+      width:23%;
       white-space:nowrap;
   }
   
   .match-history-table th:nth-child(5),
   .match-history-table td:nth-child(5){
-      width:16%;
-      white-space:nowrap;
-  }
-  
-  .match-history-table th:nth-child(6),
-  .match-history-table td:nth-child(6){
-      width:16%;
+      width:20%;
   }
   
   }
@@ -6573,7 +6500,8 @@ width:135px !important;
   flex-wrap:wrap;
 }
 
-.player-screenshot-button{
+.player-screenshot-button,
+.player-detailed-stats-button{
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -6600,13 +6528,15 @@ width:135px !important;
     transform 0.2s ease;
 }
 
-.player-screenshot-button:hover{
+.player-screenshot-button:hover,
+.player-detailed-stats-button:hover{
   background:#d4af37;
   color:#111;
   transform:translateY(-1px);
 }
 
-.player-screenshot-button svg{
+.player-screenshot-button svg,
+.player-detailed-stats-button svg{
   width:18px;
   height:18px;
   stroke-width:2.2;
@@ -6619,17 +6549,27 @@ width:135px !important;
     gap:10px;
   }
 
-  .player-screenshot-button{
+  .player-screenshot-button,
+  .player-detailed-stats-button{
     width:42px;
     min-width:42px;
     height:42px;
     padding:0;
   }
 
-  .player-screenshot-button span{
+  .player-screenshot-button span,
+  .player-detailed-stats-button span{
     display:none;
   }
 
+}
+
+.player-detailed-stats-button{
+  text-decoration:none;
+}
+
+.player-detailed-stats-button[hidden]{
+  display:none;
 }
 /* ========================================
    選手画像カード
@@ -7084,3 +7024,4 @@ td:nth-child(2){
     font-size:11px;
   }
 }
+.detailed-stats-section{--stats-gold:#d7aa13}.detailed-filter{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.detailed-filter button,.detailed-filter select{min-height:40px;padding:8px 22px;border:1px solid #59606a;border-radius:6px;background:#17191c;color:#eef1f6;font:inherit}.detailed-filter button.is-active{border-color:var(--stats-gold);background:linear-gradient(135deg,#e1b820,#a97b00);color:#111;font-weight:700}.detailed-block{margin-top:12px;border:1px solid #3b4048;border-radius:8px;background:linear-gradient(135deg,#141619,#1b1d20);overflow:hidden}.detailed-block-title{margin:0;padding:10px 14px;border-bottom:1px solid #3b4048;font-size:1.05rem}.detailed-block-title:before{content:"";display:inline-block;width:4px;height:22px;margin-right:10px;border-radius:3px;background:var(--stats-gold);vertical-align:middle}.placement-grid,.summary-grid,.detailed-panels{display:grid;gap:12px;padding:14px}.placement-grid{grid-template-columns:repeat(4,1fr)}.placement-card,.detailed-metric,.detailed-panel{border:1px solid #3b4048;border-radius:6px;background:linear-gradient(135deg,#1d2024,#15171a)}.placement-card{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:13px 18px;text-align:center}.placement-card strong{font-size:1.45rem}.placement-card.rank-1 strong{color:#e8b90e}.placement-card.rank-2 strong{color:#9aafd2}.placement-card.rank-3 strong{color:#71b846}.placement-card.rank-4 strong{color:#ad7bd5}.summary-grid{grid-template-columns:repeat(5,1fr)}.detailed-metric{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px}.detailed-metric span{color:#c9ced7}.detailed-metric strong{font-size:1.05rem;white-space:nowrap}.detailed-metric .is-positive{color:#e8b90e}.detailed-metric .is-negative{color:#f06a62}.detailed-panels{grid-template-columns:repeat(4,1fr)}.detailed-panel{padding:10px}.detailed-panel h3{display:flex;align-items:center;gap:8px;margin:0 0 6px;padding-bottom:8px;border-bottom:1px solid #30343a;font-size:1rem}.detailed-panel h3 svg{width:18px}.detailed-panel-list .detailed-metric{border:0;border-bottom:1px solid #30343a;border-radius:0;background:none;padding:5px 2px}.role-table-wrap{overflow-x:auto;padding:0 14px 12px}.role-table{width:100%;border-collapse:collapse}.role-table th,.role-table td;padding:9px 12px;border-bottom:1px solid #30343a;text-align:center}.role-table th:first-child,.role-table td:first-child{text-align:left}.detailed-empty{padding:24px;text-align:center;color:#aeb5c0}@media(max-width:900px){.placement-grid{grid-template-columns:repeat(2,1fr)}.summary-grid{grid-template-columns:repeat(2,1fr)}.detailed-panels{grid-template-columns:1fr 1fr}}@media(max-width:600px){.placement-grid,.summary-grid,.detailed-panels{grid-template-columns:1fr}.detailed-filter button,.detailed-filter select{flex:1;padding-inline:10px}.role-table{min-width:650px}}
