@@ -60,8 +60,8 @@
   function refreshInputSelectors(rebuild=true){
     const date=inputDate||today(),hasSchedule=schedule.some(row=>row["対局日"]===date);
     $("noScheduleMessage").hidden=hasSchedule;$("inputInfoBanner").hidden=!hasSchedule;$("scoreForm").hidden=!hasSchedule;
-    if(!hasSchedule){const previous=previousScheduledDate(date);$("previousInputSection").hidden=!previous;$("previousInputSection").dataset.date=previous||"";$("playerInputs").innerHTML="";$("formMessage").hidden=true;return}
-    $("inputInfoBanner").textContent=date===today()?"予定表から本日のチームを自動表示します":`${date.replaceAll("-","/")} 前節のチームを表示しています`;
+    if(!hasSchedule){const previous=previousCalendarDate(date),hasPrevious=schedule.some(row=>row["対局日"]===previous);$("previousInputSection").hidden=!hasPrevious;$("previousInputSection").dataset.date=hasPrevious?previous:"";$("playerInputs").innerHTML="";$("formMessage").hidden=true;return}
+    $("inputInfoBanner").textContent=date===today()?"予定表から本日のチームを自動表示します":`${date.replaceAll("-","/")} 前日のチームを表示しています`;
     const phase=phaseForDate(date),league=$("leagueInput").value;
     $("leagueInputField").hidden=!phaseUsesLeague(phase);
     $("tableInputField").hidden=!phaseUsesTable(phase);
@@ -110,7 +110,7 @@
 
   function setupInputPreferences(){const prefs=savedPrefs();if(["Aリーグ","Bリーグ"].includes(prefs.league))$("leagueInput").value=prefs.league;refreshInputSelectors();if(prefs.table&&[...$("tableInput").options].some(o=>o.value===prefs.table)){$("tableInput").value=prefs.table;refreshInputSelectors()}}
   function scheduledDates(){return unique(schedule.map(row=>row["対局日"])).sort()}
-  function previousScheduledDate(date){return[...scheduledDates()].reverse().find(item=>item<date)||""}
+  function previousCalendarDate(date){const value=new Date(`${date}T12:00:00`);value.setDate(value.getDate()-1);return value.toLocaleDateString("sv-SE")}
   function adjacentSection(direction){const dates=scheduledDates(),current=$("listDate").value||today();return direction<0?[...dates].reverse().find(date=>date<current):dates.find(date=>date>current)}
   function updateSectionNavigation(){$("previousDate").disabled=!adjacentSection(-1);$("nextDate").disabled=!adjacentSection(1)}
   function moveSection(direction){const date=adjacentSection(direction);if(!date)return;$("listDate").value=date;refreshListFilters()}
