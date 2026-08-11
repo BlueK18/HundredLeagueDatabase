@@ -20,6 +20,7 @@
   let schedule=[],playerMap={...fallbackPlayers},pending=null,selectedKey="",activeScoreInput=null,pendingAdminKey="",calendarMonth=null,adminPassword="",inputDate="",autoInputDate=true;
   const today=()=>new Date().toLocaleDateString("sv-SE");
   const timedInputDate=()=>{const value=new Date();value.setHours(value.getHours()-12);return value.toLocaleDateString("sv-SE")};
+  const currentDaySubmissionLocked=date=>date===today()&&new Date().getHours()<21;
   const readStore=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||"{}")}catch{return{}}};
   const writeStore=data=>localStorage.setItem(STORE_KEY,JSON.stringify(data));
   const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
@@ -59,10 +60,10 @@
   function allKnownTeams(){return unique([...Object.keys(playerMap),...Object.values(fallbackTeams).flat()])}
 
   function refreshInputSelectors(rebuild=true){
-    const date=inputDate||today(),hasSchedule=schedule.some(row=>row["対局日"]===date);
+    const date=inputDate||today(),calendarToday=today(),hasSchedule=schedule.some(row=>row["対局日"]===date),todayHasSchedule=schedule.some(row=>row["対局日"]===calendarToday),waitingForNoon=autoInputDate&&new Date().getHours()<12&&todayHasSchedule&&date!==calendarToday;
     $("noScheduleMessage").hidden=hasSchedule;$("inputInfoBanner").hidden=!hasSchedule;$("scoreForm").hidden=!hasSchedule;
-    if(!hasSchedule){const previous=previousCalendarDate(date),hasPrevious=schedule.some(row=>row["対局日"]===previous);$("previousInputSection").hidden=!hasPrevious;$("previousInputSection").dataset.date=hasPrevious?previous:"";$("playerInputs").innerHTML="";$("formMessage").hidden=true;return}
-    $("inputInfoBanner").textContent=date===today()?"予定表から本日のチームを自動表示します":`${date.replaceAll("-","/")} 前日のチームを表示しています`;
+    if(!hasSchedule){$("noScheduleText").textContent=waitingForNoon?"本日の入力フォームは12時に自動で切り替わります。":"本日は開催日ではありません。";const previous=previousCalendarDate(date),hasPrevious=schedule.some(row=>row["対局日"]===previous);$("previousInputSection").hidden=!hasPrevious;$("previousInputSection").dataset.date=hasPrevious?previous:"";$("playerInputs").innerHTML="";$("formMessage").hidden=true;return}
+    $("inputInfoBanner").textContent=waitingForNoon?"本日の入力フォームは12時に自動で切り替わります":date===calendarToday?"予定表から本日のチームを自動表示します":`${date.replaceAll("-","/")} 前日のチームを表示しています`;
     const phase=phaseForDate(date),league=$("leagueInput").value;
     $("leagueInputField").hidden=!phaseUsesLeague(phase);
     $("tableInputField").hidden=!phaseUsesTable(phase);
@@ -119,7 +120,7 @@
   function openCalendar(){const current=$("listDate").value||today();calendarMonth=new Date(`${current}T12:00:00`);renderCalendar();$("scheduleCalendar").hidden=false}
 
   $("scoreForm").onsubmit=event=>{event.preventDefault();const data=getInput(),error=validateRows(data.rows);$("formMessage").hidden=!error;$("formMessage").textContent=error;if(error)return;pending=data;renderConfirm(data);show("confirmView")};
-  $("backToInput").onclick=()=>show("inputView");$("submitScores").onclick=async()=>{const button=$("submitScores"),key=rowKey(pending);button.disabled=true;try{const result=await apiRequest({action:"submit",id:key,data:pending}),data=readStore();data[key]=result.entry;writeStore(data);$("successModal").hidden=false}catch(error){alert(error.message)}finally{button.disabled=false}};$("closeSuccess").onclick=()=>{$("successModal").hidden=true;$("listDate").value=pending.date;if(pending.league)$("listLeague").value=pending.league;refreshListFilters();show("listView")};
+  $("backToInput").onclick=()=>show("inputView");$("submitScores").onclick=async()=>{if(currentDaySubmissionLocked(pending.date)){alert("当日分の成績は21時以降に送信できます。");return}const button=$("submitScores"),key=rowKey(pending);button.disabled=true;try{const result=await apiRequest({action:"submit",id:key,data:pending}),data=readStore();data[key]=result.entry;writeStore(data);$("successModal").hidden=false}catch(error){alert(error.message)}finally{button.disabled=false}};$("closeSuccess").onclick=()=>{$("successModal").hidden=true;$("listDate").value=pending.date;if(pending.league)$("listLeague").value=pending.league;refreshListFilters();show("listView")};
   $("leagueInput").onchange=()=>refreshInputSelectors();$("tableInput").onchange=()=>refreshInputSelectors();$("matchInput").onchange=()=>{savePrefs();buildPlayerInputs(currentScheduleRow())};
   $("previousInputSection").onclick=()=>{const date=$("previousInputSection").dataset.date;if(!date)return;autoInputDate=false;inputDate=date;refreshInputSelectors()};
   $("navInput").onclick=()=>show("inputView");$("navList").onclick=()=>{refreshListFilters();show("listView")};$("listDate").onclick=openCalendar;$("listLeague").onchange=renderList;$("previousDate").onclick=()=>moveSection(-1);$("nextDate").onclick=()=>moveSection(1);$("todayButton").onclick=()=>{$("listDate").value=today();refreshListFilters()};document.addEventListener("click",event=>{if(!event.target.closest(".date-picker")&&!event.target.closest("#scheduleCalendar"))$("scheduleCalendar").hidden=true});
