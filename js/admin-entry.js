@@ -2,7 +2,7 @@
   "use strict";
 
   const ADMIN_PLAYER_ID="P0018";
-  const PASSWORD_HASH="d732d6fe703eb37cc4b8b60acc9dbecf181db0ff2309958c5c3e853a16945860";
+  const PASSWORD_HASH="31ed5189ae9533ba7beb9dc823db86b0f70ffe2920ffacc2021044b99c6ec828";
   const params=new URLSearchParams(window.location.search);
   const button=document.getElementById("adminEntryButton");
   const dialog=document.getElementById("adminEntryDialog");
@@ -21,7 +21,6 @@
   }
 
   button.addEventListener("click",()=>{
-    password.value="";
     error.hidden=true;
     dialog.showModal();
     requestAnimationFrame(()=>password.focus());

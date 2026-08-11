@@ -8,7 +8,7 @@
   const SCORE_API_URL="https://script.google.com/macros/s/AKfycbxRurjs6VukY8BUswjK4uFx_20zpo5Ar5ZZxNVeKEJHSZCKceAx_vUHge9tb0JgkJ7B/exec";
   const STORE_KEY="hldbScoreEntryDemoV2";
   const PREF_KEY="hldbScoreEntryPreferences";
-  const ADMIN_HASH="d732d6fe703eb37cc4b8b60acc9dbecf181db0ff2309958c5c3e853a16945860";
+  const ADMIN_HASH="31ed5189ae9533ba7beb9dc823db86b0f70ffe2920ffacc2021044b99c6ec828";
   const fallbackTeams={
     "Aリーグ":["武装","MJ東京","ZOO","SILVER WOLVES","最強位ズ","電光石火"],
     "Bリーグ":["さわやかMJ野郎の会","Team MJ lovers","教室生☆KSC","チートイズ","おたまーず","Brave Revengers"]
@@ -99,7 +99,7 @@
   function isAdminMode(){return sessionStorage.getItem("hldbScoreAdminMode")==="1"}
   async function sha256(value){const bytes=new TextEncoder().encode(value),digest=await crypto.subtle.digest("SHA-256",bytes);return Array.from(new Uint8Array(digest),byte=>byte.toString(16).padStart(2,"0")).join("")}
   function updateAdminButton(){const active=isAdminMode();$("adminModeButton").classList.toggle("active",active);$("adminModeButton").textContent=active?"✎":"🔒";$("adminModeButton").title=active?"管理者ログイン済み":"管理者ログイン"}
-  function openAdminLogin(key=""){pendingAdminKey=key;$("adminModePassword").value="";$("adminModeError").hidden=true;$("adminModeModal").hidden=false;requestAnimationFrame(()=>$("adminModePassword").focus())}
+  function openAdminLogin(key=""){pendingAdminKey=key;$("adminModeError").hidden=true;$("adminModeModal").hidden=false;requestAnimationFrame(()=>$("adminModePassword").focus())}
   function requestAdminEdit(key){if(isAdminMode()){openEdit(key);return}openAdminLogin(key)}
 
   function editTeamOptions(selected){return allKnownTeams().map(team=>`<option${team===selected?" selected":""}>${esc(team)}</option>`).join("")}
