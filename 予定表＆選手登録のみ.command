@@ -60,16 +60,8 @@ echo "========================================"
 echo ""
 echo "通常の update.command とは別の低頻度更新です。"
 echo ""
-echo "1：予定表・選手登録CSVのみ更新"
-echo "2：CSV更新＋変更済みのHTML・CSS・JSも送信"
+echo "予定表・選手登録CSVと、変更済みのHTML・CSS・JSを更新します。"
 echo ""
-read -r -p "更新方法を選択してください [1/2]：" UPDATE_MODE
-echo ""
-
-if [ "$UPDATE_MODE" != "1" ] && [ "$UPDATE_MODE" != "2" ]; then
-  echo "❌ 1または2を入力してください。"
-  pause_and_exit 1
-fi
 
 download_csv "1/2 Web用予定表" "$SCHEDULE_URL" "data/score-schedule.csv" \
   "対局日,開催区分,リーグ,卓,チーム1,チーム2,チーム3,チーム4,URL対象,参照元" || pause_and_exit 1
@@ -78,23 +70,14 @@ download_csv "2/2 Web用選手" "$PLAYERS_URL" "data/score-players.csv" \
   "リーグ,チーム,選手,参照元" || pause_and_exit 1
 
 git add -- data/score-schedule.csv data/score-players.csv
-
-if [ "$UPDATE_MODE" = "2" ]; then
-  git add -u -- '*.html' 'css/*.css' 'js/*.js'
-fi
+git add -u -- '*.html' 'css/*.css' 'js/*.js'
 
 if git diff --cached --quiet; then
   echo "変更はありませんでした。"
   pause_and_exit 0
 fi
 
-if [ "$UPDATE_MODE" = "1" ]; then
-  COMMIT_MESSAGE="成績入力用予定表・選手登録更新 $(date '+%Y-%m-%d %H:%M')"
-else
-  COMMIT_MESSAGE="成績入力データ・Web更新 $(date '+%Y-%m-%d %H:%M')"
-fi
-
-if ! git commit -m "$COMMIT_MESSAGE"; then
+if ! git commit -m "成績入力データ・Web更新 $(date '+%Y-%m-%d %H:%M')"; then
   echo "❌ コミットに失敗しました。"
   pause_and_exit 1
 fi
