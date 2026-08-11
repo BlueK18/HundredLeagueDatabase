@@ -2310,7 +2310,7 @@ HLDB.applyDataColors = function (
               header === "着順"
             ) {
               const rankMatch =
-                text.match(/^([1-4])(?:位|着)?/);
+                text.match(/^([1-4])(?:位|着)?$/);
 
               if (rankMatch) {
                 cell.classList.add(

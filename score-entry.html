@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>ハンドレッドリーグ 成績入力</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="stylesheet" href="css/score-entry.css?v=1">
+</head>
+<body>
+  <header class="entry-header">
+    <div class="entry-brand"><span aria-hidden="true">▤</span>ハンドレッドリーグ 成績入力</div>
+  </header>
+
+  <main class="entry-shell">
+    <section id="inputView" class="entry-view">
+      <h1>試合結果入力</h1>
+      <p class="info-banner">送信内容は運営確認後に成績へ反映されます</p>
+
+      <form id="scoreForm" novalidate>
+        <div class="panel filter-panel">
+          <label>リーグ
+            <select id="leagueInput">
+              <option>Aリーグ</option><option>Bリーグ</option>
+            </select>
+          </label>
+          <label>試合
+            <select id="matchInput">
+              <option>第一試合</option><option>第二試合</option><option>第三試合</option>
+              <option>第四試合</option><option>第五試合</option><option>第六試合</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="playerInputs" class="player-inputs"></div>
+        <div id="formMessage" class="form-message" role="alert" hidden></div>
+        <button type="submit" class="primary-button">内容を確認</button>
+      </form>
+    </section>
+
+    <section id="confirmView" class="entry-view" hidden>
+      <h1>入力内容の確認</h1>
+      <p class="info-banner">スコア順に自動で並び替えました</p>
+      <div id="confirmMatch" class="panel match-summary"></div>
+      <div class="panel">
+        <h2>入力内容</h2>
+        <div id="confirmPlayers" class="confirm-players"></div>
+      </div>
+      <div id="totalPanel" class="panel total-panel"></div>
+      <p class="warning-banner">送信後はこの画面から修正できません。内容をもう一度確認してください。</p>
+      <div class="button-stack">
+        <button id="backToInput" class="secondary-button" type="button">入力画面へ戻る</button>
+        <button id="submitScores" class="primary-button" type="button">この内容で送信する</button>
+      </div>
+      <p class="after-note">送信内容は運営確認後に成績へ反映されます</p>
+    </section>
+
+    <section id="listView" class="entry-view" hidden>
+      <h1>入力一覧</h1>
+      <div class="date-navigation">
+        <button id="previousDate" type="button" aria-label="前日">‹ 前日</button>
+        <label class="date-picker">対局日<input id="listDate" type="date"></label>
+        <button id="nextDate" type="button" aria-label="翌日">翌日 ›</button>
+      </div>
+      <button id="todayButton" class="today-button" type="button">今日</button>
+      <div class="league-tabs" role="tablist">
+        <button class="league-tab active" data-league="Aリーグ" type="button">Aリーグ</button>
+        <button class="league-tab" data-league="Bリーグ" type="button">Bリーグ</button>
+      </div>
+      <div id="listSummary" class="panel list-summary"></div>
+      <div id="matchList" class="match-list"></div>
+      <p class="info-banner">日付を選択して、過去の試合URLも登録・変更できます</p>
+    </section>
+
+    <section id="urlView" class="entry-view" hidden>
+      <button id="backToListTop" class="text-button" type="button">← 入力一覧へ戻る</button>
+      <h1 id="urlTitle">試合URL入力</h1>
+      <div id="urlMatchInfo" class="panel"></div>
+      <div class="panel url-panel">
+        <h2>試合URL</h2>
+        <label>YouTubeなどの試合動画URLを貼り付けてください
+          <input id="matchUrl" type="url" inputmode="url" placeholder="https://...">
+        </label>
+        <div id="urlMessage" class="form-message" role="alert" hidden></div>
+        <button id="saveUrl" class="primary-button" type="button">URLを保存する</button>
+        <p class="after-note">保存すると入力一覧が「URL入力済み」に変わります</p>
+      </div>
+      <button id="backToListBottom" class="secondary-button" type="button">一覧へ戻る</button>
+    </section>
+  </main>
+
+  <nav class="entry-bottom-nav" aria-label="成績入力メニュー">
+    <button id="navInput" class="active" type="button"><span>▤</span>成績入力</button>
+    <button id="navList" type="button"><span>☷</span>入力一覧</button>
+  </nav>
+
+  <div id="successModal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+      <div class="success-icon">✓</div>
+      <h2 id="successTitle">送信されました</h2>
+      <p>運営確認後に成績へ反映されます。</p>
+      <button id="closeSuccess" class="primary-button" type="button">入力一覧を見る</button>
+    </div>
+  </div>
+
+  <script src="js/score-entry.js?v=1"></script>
+</body>
+</html>

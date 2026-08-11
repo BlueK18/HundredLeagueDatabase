@@ -1,0 +1,48 @@
+.admin-entry-button{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:11px 18px;
+  border:1px solid #d4af37;
+  border-radius:999px;
+  background:#d4af37;
+  color:#111;
+  font:inherit;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.admin-entry-button[hidden]{display:none}
+.admin-entry-button:hover{background:#f0c936;transform:translateY(-2px)}
+.admin-entry-button svg{width:18px;height:18px}
+
+.admin-entry-dialog{
+  width:min(420px,calc(100% - 32px));
+  padding:0;
+  border:1px solid #3e4249;
+  border-radius:16px;
+  background:#17191c;
+  color:#f4f4f5;
+  box-shadow:0 24px 80px rgba(0,0,0,.65);
+}
+
+.admin-entry-dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+.admin-entry-dialog form{position:relative;padding:28px}
+.admin-entry-dialog h2{text-align:center;margin:10px 0 8px;font-size:24px}
+.admin-entry-dialog p{color:#aeb3bc;margin:0 0 20px;text-align:center;font-size:14px}
+.admin-entry-dialog label{display:block;margin-bottom:7px;font-size:14px;font-weight:700}
+.admin-entry-dialog input{width:100%;height:50px;box-sizing:border-box;border:1px solid #4a4f57;border-radius:9px;background:#101214;color:#fff;padding:0 13px;font:inherit;font-size:18px;outline:none}
+.admin-entry-dialog input:focus{border-color:#d4af37;box-shadow:0 0 0 3px rgba(212,175,55,.14)}
+.admin-entry-lock{display:grid;place-items:center;width:54px;height:54px;margin:auto;border-radius:50%;background:#d4af37;color:#111}
+.admin-entry-lock svg{width:25px;height:25px}
+.admin-entry-close{position:absolute;top:12px;right:14px;border:0;background:transparent;color:#aeb3bc;font-size:27px;cursor:pointer}
+.admin-entry-submit{width:100%;height:52px;margin-top:17px;border:0;border-radius:9px;background:#d4af37;color:#111;font:inherit;font-size:16px;font-weight:900;cursor:pointer}
+.admin-entry-submit:hover{background:#f0c936}
+.admin-entry-dialog .admin-entry-error{margin:8px 0 0;color:#ff6b6b;text-align:left;font-weight:700}
+
+@media(max-width:600px){
+  .admin-entry-dialog form{padding:24px 20px}
+  .admin-entry-button{padding:10px 15px}
+}

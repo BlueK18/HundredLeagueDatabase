@@ -20,8 +20,9 @@
   
   <link
     rel="stylesheet"
-    href="css/style.css?v=11"
+    href="css/style.css?v=12"
   >
+  <link rel="stylesheet" href="css/admin-entry.css?v=1">
 </head>
 
 <body>
@@ -124,8 +125,45 @@
       <i data-lucide="chart-no-axes-combined"></i>
       <span>詳細成績</span>
     </a>
+
+    <button
+      id="adminEntryButton"
+      class="admin-entry-button"
+      type="button"
+      hidden
+    >
+      <i data-lucide="lock-keyhole"></i>
+      <span>管理者</span>
+    </button>
   
   </div>
+
+  <dialog id="adminEntryDialog" class="admin-entry-dialog">
+    <form id="adminEntryForm" method="dialog">
+      <button
+        id="adminEntryClose"
+        class="admin-entry-close"
+        type="button"
+        aria-label="閉じる"
+      >×</button>
+      <div class="admin-entry-lock" aria-hidden="true">
+        <i data-lucide="lock-keyhole"></i>
+      </div>
+      <h2>管理者確認</h2>
+      <p>成績入力ページを開くにはパスワードを入力してください。</p>
+      <label for="adminEntryPassword">パスワード</label>
+      <input
+        id="adminEntryPassword"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
+      <p id="adminEntryError" class="admin-entry-error" role="alert" hidden>
+        パスワードが違います。
+      </p>
+      <button class="admin-entry-submit" type="submit">成績入力を開く</button>
+    </form>
+  </dialog>
 
 
   <main class="player-detail-page">
@@ -273,8 +311,9 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="js/common.js?v=12"></script>
+  <script src="js/common.js?v=13"></script>
   <script src="js/player.js"></script>
+  <script src="js/admin-entry.js?v=1"></script>
   
 </body>
 

@@ -344,6 +344,7 @@ tr:hover{
   color:#ad7bd5 !important;
   font-weight:800;
 }
+
 .team-matches-section{
   max-width:1100px;
   margin:20px auto 60px;
@@ -608,6 +609,48 @@ tr:hover{
       margin-top:4px;
       justify-content:flex-start;
   }
+}
+
+/* 選手詳細：着順分布カード */
+.placing-first{
+  border-color:rgba(232,185,14,.38);
+}
+
+.placing-second{
+  border-color:rgba(154,175,210,.38);
+}
+
+.placing-third{
+  border-color:rgba(113,184,70,.38);
+}
+
+.placing-fourth{
+  border-color:rgba(173,123,213,.38);
+}
+
+.placing-first .placement-name,
+.placing-first strong{
+  color:#e8b90e;
+}
+
+.placing-second .placement-name,
+.placing-second strong{
+  color:#9aafd2;
+}
+
+.placing-third .placement-name,
+.placing-third strong{
+  color:#71b846;
+}
+
+.placing-fourth .placement-name,
+.placing-fourth strong{
+  color:#ad7bd5;
+}
+
+.placing-card strong small{
+  color:inherit;
+  opacity:.66;
 }
 .players-page{
   max-width:1250px;
@@ -7282,4 +7325,46 @@ tbody tr:hover,
   .player-matches-section{
     border-radius:10px;
   }
+}
+
+/* Theme override: 選手詳細の着順分布 */
+.placing-first{
+  border-color:rgba(232,185,14,.38);
+}
+
+.placing-second{
+  border-color:rgba(154,175,210,.38);
+}
+
+.placing-third{
+  border-color:rgba(113,184,70,.38);
+}
+
+.placing-fourth{
+  border-color:rgba(173,123,213,.38);
+}
+
+.placing-first .placement-name,
+.placing-first strong{
+  color:#e8b90e;
+}
+
+.placing-second .placement-name,
+.placing-second strong{
+  color:#9aafd2;
+}
+
+.placing-third .placement-name,
+.placing-third strong{
+  color:#71b846;
+}
+
+.placing-fourth .placement-name,
+.placing-fourth strong{
+  color:#ad7bd5;
+}
+
+.placing-card strong small{
+  color:inherit;
+  opacity:.66;
 }
