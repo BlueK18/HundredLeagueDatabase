@@ -58,6 +58,9 @@
   function allKnownTeams(){return unique([...Object.keys(playerMap),...Object.values(fallbackTeams).flat()])}
 
   function refreshInputSelectors(rebuild=true){
+    const hasSchedule=schedule.some(row=>row["対局日"]===today());
+    $("noScheduleMessage").hidden=hasSchedule;$("inputInfoBanner").hidden=!hasSchedule;$("scoreForm").hidden=!hasSchedule;
+    if(!hasSchedule){$("playerInputs").innerHTML="";$("formMessage").hidden=true;return}
     const phase=phaseForDate(today()),league=$("leagueInput").value;
     $("leagueInputField").hidden=!phaseUsesLeague(phase);
     $("tableInputField").hidden=!phaseUsesTable(phase);
