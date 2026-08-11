@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_DIR="/Users/blue-k18/Documents/website/assets/css/HundredLeagueDatabase"
+PROJECT_DIR="/Users/blue-k18/Documents/HundredLeagueDatabase"
 SCHEDULE_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=0&single=true&output=csv"
 PLAYERS_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=1242200473&single=true&output=csv"
 
@@ -8,8 +8,37 @@ cd "$PROJECT_DIR" || exit 1
 
 pause_and_exit() {
   echo ""
-  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  read -n 1 -s -r -p "何かキーを押すと処理を終了します（エラー画面は残ります）..."
   exit "$1"
+}
+
+close_on_success() {
+  echo ""
+  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  echo ""
+
+  if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+    local command_tty
+    command_tty="$(tty)"
+    nohup osascript - "$command_tty" <<'APPLESCRIPT' >/dev/null 2>&1 &
+on run argv
+  delay 0.8
+  tell application "Terminal"
+    repeat with terminalWindow in windows
+      repeat with terminalTab in tabs of terminalWindow
+        if tty of terminalTab is item 1 of argv then
+          close terminalWindow
+          return
+        end if
+      end repeat
+    end repeat
+  end tell
+end run
+APPLESCRIPT
+    disown 2>/dev/null || true
+  fi
+
+  exit 0
 }
 
 download_csv() {
@@ -74,7 +103,7 @@ git add -u -- '*.html' 'css/*.css' 'js/*.js'
 
 if git diff --cached --quiet; then
   echo "変更はありませんでした。"
-  pause_and_exit 0
+  close_on_success
 fi
 
 if ! git commit -m "成績入力データ・Web更新 $(date '+%Y-%m-%d %H:%M')"; then
@@ -89,4 +118,4 @@ fi
 
 echo "✅ 予定表・選手登録CSVをGitHubへ送信しました。"
 echo "通常30秒〜数分で成績入力ページへ反映されます。"
-pause_and_exit 0
+close_on_success

@@ -1,5 +1,35 @@
 #!/bin/bash
-PROJECT_DIR="/Users/blue-k18/Documents/website/assets/css/HundredLeagueDatabase"
+PROJECT_DIR="/Users/blue-k18/Documents/HundredLeagueDatabase"
+
+close_on_success() {
+  echo ""
+  read -n 1 -s -r -p "何かキーを押すと閉じます..."
+  echo ""
+
+  if [ "$TERM_PROGRAM" = "Apple_Terminal" ]; then
+    local command_tty
+    command_tty="$(tty)"
+    nohup osascript - "$command_tty" <<'APPLESCRIPT' >/dev/null 2>&1 &
+on run argv
+  delay 0.8
+  tell application "Terminal"
+    repeat with terminalWindow in windows
+      repeat with terminalTab in tabs of terminalWindow
+        if tty of terminalTab is item 1 of argv then
+          close terminalWindow
+          return
+        end if
+      end repeat
+    end repeat
+  end tell
+end run
+APPLESCRIPT
+    disown 2>/dev/null || true
+  fi
+
+  exit 0
+}
+
 cd "$PROJECT_DIR" || {
   echo ""
   echo "❌ プロジェクトフォルダを開けませんでした。"
@@ -239,4 +269,4 @@ echo ""
 echo "この画面は閉じて大丈夫です。"
 echo ""
 
-read -n 1 -s -r -p "何かキーを押すと閉じます..."
+close_on_success
