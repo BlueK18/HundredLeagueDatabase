@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f5f7fb">
   <title>ハンドレッドリーグ 成績入力</title>
+  <script>
+    if(sessionStorage.getItem("hldbAdminUnlocked")!=="1"){
+      window.location.replace("player.html?id=P0018");
+    }
+  </script>
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="stylesheet" href="css/score-entry.css?v=1">
 </head>

@@ -34,6 +34,7 @@
     const isCorrect=(await sha256(password.value))===PASSWORD_HASH;
     error.hidden=isCorrect;
     if(!isCorrect){password.select();return}
+    sessionStorage.setItem("hldbAdminUnlocked","1");
     window.location.href="score-entry.html";
   });
 })();
