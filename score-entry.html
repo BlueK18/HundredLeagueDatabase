@@ -1,114 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f5f7fb">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#f5f7fb">
   <title>ハンドレッドリーグ 成績入力</title>
-  <script>
-    if(sessionStorage.getItem("hldbAdminUnlocked")!=="1"){
-      window.location.replace("player.html?id=P0018");
-    }
-  </script>
-  <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="stylesheet" href="css/score-entry.css?v=1">
+  <link rel="icon" href="favicon.ico" sizes="any"><link rel="stylesheet" href="css/score-entry.css?v=3">
 </head>
 <body>
-  <header class="entry-header">
-    <div class="entry-brand"><span aria-hidden="true">▤</span>ハンドレッドリーグ 成績入力</div>
-  </header>
-
+  <header class="entry-header"><div class="entry-header-inner"><div class="entry-brand"><span aria-hidden="true">▤</span>ハンドレッドリーグ 成績入力</div><button id="adminModeButton" class="admin-mode-button" type="button" aria-label="管理者ログイン" title="管理者ログイン">♙</button></div></header>
   <main class="entry-shell">
     <section id="inputView" class="entry-view">
-      <h1>試合結果入力</h1>
-      <p class="info-banner">送信内容は運営確認後に成績へ反映されます</p>
-
+      <h1>試合結果入力</h1><p class="info-banner">予定表から本日のチームを自動表示します</p>
       <form id="scoreForm" novalidate>
         <div class="panel filter-panel">
-          <label>リーグ
-            <select id="leagueInput">
-              <option>Aリーグ</option><option>Bリーグ</option>
-            </select>
-          </label>
-          <label>試合
-            <select id="matchInput">
-              <option>第一試合</option><option>第二試合</option><option>第三試合</option>
-              <option>第四試合</option><option>第五試合</option><option>第六試合</option>
-            </select>
-          </label>
+          <label id="leagueInputField">リーグ<select id="leagueInput"><option>Aリーグ</option><option>Bリーグ</option></select></label>
+          <label id="tableInputField">卓<select id="tableInput"></select></label><label>試合<select id="matchInput"></select></label>
         </div>
-
-        <div id="playerInputs" class="player-inputs"></div>
-        <div id="formMessage" class="form-message" role="alert" hidden></div>
-        <button type="submit" class="primary-button">内容を確認</button>
+        <div id="scheduleNote" class="schedule-note"></div><div id="playerInputs" class="player-inputs"></div>
+        <div id="formMessage" class="form-message" role="alert" hidden></div><button type="submit" class="primary-button">内容を確認</button>
       </form>
     </section>
 
     <section id="confirmView" class="entry-view" hidden>
-      <h1>入力内容の確認</h1>
-      <p class="info-banner">スコア順に自動で並び替えました</p>
-      <div id="confirmMatch" class="panel match-summary"></div>
-      <div class="panel">
-        <h2>入力内容</h2>
-        <div id="confirmPlayers" class="confirm-players"></div>
-      </div>
-      <div id="totalPanel" class="panel total-panel"></div>
-      <p class="warning-banner">送信後はこの画面から修正できません。内容をもう一度確認してください。</p>
-      <div class="button-stack">
-        <button id="backToInput" class="secondary-button" type="button">入力画面へ戻る</button>
-        <button id="submitScores" class="primary-button" type="button">この内容で送信する</button>
-      </div>
-      <p class="after-note">送信内容は運営確認後に成績へ反映されます</p>
+      <h1>入力内容の確認</h1><p class="info-banner">スコア順に自動で並び替えました</p>
+      <div id="confirmMatch" class="panel match-summary"></div><div class="panel"><h2>入力内容</h2><div id="confirmPlayers"></div></div><div id="totalPanel" class="panel total-panel"></div>
+      <p class="warning-banner">選手名とスコアをもう一度確認してください。</p><div class="button-stack"><button id="backToInput" class="secondary-button" type="button">入力画面へ戻る</button><button id="submitScores" class="primary-button" type="button">この内容で送信する</button></div>
     </section>
 
     <section id="listView" class="entry-view" hidden>
-      <h1>入力一覧</h1>
-      <div class="date-navigation">
-        <button id="previousDate" type="button" aria-label="前日">‹ 前日</button>
-        <label class="date-picker">対局日<input id="listDate" type="date"></label>
-        <button id="nextDate" type="button" aria-label="翌日">翌日 ›</button>
-      </div>
-      <button id="todayButton" class="today-button" type="button">今日</button>
-      <div class="league-tabs" role="tablist">
-        <button class="league-tab active" data-league="Aリーグ" type="button">Aリーグ</button>
-        <button class="league-tab" data-league="Bリーグ" type="button">Bリーグ</button>
-      </div>
-      <div id="listSummary" class="panel list-summary"></div>
-      <div id="matchList" class="match-list"></div>
-      <p class="info-banner">日付を選択して、過去の試合URLも登録・変更できます</p>
+      <h1>入力一覧</h1><div class="date-navigation"><button id="previousDate" type="button">‹ 前節</button><label class="date-picker">対局日<input id="listDate" type="text" inputmode="none" readonly aria-haspopup="dialog"></label><button id="nextDate" type="button">次節 ›</button></div><div id="scheduleCalendar" class="schedule-calendar" role="dialog" aria-label="対局日を選択" hidden></div><button id="todayButton" class="today-button" type="button">今日</button>
+      <div class="list-filters panel"><label id="listLeagueField">リーグ<select id="listLeague"><option>Aリーグ</option><option>Bリーグ</option></select></label><div id="listPhaseDisplay" class="auto-phase"></div></div>
+      <div id="listSummary" class="panel list-summary"></div><div id="matchList" class="match-list"></div><p class="info-banner">試合をタップすると選手名とスコアを確認できます</p>
     </section>
 
     <section id="urlView" class="entry-view" hidden>
-      <button id="backToListTop" class="text-button" type="button">← 入力一覧へ戻る</button>
-      <h1 id="urlTitle">試合URL入力</h1>
-      <div id="urlMatchInfo" class="panel"></div>
-      <div class="panel url-panel">
-        <h2>試合URL</h2>
-        <label>YouTubeなどの試合動画URLを貼り付けてください
-          <input id="matchUrl" type="url" inputmode="url" placeholder="https://...">
-        </label>
-        <div id="urlMessage" class="form-message" role="alert" hidden></div>
-        <button id="saveUrl" class="primary-button" type="button">URLを保存する</button>
-        <p class="after-note">保存すると入力一覧が「URL入力済み」に変わります</p>
-      </div>
+      <button id="backToListTop" class="text-button" type="button">← 入力一覧へ戻る</button><h1 id="urlTitle">試合URL入力</h1><div id="urlMatchInfo" class="panel"></div>
+      <div class="panel url-panel"><div class="section-heading-row"><h2>試合URL</h2><button id="openUrlHelp" class="help-button" type="button" aria-label="URLの貼り付け方">?</button></div><label>試合のリプレイを貼り付けてください。<input id="matchUrl" type="url" inputmode="url" placeholder="https://pl.sega-mj.com/..."></label><div id="urlMessage" class="form-message" role="alert" hidden></div><button id="saveUrl" class="primary-button" type="button">URLを保存する</button></div>
       <button id="backToListBottom" class="secondary-button" type="button">一覧へ戻る</button>
+    </section>
+
+    <section id="editView" class="entry-view" hidden>
+      <button id="backFromEdit" class="text-button" type="button">← 入力一覧へ戻る</button><h1>送信内容の編集</h1><p class="warning-banner">保存すると、この試合の送信内容が更新されます。</p><div id="editMatchInfo" class="panel"></div><div id="editRows" class="player-inputs"></div><div id="editMessage" class="form-message" role="alert" hidden></div>
+      <div id="editUrlSection" class="panel url-panel"><div class="section-heading-row"><h2>試合URL</h2><button id="openEditUrlHelp" class="help-button" type="button" aria-label="URLの貼り付け方">?</button></div><label>試合のリプレイを貼り付けてください。<input id="editMatchUrl" type="url" inputmode="url" placeholder="https://pl.sega-mj.com/..."></label></div>
+      <div class="button-stack"><button id="saveEdit" class="primary-button" type="button">変更を保存する</button><button id="deleteEntry" class="danger-button" type="button">このデータを消去する</button></div>
     </section>
   </main>
 
-  <nav class="entry-bottom-nav" aria-label="成績入力メニュー">
-    <button id="navInput" class="active" type="button"><span>▤</span>成績入力</button>
-    <button id="navList" type="button"><span>☷</span>入力一覧</button>
-  </nav>
-
-  <div id="successModal" class="modal" hidden>
-    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
-      <div class="success-icon">✓</div>
-      <h2 id="successTitle">送信されました</h2>
-      <p>運営確認後に成績へ反映されます。</p>
-      <button id="closeSuccess" class="primary-button" type="button">入力一覧を見る</button>
-    </div>
-  </div>
-
-  <script src="js/score-entry.js?v=1"></script>
-</body>
-</html>
+  <nav class="entry-bottom-nav" aria-label="成績入力メニュー"><button id="navInput" class="active" type="button"><span>▤</span><strong>成績入力</strong></button><button id="navList" type="button"><span>☷</span><strong>入力一覧</strong></button></nav>
+  <div id="scoreKeypad" class="keypad-backdrop" hidden><div class="score-keypad" role="dialog" aria-modal="true"><div class="keypad-header"><div><small id="keypadLabel">スコア</small><strong id="keypadValue">0</strong></div><button id="closeKeypad" type="button">完了</button></div><div id="keypadButtons" class="keypad-grid"></div></div></div>
+  <div id="successModal" class="modal" hidden><div class="modal-card" role="dialog" aria-modal="true"><div class="success-icon">✓</div><h2>送信されました</h2><p>運営確認後に成績へ反映されます。</p><button id="closeSuccess" class="primary-button" type="button">入力一覧を見る</button></div></div>
+  <div id="urlHelpModal" class="modal" hidden><div class="modal-card help-modal-card" role="dialog" aria-modal="true"><button id="closeUrlHelp" class="modal-close" type="button">×</button><h2>試合URLの貼り付け方</h2><div class="help-image-placeholder">操作画像をここに追加</div><ol><li>MJの試合リプレイを開く</li><li>共有用URLをコピーする</li><li>入力欄へ貼り付けて保存する</li></ol></div></div>
+  <div id="adminModeModal" class="modal" hidden><form id="adminModeForm" class="modal-card" role="dialog" aria-modal="true"><button id="closeAdminMode" class="modal-close" type="button">×</button><div class="admin-login-icon">♙</div><h2>管理者ログイン</h2><label>パスワード<input id="adminModePassword" type="password" autocomplete="current-password" required></label><p id="adminModeError" class="form-message" hidden>パスワードが違います。</p><button class="primary-button" type="submit">ログイン</button></form></div>
+  <script src="js/score-entry.js?v=7"></script>
+</body></html>
