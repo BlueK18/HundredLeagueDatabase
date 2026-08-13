@@ -5,7 +5,7 @@
   const MATCHES=["第一試合","第二試合"];
   const SCHEDULE_CSV_URL="data/score-schedule.csv";
   const PLAYERS_CSV_URL="data/score-players.csv";
-  const SCORE_API_URL="https://script.google.com/macros/s/AKfycbxRurjs6VukY8BUswjK4uFx_20zpo5Ar5ZZxNVeKEJHSZCKceAx_vUHge9tb0JgkJ7B/exec";
+  const SCORE_API_URL="https://script.google.com/macros/s/AKfycbwxEUjYPXGRM_XVy1r2-fZhUNmD987twm0dWUucr8eI2ItTuD_wk3Tp5gHLkE9L6Vws/exec";
   const DEMO_MODE=new URLSearchParams(location.search).get("demo")==="1";
   const STORE_KEY=DEMO_MODE?"hldbScoreEntryPracticeV1":"hldbScoreEntryDemoV2";
   const PREF_KEY=DEMO_MODE?"hldbScoreEntryPracticePreferences":"hldbScoreEntryPreferences";
