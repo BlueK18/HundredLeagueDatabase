@@ -19,7 +19,7 @@
     "武装":["ツナマヨ","年賀状","乙子","しんじゃうツモ"],"MJ東京":["Blue-K18","aimoni","選手A","選手B"],
     "ZOO":["かじ","選手C","選手D"],"SILVER WOLVES":["田口淳之介","店長倍損の上司","選手E"]
   };
-  let schedule=[],playerMap={...fallbackPlayers},pending=null,selectedKey="",activeScoreInput=null,pendingAdminKey="",calendarMonth=null,adminPassword="",inputDate="",autoInputDate=true;
+  let schedule=[],playerMap={...fallbackPlayers},teamLeagueMap=new Map(Object.entries(fallbackTeams).flatMap(([league,teams])=>teams.map(team=>[String(team).normalize("NFKC").trim(),league]))),pending=null,selectedKey="",activeScoreInput=null,pendingAdminKey="",calendarMonth=null,adminPassword="",inputDate="",autoInputDate=true;
   const today=()=>new Date().toLocaleDateString("sv-SE");
   const timedInputDate=()=>{const value=new Date();value.setHours(value.getHours()-12);return value.toLocaleDateString("sv-SE")};
   const currentDaySubmissionLocked=date=>!DEMO_MODE&&date===today()&&new Date().getHours()<21;
@@ -35,7 +35,7 @@
   async function loadServerEntries(){const result=await apiRequest(),data={};result.entries.forEach(item=>{const scheduled=scheduleRows(item.date,item.league).find(row=>rowKey(row)===item.id);data[item.id]={...item,requiresUrl:item.requiresUrl??scheduled?.requiresUrl??item.phase!=="予選"}});writeStore(data)}
   async function loadReferenceData(){
     try{schedule=await loadCsv(SCHEDULE_CSV_URL)}catch{schedule=[]}
-    try{const players=await loadCsv(PLAYERS_CSV_URL),map={};players.forEach(row=>{const team=teamKey(row["チーム"]),name=row["選手"];if(!team||!name)return;(map[team]??=[]).push(name)});Object.keys(map).forEach(team=>map[team]=[...new Set(map[team])].sort((a,b)=>a.localeCompare(b,"ja")));playerMap={...fallbackPlayers,...map}}catch{/* 仮選手で継続 */}
+    try{const players=await loadCsv(PLAYERS_CSV_URL),map={},leagues=new Map(teamLeagueMap);players.forEach(row=>{const team=teamKey(row["チーム"]),name=row["選手"],league=teamKey(row["リーグ"]);if(!team||!name)return;(map[team]??=[]).push(name);if(league)leagues.set(team,league)});Object.keys(map).forEach(team=>map[team]=[...new Set(map[team])].sort((a,b)=>a.localeCompare(b,"ja")));playerMap={...fallbackPlayers,...map};teamLeagueMap=leagues}catch{/* 仮選手で継続 */}
   }
 
   function show(id){VIEWS.forEach(view=>$(view).hidden=view!==id);$("navInput").classList.toggle("active",id==="inputView");$("navList").classList.toggle("active",["listView","urlView","editView"].includes(id));window.scrollTo(0,0)}
@@ -43,7 +43,7 @@
   function unique(values){return[...new Set(values.filter(Boolean))]}
   function savedPrefs(){try{return JSON.parse(localStorage.getItem(PREF_KEY)||"{}")}catch{return{}}}
   function savePrefs(){localStorage.setItem(PREF_KEY,JSON.stringify({league:$("leagueInput").value,table:$("tableInput").value}))}
-  function phaseForDate(date){return schedule.find(row=>row["対局日"]===date)?.["開催区分"]||"レギュラー"}
+  function phaseForDate(date){return schedule.find(row=>row["対局日"]===date)?.["開催区分"]||Object.values(readStore()).find(item=>item.date===date)?.phase||"レギュラー"}
   function phaseUsesLeague(phase){return phase!=="予選"}
   function phaseUsesTable(phase){return phase==="レギュラー"||phase==="予選"}
   function matchLabel(row){return phaseUsesTable(row.phase)?`${row.table}・${row.match}`:row.match}
@@ -59,7 +59,7 @@
   function currentScheduleRow(){const rows=scheduleRows(inputDate||today(),$("leagueInput").value);return rows.find(row=>row.table===$("tableInput").value&&row.match===$("matchInput").value)||rows[0]}
   function setOptions(select,values,preferred){select.innerHTML=values.map(v=>`<option${v===preferred?" selected":""}>${esc(v)}</option>`).join("")}
   function playerOptions(team,selected){const names=playerMap[teamKey(team)]||["選手A","選手B","選手C","選手D"];return`<option value="" disabled${selected?"":" selected"}>選手を選んでください</option>`+unique(names).map(name=>`<option${name===selected?" selected":""}>${esc(name)}</option>`).join("")}
-  function allKnownTeams(){return unique([...Object.keys(playerMap),...Object.values(fallbackTeams).flat()])}
+  function allKnownTeams(league="",selected=""){const selectedTeam=teamKey(selected),teams=unique([selectedTeam,...Object.keys(playerMap),...Object.values(fallbackTeams).flat().map(teamKey)]);return league?teams.filter(team=>team===selectedTeam||teamLeagueMap.get(team)===league):teams}
 
   function refreshInputSelectors(rebuild=true){
     const date=inputDate||today(),calendarToday=today(),hasSchedule=schedule.some(row=>row["対局日"]===date),todayHasSchedule=schedule.some(row=>row["対局日"]===calendarToday),waitingForNoon=autoInputDate&&new Date().getHours()<12&&todayHasSchedule&&date!==calendarToday;
@@ -75,7 +75,7 @@
     savePrefs();if(rebuild)buildPlayerInputs(row);
   }
   function buildPlayerInputs(row,values=[]){
-    const host=$("playerInputs");host.innerHTML="";(row?.teams||[]).forEach((team,i)=>{const old=values[i]||{},selectedTeam=old.team||team,card=document.createElement("section");card.className="panel player-card";card.innerHTML=`<h2><span>入力${i+1}</span><small>予定：${esc(team)}</small></h2><label>チーム<select class="team-select">${editTeamOptions(selectedTeam)}</select></label><label>選手<select class="player-select">${playerOptions(selectedTeam,old.player||"")}</select></label><label>スコア<input class="score-input" inputmode="none" readonly placeholder="タップして入力" value="${esc(old.raw??old.score??"")}"></label>`;host.appendChild(card);const teamSelect=card.querySelector(".team-select");teamSelect.onchange=()=>card.querySelector(".player-select").innerHTML=playerOptions(teamSelect.value,"")});bindScoreInputs(host)
+    const host=$("playerInputs");host.innerHTML="";(row?.teams||[]).forEach((team,i)=>{const old=values[i]||{},selectedTeam=old.team||team,card=document.createElement("section");card.className="panel player-card";card.innerHTML=`<h2><span>入力${i+1}</span><small>予定：${esc(team)}</small></h2><label>チーム<select class="team-select">${editTeamOptions(selectedTeam,row.league)}</select></label><label>選手<select class="player-select">${playerOptions(selectedTeam,old.player||"")}</select></label><label>スコア<input class="score-input" inputmode="none" readonly placeholder="タップして入力" value="${esc(old.raw??old.score??"")}"></label>`;host.appendChild(card);const teamSelect=card.querySelector(".team-select");teamSelect.onchange=()=>card.querySelector(".player-select").innerHTML=playerOptions(teamSelect.value,"")});bindScoreInputs(host)
   }
   function getRows(container){return[...container.querySelectorAll(".player-card")].map(card=>{const raw=normalizeScore(card.querySelector(".score-input").value);return{team:card.querySelector(".team-select")?.value||card.querySelector(".fixed-team").value,player:card.querySelector(".player-select").value,raw,score:Number(raw)}})}
   function validateRows(rows){if(rows.some(r=>!r.player))return"4人全員の選手を選んでください。";if(rows.length!==4||rows.some(r=>r.raw===""||!Number.isFinite(r.score)))return"4人全員のスコアを数字で入力してください。";if(rows.some(r=>Math.abs(r.score)>200))return"スコアが±200を超えています。数字を確認してください。";if(new Set(rows.map(r=>r.player)).size!==4)return"同じ選手が重複しています。";const total=rows.reduce((n,r)=>n+r.score,0);if(Math.abs(total)>.051)return`スコア合計が ${total>0?"+":""}${total.toFixed(1)} ptです。入力内容を確認してください。`;return""}
@@ -105,8 +105,8 @@
   function openAdminLogin(key=""){pendingAdminKey=key;$("adminModeError").hidden=true;$("adminModeModal").hidden=false;requestAnimationFrame(()=>$("adminModePassword").focus())}
   function requestAdminEdit(key){if(isAdminMode()){openEdit(key);return}openAdminLogin(key)}
 
-  function editTeamOptions(selected){return allKnownTeams().map(team=>`<option${team===selected?" selected":""}>${esc(team)}</option>`).join("")}
-  function openEdit(key){selectedKey=key;const item=readStore()[key];$("editMatchInfo").innerHTML=`<div class="match-summary">${item.league?`<strong>${esc(item.league)}</strong>`:""}<span>${esc(matchLabel(item))}</span></div>`;$("editRows").innerHTML=item.rows.map((r,i)=>`<section class="panel player-card"><h2>編集${i+1}</h2><label>チーム<select class="team-select">${editTeamOptions(r.team)}</select></label><label>選手<select class="player-select">${playerOptions(r.team,r.player)}</select></label><label>スコア<input class="score-input" inputmode="none" readonly value="${esc(r.score)}"></label></section>`).join("");$("editRows").querySelectorAll(".team-select").forEach(select=>select.onchange=()=>select.closest(".player-card").querySelector(".player-select").innerHTML=playerOptions(select.value,""));bindScoreInputs($("editRows"));$("editUrlSection").hidden=!item.requiresUrl;$("editMatchUrl").value=item.url||"";$("editMessage").hidden=true;show("editView")}
+  function editTeamOptions(selected,league=""){return allKnownTeams(league,selected).map(team=>`<option${team===teamKey(selected)?" selected":""}>${esc(team)}</option>`).join("")}
+  function openEdit(key){selectedKey=key;const item=readStore()[key];$("editMatchInfo").innerHTML=`<div class="match-summary">${item.league?`<strong>${esc(item.league)}</strong>`:""}<span>${esc(matchLabel(item))}</span></div>`;$("editRows").innerHTML=item.rows.map((r,i)=>`<section class="panel player-card"><h2>編集${i+1}</h2><label>チーム<select class="team-select">${editTeamOptions(r.team,item.league)}</select></label><label>選手<select class="player-select">${playerOptions(r.team,r.player)}</select></label><label>スコア<input class="score-input" inputmode="none" readonly value="${esc(r.score)}"></label></section>`).join("");$("editRows").querySelectorAll(".team-select").forEach(select=>select.onchange=()=>select.closest(".player-card").querySelector(".player-select").innerHTML=playerOptions(select.value,""));bindScoreInputs($("editRows"));$("editUrlSection").hidden=!item.requiresUrl;$("editMatchUrl").value=item.url||"";$("editMessage").hidden=true;show("editView")}
 
   function bindScoreInputs(root){root.querySelectorAll(".score-input").forEach(input=>input.addEventListener("click",()=>openKeypad(input)))}
   function openKeypad(input){activeScoreInput=input;$("keypadLabel").textContent=`${input.closest(".player-card")?.querySelector("h2")?.textContent.trim()||""} スコア`;renderKeypad();$("scoreKeypad").hidden=false}
