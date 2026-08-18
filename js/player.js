@@ -8,7 +8,7 @@ const AWARDS_CSV_URL =
   "data/awards.csv";
 
 const POINT_PROGRESS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ko9LDvGCpZNN-VBF8TC2VTSZLyu2vl4BE0BzOqZDSiT3DbTLHYvOL_LEpihVVVLtODHtGzJ5QADE/pub?gid=2026081012&single=true&output=csv";
+  "data/point-progress.csv";
 /* ========================================
    URL・画面要素
 ======================================== */
@@ -97,6 +97,9 @@ let playersData = [];
 let matchesData = [];
 let awardsData = [];
 let pointProgressData = [];
+let pointProgressLoaded = false;
+let pointProgressLoadPromise = null;
+let html2CanvasLoadPromise = null;
 
 let playerAliasData = [];
 let currentPlayerId = "";
@@ -106,6 +109,19 @@ let activeYear = "";
 let activeLeague = "";
 let activeStage = "ALL";
 let currentPlayerRecords = [];
+
+function ensureHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve();
+  if (html2CanvasLoadPromise) return html2CanvasLoadPromise;
+  html2CanvasLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("画像作成機能を読み込めませんでした。"));
+    document.head.appendChild(script);
+  });
+  return html2CanvasLoadPromise;
+}
 
 /* ========================================
    CSV解析
@@ -959,7 +975,13 @@ function renderPlayerInfo() {
 
 if (playerScreenshotButton) {
 
-  playerScreenshotButton.onclick = () => {
+  playerScreenshotButton.onclick = async () => {
+    try {
+      await ensureHtml2Canvas();
+    } catch (error) {
+      alert(error.message);
+      return;
+    }
     
     const regularPlayerCount =
   playersData.filter(
@@ -2863,6 +2885,13 @@ function attachFilterEvents() {
     if (window.lucide) {
       lucide.createIcons();
     }
+    if (!pointProgressLoaded) {
+      ensurePointProgressData().then(() => {
+        if (modal.classList.contains("is-open")) {
+          openMatchDetail(selectedMatch);
+        }
+      });
+    }
   }
   
   
@@ -2951,6 +2980,18 @@ async function loadPointProgressData() {
   }
 }
 
+function ensurePointProgressData() {
+  if (pointProgressLoaded) return Promise.resolve(pointProgressData);
+  if (!pointProgressLoadPromise) {
+    pointProgressLoadPromise = loadPointProgressData().then(rows => {
+      pointProgressData = rows;
+      pointProgressLoaded = true;
+      return rows;
+    });
+  }
+  return pointProgressLoadPromise;
+}
+
 async function loadPlayerDetail() {
     try {
       if (!playerId && !playerName) {
@@ -2982,14 +3023,12 @@ async function loadPlayerDetail() {
         playersData,
         matchesData,
         awardsData,
-        playerAliasData,
-        pointProgressData
+        playerAliasData
       ] = await Promise.all([
         HLDB.loadData("players"),
         HLDB.loadData("matches"),
         HLDB.loadData("awards"),
-        HLDB.loadData("playerAlias"),
-        loadPointProgressData()
+        HLDB.loadData("playerAlias")
       ]);
       
       

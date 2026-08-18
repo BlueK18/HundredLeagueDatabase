@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_DIR="/Users/blue-k18/Documents/HundredLeagueDatabase"
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SCHEDULE_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=0&single=true&output=csv"
 PLAYERS_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=1242200473&single=true&output=csv"
 
