@@ -2461,6 +2461,22 @@ function attachFilterEvents() {
     if (!rows.length) return "";
 
     const first = rows[0];
+    const officialFinalPointsById = new Map(
+      tableMatches
+        .map(match => [
+          String(match["選手ID"] || "").trim(),
+          toNumber(match["得点"])
+        ])
+        .filter(([id, points]) => id && points !== null)
+    );
+    const officialFinalPointsByName = new Map(
+      tableMatches
+        .map(match => [
+          String(match["選手名"] || "").trim(),
+          toNumber(match["得点"])
+        ])
+        .filter(([name, points]) => name && points !== null)
+    );
     const colors = ["#d4af37", "#8fa8cf", "#67b63d", "#b070d1"];
     const series = [1, 2, 3, 4].map((index, seriesIndex) => {
       const id = String(first[`選手${index}ID`] || "").trim();
@@ -2469,15 +2485,23 @@ function attachFilterEvents() {
         first[`選手${index}`] ||
         `選手${index}`
       ).trim();
+      const officialFinalPoints =
+        officialFinalPointsById.get(id) ??
+        officialFinalPointsByName.get(name) ??
+        null;
+      const progressValues = rows.map(row =>
+        toNumber(row[`終了点${index}`]) ?? 0
+      );
+      if (officialFinalPoints !== null && progressValues.length) {
+        progressValues[progressValues.length - 1] = officialFinalPoints;
+      }
       return {
         id,
         name,
         color: colors[seriesIndex],
         values: [
           toNumber(first[`開始点${index}`]) ?? 25000,
-          ...rows.map(row =>
-            toNumber(row[`終了点${index}`]) ?? 0
-          )
+          ...progressValues
         ]
       };
     });
@@ -2588,7 +2612,11 @@ function attachFilterEvents() {
           const id = String(match["選手ID"] || "").trim();
           const name = String(match["選手名"] || "").trim();
           const index = playerIndexById.get(id) || playerIndexByName.get(name);
-          const finalPoints = index ? toNumber(last[`終了点${index}`]) : toNumber(match["得点"]);
+          // The hand-history feed can leave an unclaimed riichi stick in its
+          // last-row total. Use the official match result for the settled score.
+          const finalPoints =
+            toNumber(match["得点"]) ??
+            (index ? toNumber(last[`終了点${index}`]) : null);
           const rawName = index ? String(first[`選手${index}`] || "").trim() : "";
           const officialName = index ? String(first[`選手${index}公式名`] || "").trim() : "";
           const matchNames = [...new Set([name, rawName, officialName].filter(Boolean))];
