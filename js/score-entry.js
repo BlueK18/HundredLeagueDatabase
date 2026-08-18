@@ -10,6 +10,7 @@
   const STORE_KEY=DEMO_MODE?"hldbScoreEntryPracticeV1":"hldbScoreEntryDemoV2";
   const PREF_KEY=DEMO_MODE?"hldbScoreEntryPracticePreferences":"hldbScoreEntryPreferences";
   const URL_HELP_SEEN_KEY="hldbScoreUrlHelpSeen";
+  const URL_ENTRY_START_DATE="2026-08-18";
   const ADMIN_HASH="31ed5189ae9533ba7beb9dc823db86b0f70ffe2920ffacc2021044b99c6ec828";
   const fallbackTeams={
     "Aリーグ":["武装","MJ東京","ZOO","SILVER WOLVES","最強位ズ","電光石火"],
@@ -85,7 +86,7 @@
   function listRows(){return scheduleRows($("listDate").value||today(),$("listLeague").value)}
   function refreshListFilters(){const date=$("listDate").value||today(),phase=phaseForDate(date);$("listLeagueField").hidden=!phaseUsesLeague(phase);$("listPhaseDisplay").textContent=phase;updateSectionNavigation();renderList()}
   function scoreSummary(item){return item?.rows?.length?`<div class="match-player-preview">${item.rows.map(r=>`<span>${esc(r.player)} <strong class="${r.score<0?"score-negative":"score-positive"}">${r.score>0?"+":""}${Number(r.score).toFixed(1)}</strong></span>`).join("")}</div>`:""}
-  function missingUrlItems(){return Object.entries(readStore()).filter(([,item])=>item.requiresUrl&&!item.url&&item.rows?.length===4).map(([key,item])=>({key,item})).sort((a,b)=>`${a.item.date}|${a.item.time}|${a.item.league}|${a.item.table}|${a.item.match}`.localeCompare(`${b.item.date}|${b.item.time}|${b.item.league}|${b.item.table}|${b.item.match}`,"ja"))}
+  function missingUrlItems(){return Object.entries(readStore()).filter(([,item])=>item.date>=URL_ENTRY_START_DATE&&item.requiresUrl&&!item.url&&item.rows?.length===4).map(([key,item])=>({key,item})).sort((a,b)=>`${a.item.date}|${a.item.time}|${a.item.league}|${a.item.table}|${a.item.match}`.localeCompare(`${b.item.date}|${b.item.time}|${b.item.league}|${b.item.table}|${b.item.match}`,"ja"))}
   function updateUrlQueueBadge(){const count=missingUrlItems().length;$("urlQueueBadge").textContent=count;$("urlQueueBadge").hidden=!count}
   function renderUrlQueue(){const items=missingUrlItems();$("urlQueueCount").textContent=items.length;$("urlQueueList").innerHTML=items.length?items.map(({key,item})=>`<article class="match-card needs-action url-queue-card"><div class="match-card-main"><div><div class="match-date">${esc(item.date.replaceAll("-","/"))}　${esc(item.league||item.phase||"")}</div><div class="match-name">${esc(matchLabel(item))}</div><div class="match-time">送信 ${esc(item.time)}</div></div><span class="status status-warning">URL未入力</span></div>${scoreSummary(item)}<div class="match-card-actions"><button class="url-action" data-queue-key="${esc(key)}">URLを記入してください</button></div></article>`).join(""):`<div class="panel empty-list">URL未入力の試合はありません。</div>`;document.querySelectorAll("[data-queue-key]").forEach(button=>button.onclick=()=>{urlReturnView="urlQueueView";openUrl(button.dataset.queueKey)});updateUrlQueueBadge()}
   function isReadOnlyHistory(item){return item?.phase==="セミファイナル"&&item?.date>="2026-07-27"&&item?.date<="2026-08-07"}
