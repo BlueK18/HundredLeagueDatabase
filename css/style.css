@@ -1909,6 +1909,210 @@ transform:translateY(-1px);
   font-size:12px;
 }
 
+.match-broadcast-results{
+  overflow:hidden;
+  border:1px solid #343434;
+  border-radius:14px;
+  background:#191919;
+}
+
+.match-broadcast-head,
+.match-broadcast-row{
+  display:grid;
+  grid-template-columns:58px minmax(150px,1.25fr) minmax(120px,.8fr) repeat(3,minmax(70px,.5fr));
+  align-items:center;
+  gap:8px;
+}
+
+.match-broadcast-summary{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  margin-bottom:8px;
+  padding:10px 14px;
+  border-radius:5px;
+  background:linear-gradient(90deg,#0a4b39,#123b31 65%,#0c2c24);
+  color:#fff;
+}
+
+.match-broadcast-summary span{
+  color:#d3e6df;
+  font-size:12px;
+}
+
+.match-broadcast-head{
+  padding:9px 16px;
+  background:#252525;
+  color:#aaa;
+  font-size:11px;
+  text-align:center;
+}
+
+.match-broadcast-row{
+  position:relative;
+  min-height:72px;
+  padding:12px 16px;
+  border-top:1px solid #333;
+  background:linear-gradient(90deg,var(--rank-tone) 0,var(--rank-tone) 5px,#191919 5px,#191919 100%);
+}
+
+.match-broadcast-row.rank-tone-1{--rank-tone:#d4af37}
+.match-broadcast-row.rank-tone-2{--rank-tone:#8fa8cf}
+.match-broadcast-row.rank-tone-3{--rank-tone:#cb7a35}
+.match-broadcast-row.rank-tone-4{--rank-tone:#9a68bb}
+
+.match-broadcast-row.is-current-player{
+  background:linear-gradient(90deg,rgba(212,175,55,.16),rgba(212,175,55,.03));
+}
+
+.match-broadcast-rank{
+  text-align:center;
+}
+
+.match-broadcast-player{
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  gap:4px;
+}
+
+.match-broadcast-player a{
+  overflow:hidden;
+  color:#fff;
+  font-weight:800;
+  text-decoration:none;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.match-broadcast-player a:hover{
+  color:#d4af37;
+  text-decoration:underline;
+}
+
+.match-broadcast-player span{
+  overflow:hidden;
+  color:#aaa;
+  font-size:12px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.match-broadcast-points{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:2px;
+  text-align:right;
+  white-space:nowrap;
+}
+
+.match-broadcast-points strong{
+  color:#f4f4f4;
+  font-size:17px;
+}
+
+.match-broadcast-points span{
+  color:#d4af37;
+  font-size:12px;
+  font-weight:700;
+}
+
+.match-broadcast-points span.is-negative{
+  color:#ff6666;
+}
+
+.match-broadcast-stat{
+  text-align:center;
+  white-space:nowrap;
+}
+
+.match-broadcast-stat strong{
+  color:#f4f4f4;
+  font-size:21px;
+}
+
+.match-broadcast-stat span{
+  margin-left:2px;
+  color:#aaa;
+  font-size:11px;
+}
+
+.match-progress-section{
+  margin-top:18px;
+  padding:17px;
+  border:1px solid #343434;
+  border-radius:14px;
+  background:#191919;
+}
+
+.match-progress-section h3{
+  margin:0 0 12px;
+  color:#f2f2f2;
+  font-size:17px;
+}
+
+.match-progress-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 16px;
+  margin-bottom:8px;
+  color:#ccc;
+  font-size:12px;
+}
+
+.match-progress-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.match-progress-legend i{
+  width:17px;
+  height:3px;
+  border-radius:999px;
+  background:var(--series-color);
+}
+
+.match-progress-scroll{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.match-progress-chart{
+  display:block;
+  width:100%;
+  min-width:600px;
+  height:auto;
+}
+
+.progress-grid-line{
+  stroke:#454545;
+  stroke-width:1;
+}
+
+.progress-grid-line.is-vertical{
+  stroke:#303030;
+}
+
+.progress-grid-line.is-start-line{
+  stroke:#d4af37;
+  stroke-width:1.5;
+  stroke-dasharray:6 5;
+  opacity:.85;
+}
+
+.progress-axis-label,
+.progress-x-label{
+  fill:#aaa;
+  font-size:11px;
+}
+
+.progress-axis-label.is-start-line{
+  fill:#d4af37;
+  font-weight:700;
+}
+
 body.modal-open{
   overflow:hidden;
 }
@@ -1925,6 +2129,32 @@ body.modal-open{
   .match-detail-score{
       grid-column:2;
       align-items:flex-start;
+  }
+
+  .match-broadcast-head{
+    display:none;
+  }
+
+  .match-broadcast-row{
+    grid-template-columns:38px minmax(0,1fr) auto;
+    gap:9px;
+    padding:12px 10px;
+  }
+
+  .match-broadcast-points{
+    font-size:13px;
+  }
+
+  .match-broadcast-stat{
+    display:none;
+  }
+
+  .match-broadcast-summary{
+    padding:9px 11px;
+  }
+
+  .match-progress-section{
+    padding:14px 10px;
   }
 }
 /* ========================================

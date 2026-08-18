@@ -6,6 +6,9 @@ const MATCHES_CSV_URL =
 
 const AWARDS_CSV_URL =
   "data/awards.csv";
+
+const POINT_PROGRESS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ko9LDvGCpZNN-VBF8TC2VTSZLyu2vl4BE0BzOqZDSiT3DbTLHYvOL_LEpihVVVLtODHtGzJ5QADE/pub?gid=2026081012&single=true&output=csv";
 /* ========================================
    URL・画面要素
 ======================================== */
@@ -93,6 +96,7 @@ function updateDetailedStatsButton() {
 let playersData = [];
 let matchesData = [];
 let awardsData = [];
+let pointProgressData = [];
 
 let playerAliasData = [];
 let currentPlayerId = "";
@@ -2347,6 +2351,274 @@ function attachFilterEvents() {
   
     return "―";
   }
+
+
+  function normalizeMatchDate(value) {
+    return String(value || "")
+      .match(/\d+/g)
+      ?.slice(0, 3)
+      .map((part, index) =>
+        index === 0
+          ? part.padStart(4, "0")
+          : part.padStart(2, "0")
+      )
+      .join("-") || "";
+  }
+
+
+  function getProgressRows(selectedMatch, tableMatches) {
+    if (!pointProgressData.length) return [];
+
+    const selectedDate = normalizeMatchDate(
+      selectedMatch["日付"]
+    );
+    const selectedTime = String(
+      selectedMatch["時間"] || ""
+    ).trim();
+    const selectedLeague = normalizeLeague(
+      selectedMatch["リーグ"]
+    );
+    const selectedStage = normalizeStage(
+      selectedMatch["ステージ"]
+    );
+    const selectedIds = new Set(
+      tableMatches
+        .map(match => String(match["選手ID"] || "").trim())
+        .filter(Boolean)
+    );
+    const selectedNames = new Set(
+      tableMatches
+        .map(match => String(match["選手名"] || "").trim())
+        .filter(Boolean)
+    );
+    const groups = new Map();
+
+    pointProgressData.forEach(row => {
+      const key = String(row["対局キー"] || "").trim();
+      if (!key) return;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(row);
+    });
+
+    let best = null;
+
+    groups.forEach(rows => {
+      const first = rows[0];
+      const rawDateTime = String(first["対局日時"] || "").trim();
+      if (normalizeMatchDate(rawDateTime) !== selectedDate) return;
+
+      let score = 5;
+      if (
+        selectedLeague &&
+        normalizeLeague(first["リーグ"]) === selectedLeague
+      ) score += 2;
+      if (
+        selectedStage &&
+        normalizeStage(first["シーズン"]) === selectedStage
+      ) score += 2;
+      if (
+        selectedTime &&
+        rawDateTime.includes(selectedTime)
+      ) score += 5;
+
+      const rawIds = new Set(
+        [1, 2, 3, 4]
+          .map(index => String(first[`選手${index}ID`] || "").trim())
+          .filter(Boolean)
+      );
+      const rawNames = new Set(
+        [1, 2, 3, 4]
+          .flatMap(index => [
+            String(first[`選手${index}公式名`] || "").trim(),
+            String(first[`選手${index}`] || "").trim()
+          ])
+          .filter(Boolean)
+      );
+      const idMatches = [...selectedIds]
+        .filter(id => rawIds.has(id)).length;
+      const nameMatches = [...selectedNames]
+        .filter(name => rawNames.has(name)).length;
+
+      score += idMatches * 4 + nameMatches * 2;
+
+      if (
+        (idMatches >= 3 || nameMatches >= 3) &&
+        (!best || score > best.score)
+      ) {
+        best = { score, rows };
+      }
+    });
+
+    return (best?.rows || []).sort(
+      (a, b) =>
+        (toNumber(a["局順"]) ?? 999) -
+        (toNumber(b["局順"]) ?? 999)
+    );
+  }
+
+
+  function renderPointProgressGraph(rows, tableMatches) {
+    if (!rows.length) return "";
+
+    const first = rows[0];
+    const colors = ["#d4af37", "#8fa8cf", "#67b63d", "#b070d1"];
+    const series = [1, 2, 3, 4].map((index, seriesIndex) => {
+      const id = String(first[`選手${index}ID`] || "").trim();
+      const name = String(
+        first[`選手${index}公式名`] ||
+        first[`選手${index}`] ||
+        `選手${index}`
+      ).trim();
+      return {
+        id,
+        name,
+        color: colors[seriesIndex],
+        values: [
+          toNumber(first[`開始点${index}`]) ?? 25000,
+          ...rows.map(row =>
+            toNumber(row[`終了点${index}`]) ?? 0
+          )
+        ]
+      };
+    });
+    const values = series.flatMap(item => item.values);
+    const startPoint = 25000;
+    const maxDeviation = Math.max(
+      ...values.map(value =>
+        Math.abs(value - startPoint)
+      )
+    );
+    const axisHalfRange = Math.max(
+      6000,
+      maxDeviation * 1.12
+    );
+    const min = startPoint - axisHalfRange;
+    const max = startPoint + axisHalfRange;
+    const width = 720;
+    const height = 300;
+    const left = 64;
+    const right = 20;
+    const top = 24;
+    const bottom = 42;
+    const plotWidth = width - left - right;
+    const plotHeight = height - top - bottom;
+    const count = rows.length + 1;
+    const x = index =>
+      left + (count <= 1 ? 0 : (plotWidth * index) / (count - 1));
+    const y = value =>
+      top + plotHeight - ((value - min) / (max - min || 1)) * plotHeight;
+    const guides = [0, 0.5, 1].map(ratio => {
+      const value = max - (max - min) * ratio;
+      const py = top + plotHeight * ratio;
+      const middleClass = ratio === 0.5 ? " is-start-line" : "";
+      return `<g><line x1="${left}" y1="${py}" x2="${width - right}" y2="${py}" class="progress-grid-line${middleClass}"/><text x="${left - 10}" y="${py + 4}" class="progress-axis-label${middleClass}" text-anchor="end">${formatInteger(Math.round(value))}</text></g>`;
+    }).join("");
+    const verticals = Array.from({ length: count }, (_, index) =>
+      `<line x1="${x(index)}" y1="${top}" x2="${x(index)}" y2="${top + plotHeight}" class="progress-grid-line is-vertical"/>`
+    ).join("");
+    const labels = Array.from({ length: count }, (_, index) => {
+      const label = index === 0 ? "開始" : String(rows[index - 1]["局順"] || index);
+      return `<text x="${x(index)}" y="${height - 14}" class="progress-x-label" text-anchor="middle">${escapeHtml(label)}</text>`;
+    }).join("");
+    const lines = series.map(item => {
+      const points = item.values
+        .map((value, index) => `${x(index)},${y(value)}`)
+        .join(" ");
+      const dots = item.values.map((value, index) =>
+        `<circle cx="${x(index)}" cy="${y(value)}" r="3.5" fill="${item.color}"/>`
+      ).join("");
+      return `<polyline points="${points}" fill="none" stroke="${item.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}`;
+    }).join("");
+
+    return `
+      <section class="match-progress-section">
+        <h3>点数推移</h3>
+        <div class="match-progress-legend">
+          ${series.map(item => `
+            <span><i style="--series-color:${item.color}"></i>${escapeHtml(item.name)}</span>
+          `).join("")}
+        </div>
+        <div class="match-progress-scroll">
+          <svg class="match-progress-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="局ごとの点数推移">
+            ${guides}${verticals}${labels}${lines}
+          </svg>
+        </div>
+      </section>
+    `;
+  }
+
+
+  function renderEnhancedMatchDetail(tableMatches, progressRows) {
+    const last = progressRows[progressRows.length - 1];
+    const first = progressRows[0];
+    const playerIndexById = new Map(
+      [1, 2, 3, 4].map(index => [
+        String(first[`選手${index}ID`] || "").trim(),
+        index
+      ])
+    );
+    const playerIndexByName = new Map(
+      [1, 2, 3, 4].flatMap(index => [
+        [String(first[`選手${index}公式名`] || "").trim(), index],
+        [String(first[`選手${index}`] || "").trim(), index]
+      ])
+    );
+    const drawCount = progressRows.filter(row =>
+      String(row["結果区分"] || "").includes("流局")
+    ).length;
+    const countPlayerInField = (fieldName, names) =>
+      progressRows.filter(row => {
+        const tokens = String(row[fieldName] || "")
+          .split(/[\/／・,、|｜]/)
+          .map(value => value.trim())
+          .filter(Boolean);
+        return names.some(name => tokens.includes(name));
+      }).length;
+
+    return `
+      <div class="match-broadcast-summary">
+        <strong>総局数 / ${progressRows.length}局</strong>
+        <span>（流局数 / ${drawCount}局）</span>
+      </div>
+      <div class="match-broadcast-results">
+        <div class="match-broadcast-head" aria-hidden="true">
+          <span>順位</span><span>選手</span><span>最終持ち点</span><span>リーチ回数</span><span>和了回数</span><span>放銃回数</span>
+        </div>
+        ${tableMatches.map(match => {
+          const id = String(match["選手ID"] || "").trim();
+          const name = String(match["選手名"] || "").trim();
+          const index = playerIndexById.get(id) || playerIndexByName.get(name);
+          const finalPoints = index ? toNumber(last[`終了点${index}`]) : toNumber(match["得点"]);
+          const rawName = index ? String(first[`選手${index}`] || "").trim() : "";
+          const officialName = index ? String(first[`選手${index}公式名`] || "").trim() : "";
+          const matchNames = [...new Set([name, rawName, officialName].filter(Boolean))];
+          const riichiCount = countPlayerInField("リーチ者", matchNames);
+          const winCount = countPlayerInField("和了者", matchNames);
+          const dealInCount = countPlayerInField("放銃者", matchNames);
+          const placement = toNumber(match["着順"]) || 4;
+          const playerQuery = new URLSearchParams({
+            id,
+            player: name,
+            year: normalizeYear(match["年度"]),
+            league: match["リーグ"] || "",
+            stage: match["ステージ"] || ""
+          });
+          const playerUrl = `player.html?${playerQuery.toString()}`;
+          return `
+            <article class="match-broadcast-row rank-tone-${placement} ${id && id === currentPlayerId ? "is-current-player" : ""}">
+              <div class="match-broadcast-rank">${getMatchMedal(match["着順"])}</div>
+              <div class="match-broadcast-player"><a href="${playerUrl}">${escapeHtml(name || "―")}</a><span>${escapeHtml(match["チーム名"] || "―")}</span></div>
+              <div class="match-broadcast-points"><strong>${finalPoints !== null ? `${formatInteger(finalPoints)}点` : "―"}</strong><span class="${toNumber(match["スコア"]) < 0 ? "is-negative" : ""}">${formatScore(match["スコア"])}</span></div>
+              <div class="match-broadcast-stat"><strong>${riichiCount}</strong><span>回</span></div>
+              <div class="match-broadcast-stat"><strong>${winCount}</strong><span>回</span></div>
+              <div class="match-broadcast-stat"><strong>${dealInCount}</strong><span>回</span></div>
+            </article>
+          `;
+        }).join("")}
+      </div>
+      ${renderPointProgressGraph(progressRows, tableMatches)}
+    `;
+  }
   
   
   function openMatchDetail(
@@ -2419,7 +2691,21 @@ function attachFilterEvents() {
         </p>
       `;
     } else {
-      body.innerHTML = `
+      const progressRows = getProgressRows(
+        selectedMatch,
+        tableMatches
+      );
+
+      body.innerHTML = progressRows.length
+        ? `
+          <div class="match-detail-meta">
+            <span>${escapeHtml(date || "日付不明")}</span>
+            ${time ? `<span>${escapeHtml(time)}</span>` : ""}
+            <span class="stage-badge ${getStageClass(selectedMatch["ステージ"])}">${escapeHtml(stage)}</span>
+          </div>
+          ${renderEnhancedMatchDetail(tableMatches, progressRows)}
+        `
+        : `
         <div class="match-detail-meta">
   
           <span>
@@ -2616,6 +2902,27 @@ function attachFilterEvents() {
    データ読み込み
 ======================================== */
 
+async function loadPointProgressData() {
+  try {
+    const response = await fetch(
+      POINT_PROGRESS_CSV_URL,
+      { cache: "no-store" }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Status: ${response.status}`);
+    }
+
+    return parseCsv(await response.text());
+  } catch (error) {
+    console.warn(
+      "点数推移CSVを読み込めないため、従来の試合詳細を表示します。",
+      error
+    );
+    return [];
+  }
+}
+
 async function loadPlayerDetail() {
     try {
       if (!playerId && !playerName) {
@@ -2647,12 +2954,14 @@ async function loadPlayerDetail() {
         playersData,
         matchesData,
         awardsData,
-        playerAliasData
+        playerAliasData,
+        pointProgressData
       ] = await Promise.all([
         HLDB.loadData("players"),
         HLDB.loadData("matches"),
         HLDB.loadData("awards"),
-        HLDB.loadData("playerAlias")
+        HLDB.loadData("playerAlias"),
+        loadPointProgressData()
       ]);
       
       
