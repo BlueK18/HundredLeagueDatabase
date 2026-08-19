@@ -1916,9 +1916,10 @@ transform:translateY(-1px);
   gap:9px;
 }
 .match-share-card.is-result .match-broadcast-head{
-  min-height:43px;
+  min-height:47px;
   box-sizing:border-box;
-  font-size:13px;
+  font-size:16px;
+  font-weight:700;
 }
 .match-share-card.is-result .match-broadcast-head > :nth-child(2){
   justify-self:start;
