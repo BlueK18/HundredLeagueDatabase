@@ -18,6 +18,23 @@
 .admin-entry-button:hover{background:#f0c936;transform:translateY(-2px)}
 .admin-entry-button svg{width:18px;height:18px}
 
+.admin-entry-button-bottom{
+  width:min(100%,460px);
+  min-height:52px;
+  justify-content:center;
+  margin:18px auto 0;
+}
+
+.admin-entry-logout-button{
+  border-color:#4a4f57;
+  background:#202327;
+  color:#f4f4f5;
+}
+
+.admin-entry-logout-button:hover{
+  background:#2b2f34;
+}
+
 .admin-entry-dialog{
   width:min(420px,calc(100% - 32px));
   padding:0;

@@ -53,42 +53,6 @@ const headToHeadTapNote =
 const favoriteButton =
   document.getElementById("favoriteButton");
 
-const playerDetailedStatsButton =
-  document.getElementById(
-    "playerDetailedStatsButton"
-  );
-
-const DETAILED_STATS_PLAYER_IDS =
-  new Set(["P0018"]);
-
-function updateDetailedStatsButton() {
-  if (!playerDetailedStatsButton) {
-    return;
-  }
-
-  const isAvailable =
-    DETAILED_STATS_PLAYER_IDS.has(
-      currentPlayerId
-    );
-
-  playerDetailedStatsButton.hidden =
-    !isAvailable;
-
-  if (isAvailable) {
-    const detailParams =
-      new URLSearchParams(params);
-
-    detailParams.set(
-      "id",
-      currentPlayerId
-    );
-
-    playerDetailedStatsButton.href =
-      `player-stats.html?${detailParams.toString()}`;
-  }
-}
-
-
 /* ========================================
    状態
 ======================================== */
@@ -3325,7 +3289,6 @@ if (playerId) {
     );
 }
 
-updateDetailedStatsButton();
       
       
       /*

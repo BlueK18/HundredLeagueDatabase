@@ -3,14 +3,19 @@
   const area = document.getElementById("playerDetailedStatsBody");
   if (!area) return;
 
-  const supportedPlayerIds =
-    new Set(["P0018"]);
-
   const requestedPlayerId =
     new URLSearchParams(location.search)
       .get("id") || "";
 
-  if (!supportedPlayerIds.has(requestedPlayerId)) {
+  const isAdminUnlocked =
+    sessionStorage.getItem(
+      "hldbDetailedStatsUnlocked"
+    ) === "1";
+
+  if (
+    !requestedPlayerId ||
+    !isAdminUnlocked
+  ) {
     const title = document.getElementById(
       "playerDetailedTitle"
     );
@@ -21,7 +26,7 @@
 
     area.innerHTML = `
       <p class="detailed-empty">
-        詳細成績は現在準備中です。
+        この詳細成績は管理者専用です。
       </p>
     `;
 

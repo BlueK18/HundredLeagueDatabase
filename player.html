@@ -22,7 +22,7 @@
     rel="stylesheet"
     href="css/style.css?v=32"
   >
-  <link rel="stylesheet" href="css/admin-entry.css?v=1">
+  <link rel="stylesheet" href="css/admin-entry.css?v=2">
 </head>
 
 <body>
@@ -133,9 +133,9 @@
       hidden
     >
       <i data-lucide="lock-keyhole"></i>
-      <span>管理者</span>
+      <span>入力フォーム</span>
     </button>
-  
+
   </div>
 
   <dialog id="adminEntryDialog" class="admin-entry-dialog">
@@ -260,7 +260,7 @@
     
     </section>
 
-    <a
+  <a
     href="#"
     class="back-button"
     id="backButton"
@@ -269,7 +269,56 @@
     戻る
   </a>
 
+  <button
+    id="detailedAdminButton"
+    class="admin-entry-button admin-entry-button-bottom"
+    type="button"
+    hidden
+  >
+    <i data-lucide="lock-keyhole"></i>
+    <span>管理者モード</span>
+  </button>
+
+  <button
+    id="detailedAdminLogoutButton"
+    class="admin-entry-button admin-entry-button-bottom admin-entry-logout-button"
+    type="button"
+    hidden
+  >
+    <i data-lucide="lock-keyhole-open"></i>
+    <span>管理者モードを解除</span>
+  </button>
+
 </main>
+
+  <dialog id="detailedAdminDialog" class="admin-entry-dialog">
+    <form id="detailedAdminForm" method="dialog">
+      <button
+        id="detailedAdminClose"
+        class="admin-entry-close"
+        type="button"
+        aria-label="閉じる"
+      >×</button>
+      <div class="admin-entry-lock" aria-hidden="true">
+        <i data-lucide="chart-no-axes-combined"></i>
+      </div>
+      <h2>管理者モード</h2>
+      <p>管理者専用の詳細成績を開きます。</p>
+      <input type="text" name="username" value="hundredleague-stats-admin" autocomplete="username" tabindex="-1" aria-hidden="true" style="position:absolute;left:-10000px">
+      <label for="detailedAdminPassword">パスワード</label>
+      <input
+        id="detailedAdminPassword"
+        name="password"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
+      <p id="detailedAdminError" class="admin-entry-error" role="alert" hidden>
+        パスワードが違います。
+      </p>
+      <button class="admin-entry-submit" type="submit">詳細成績を開く</button>
+    </form>
+  </dialog>
 
 
   <div
@@ -334,8 +383,9 @@
 
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/common.js?v=13"></script>
-  <script src="js/player.js?v=17"></script>
-  <script src="js/admin-entry.js?v=3"></script>
+  <script src="js/player.js?v=18"></script>
+  <script src="js/admin-entry.js?v=4"></script>
+  <script src="js/detailed-admin.js?v=3"></script>
   
 </body>
 
