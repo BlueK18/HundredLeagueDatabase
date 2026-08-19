@@ -2672,6 +2672,11 @@ function attachFilterEvents() {
               <div class="match-broadcast-stat"><strong>${riichiCount}</strong><span>回</span></div>
               <div class="match-broadcast-stat"><strong>${winCount}</strong><span>回</span></div>
               <div class="match-broadcast-stat"><strong>${dealInCount}</strong><span>回</span></div>
+              <div class="match-broadcast-mobile-stats">
+                <span>立直 <strong>${riichiCount}回</strong></span>
+                <span>和了 <strong>${winCount}回</strong></span>
+                <span>放銃 <strong>${dealInCount}回</strong></span>
+              </div>
             </article>
           `;
         }).join("")}

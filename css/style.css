@@ -2038,6 +2038,10 @@ transform:translateY(-1px);
   font-size:11px;
 }
 
+.match-broadcast-mobile-stats{
+  display:none;
+}
+
 .match-progress-section{
   margin-top:18px;
   padding:17px;
@@ -2147,6 +2151,24 @@ body.modal-open{
 
   .match-broadcast-stat{
     display:none;
+  }
+
+  .match-broadcast-mobile-stats{
+    display:flex;
+    grid-column:2 / -1;
+    justify-content:flex-end;
+    gap:12px;
+    padding-top:7px;
+    border-top:1px solid #303030;
+    color:#aaa;
+    font-size:11px;
+    white-space:nowrap;
+  }
+
+  .match-broadcast-mobile-stats strong{
+    margin-left:2px;
+    color:#f4f4f4;
+    font-size:12px;
   }
 
   .match-broadcast-summary{

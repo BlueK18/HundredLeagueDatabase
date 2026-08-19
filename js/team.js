@@ -868,12 +868,18 @@ function renderTeamMatches(
   specialStats = {}
 ) {
 
-  const selectedMatches = matchesData.filter(row =>
-    row["年度"] === year &&
-    row["チーム名"] === teamName &&
-    HLDB.normalizeLeague(row["リーグ"]) === HLDB.normalizeLeague(league) &&
-    HLDB.normalizeStage(row["ステージ"]) === HLDB.normalizeStage(stage)
-  );
+  const selectedMatches = matchesData
+    .filter(row =>
+      row["年度"] === year &&
+      row["チーム名"] === teamName &&
+      HLDB.normalizeLeague(row["リーグ"]) === HLDB.normalizeLeague(league) &&
+      HLDB.normalizeStage(row["ステージ"]) === HLDB.normalizeStage(stage)
+    )
+    .sort((a, b) => {
+      const dateA = new Date(String(a["日付"] || "").replace(/\//g, "-"));
+      const dateB = new Date(String(b["日付"] || "").replace(/\//g, "-"));
+      return dateB - dateA;
+    });
 
   if (selectedMatches.length === 0) {
     teamMatches.innerHTML = `
