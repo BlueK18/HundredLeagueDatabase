@@ -54,7 +54,7 @@ header::after{
 }
 
 header::before{
-  left:0;
+  left:-10000px;
   background-position:left center;
 }
 
@@ -1792,6 +1792,231 @@ transform:translateY(-1px);
   color:#d4af37;
 }
 
+.match-camera-tools{
+  position:absolute;
+  top:12px;
+  right:62px;
+  z-index:2;
+}
+
+.match-camera-button{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:38px;
+  padding:0 13px;
+  border:1px solid #5a4a1e;
+  border-radius:19px;
+  background:#201d13;
+  color:#d4af37;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.match-camera-button svg{display:block;width:17px;height:17px;margin:0;flex:none}
+.match-camera-button:disabled{opacity:.6;cursor:wait}
+
+.match-camera-menu{
+  position:absolute;
+  top:45px;
+  right:0;
+  width:300px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  overflow:hidden;
+  border:1px solid #49412a;
+  border-radius:12px;
+  background:#202020;
+  box-shadow:0 12px 30px rgba(0,0,0,.45);
+}
+.match-camera-menu[hidden]{display:none!important}
+
+.match-camera-menu button{
+  width:100%;
+  min-height:42px;
+  padding:9px 10px;
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:13px;
+  line-height:1.2;
+  text-align:center;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.match-camera-menu button:first-child{border-right:1px solid #363636}
+.match-camera-menu button:hover{background:#302a18;color:#d4af37}
+
+.match-share-card{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:-1;
+  box-sizing:border-box;
+  width:1200px;
+  height:675px;
+  overflow:hidden;
+  padding:30px 38px 22px;
+  background:#101010;
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+}
+.match-share-header{display:flex!important;align-items:center!important;justify-content:space-between!important;height:31px!important;margin:0 2px 14px!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;color:#fff!important}
+.match-share-titleline,.match-share-metaline{display:flex;align-items:center;gap:20px;min-width:0;white-space:nowrap}
+.match-share-titleline span{color:#ddd;font-size:15px;font-weight:700}
+.match-share-titleline strong{color:#d4af37;font-size:17px}
+.match-share-metaline{justify-content:flex-end;gap:18px}
+.match-share-metaline strong{color:#d4af37;font-size:16px}
+.match-share-header time{color:#ddd;font-size:15px}
+.match-share-summary{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding:10px 18px;border-radius:6px;background:linear-gradient(90deg,#075039,#103d31 70%,#0b2d24)}
+.match-share-summary strong{font-size:22px}.match-share-summary span{color:#d4e9e1;font-size:15px}
+.match-share-card .match-broadcast-results{display:block!important;overflow:hidden!important;border:1px solid #3d3d3d!important;border-radius:14px!important;background:#171717!important}
+.match-share-card .match-broadcast-head,.match-share-card .match-broadcast-row{grid-template-columns:72px minmax(240px,1.35fr) minmax(175px,.9fr) repeat(3,minmax(100px,.5fr))}
+.match-share-card .match-broadcast-head{display:grid!important;padding:8px 18px!important;background:#202020!important;color:#bdbdbd!important}
+.match-share-card .match-broadcast-row{display:grid!important;min-height:91px!important;padding:12px 18px!important}
+.match-share-card .match-broadcast-player a{font-size:20px}
+.match-share-card .match-broadcast-player span{font-size:14px}
+.match-share-card .match-broadcast-points strong{font-size:22px}
+.match-share-card .match-broadcast-points span{font-size:16px}
+.match-share-card .match-broadcast-stat{display:flex!important;align-items:baseline!important;justify-content:center!important}
+.match-share-card .match-broadcast-stat strong{font-size:25px}
+.match-share-card .match-broadcast-mobile-stats{display:none!important}
+.match-share-progress-players{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:9px}
+.match-share-progress-players article{position:relative;display:grid;grid-template-columns:45px 38px minmax(0,1fr);align-items:start;min-width:0;min-height:92px;box-sizing:border-box;padding:10px 12px 9px;border:1px solid #383838;border-bottom:6px solid var(--series-color);border-radius:9px;background:#171717!important}
+.match-share-progress-players article > em{display:block;padding-top:7px;color:var(--series-color);font-size:18px;font-style:normal;font-weight:900;white-space:nowrap}
+.match-share-progress-players i{width:30px;height:7px;margin-top:14px;border-radius:6px;background:var(--series-color)}
+.match-share-progress-players article > div{display:grid;min-width:0}
+.match-share-progress-players strong,.match-share-progress-players span,.match-share-progress-players b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.match-share-progress-players strong{color:#fff;font-size:17px}.match-share-progress-players span{color:#c1c1c1;font-size:12px}.match-share-progress-players b{margin-top:5px;color:var(--series-color);font-size:17px}.match-share-progress-players b small{margin-right:5px;color:#ddd;font-size:12px;font-weight:500}
+.match-share-card.is-progress .match-share-summary{min-height:42px;box-sizing:border-box;margin-bottom:8px;padding:7px 16px;background:linear-gradient(90deg,#0b4307,#123b0e 72%,#0d300a)}
+.match-share-card.is-progress .match-progress-section{position:relative;margin:0;padding:35px 14px 2px;border:1px solid #343434;border-radius:10px;background:linear-gradient(135deg,#151515,#0d0d0d)}
+.match-share-card.is-progress .match-progress-section h3{position:absolute;top:8px;left:20px;margin:0;color:#fff;font-size:21px}
+.match-share-card.is-progress .match-progress-scroll{overflow:visible}
+.match-share-card.is-progress .match-progress-chart{display:block;width:100%;height:360px;min-width:0}
+
+/* 対局結果画像は、16:9の画面を縦いっぱいに使う専用比率 */
+.match-share-card.is-result{
+  padding-top:18px;
+  padding-bottom:14px;
+}
+.match-share-card.is-result .match-share-header{
+  margin-bottom:11px!important;
+}
+.match-share-card.is-result .match-share-summary{
+  min-height:66px;
+  box-sizing:border-box;
+  margin-bottom:13px;
+  padding:13px 20px;
+}
+.match-share-card.is-result .match-share-summary strong{font-size:28px}
+.match-share-card.is-result .match-share-summary span{font-size:18px}
+.match-share-card.is-result .match-broadcast-head,
+.match-share-card.is-result .match-broadcast-row{
+  grid-template-columns:92px minmax(225px,1.27fr) minmax(185px,.86fr) repeat(3,minmax(100px,.5fr));
+  gap:9px;
+}
+.match-share-card.is-result .match-broadcast-head{
+  min-height:43px;
+  box-sizing:border-box;
+  font-size:13px;
+}
+.match-share-card.is-result .match-broadcast-head > :nth-child(2){
+  justify-self:start;
+  transform:translateX(76px);
+}
+.match-share-card.is-result .match-broadcast-head > :nth-child(3),
+.match-share-card.is-result .match-broadcast-points{
+  transform:translateX(-68px);
+}
+.match-share-card.is-result .match-broadcast-player{
+  transform:translateX(42px);
+}
+.match-share-card.is-result .match-broadcast-row{
+  min-height:108px!important;
+  box-sizing:border-box;
+}
+.match-share-card.is-result .match-broadcast-player a{font-size:24px}
+.match-share-card.is-result .match-broadcast-player span{font-size:16px}
+.match-share-card.is-result .match-broadcast-points strong{font-size:27px}
+.match-share-card.is-result .match-broadcast-points span{font-size:17px}
+.match-share-card.is-result .match-broadcast-stat strong{font-size:28px}
+.match-share-card.is-result .match-broadcast-stat span{font-size:14px}
+
+.match-image-preview{
+  position:fixed;
+  inset:0;
+  z-index:20000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(5px);
+}
+.match-image-preview-dialog{
+  width:min(1100px,100%);
+  overflow:hidden;
+  border:1px solid #4b4125;
+  border-radius:16px;
+  background:#171717;
+  box-shadow:0 24px 80px rgba(0,0,0,.7);
+}
+.match-image-preview-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:13px 17px;
+  color:#fff;
+}
+.match-image-preview-head strong{font-size:17px}
+.match-image-preview-head button{
+  width:34px;
+  height:34px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:#303030;
+  color:#fff;
+  font-size:23px;
+  cursor:pointer;
+}
+.match-image-preview-canvas{
+  padding:0 17px;
+  background:#111;
+}
+.match-image-preview-canvas img{
+  display:block;
+  width:100%;
+  aspect-ratio:16 / 9;
+  object-fit:contain;
+  background:#101010;
+}
+.match-image-preview-actions{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:10px;
+  padding:14px 17px 17px;
+}
+.match-image-preview-actions button{
+  min-height:48px;
+  padding:12px 18px;
+  border-radius:9px;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+}
+.match-image-preview-actions .is-back{
+  border:1px solid #555;
+  background:#242424;
+  color:#ddd;
+}
+.match-image-preview-actions .is-save{
+  border:1px solid #d4af37;
+  background:#d4af37;
+  color:#111;
+}
+.match-image-preview-actions button:disabled{opacity:.6;cursor:wait}
+
 .match-modal-close{
   position:absolute;
   top:12px;
@@ -2122,6 +2347,51 @@ body.modal-open{
 }
 
 @media(max-width:600px){
+  .match-image-preview{padding:8px}
+  .match-image-preview-dialog{border-radius:12px}
+  .match-image-preview-head{padding:10px 12px}
+  .match-image-preview-canvas{padding:0 8px}
+  .match-image-preview-actions{grid-template-columns:2fr 1fr;gap:7px;padding:8px 8px 10px}
+  .match-image-preview-actions button{min-height:38px;padding:7px 8px;border-radius:7px;font-size:13px}
+  .match-detail-dialog > h2{margin-right:118px;font-size:22px}
+  .match-camera-button{
+    position:relative;
+    width:42px;
+    height:42px;
+    min-height:42px;
+    box-sizing:border-box;
+    padding:0;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    font-size:0;
+    line-height:0;
+  }
+  .match-camera-button svg{
+    position:absolute;
+    top:50%;
+    left:50%;
+    display:block;
+    width:20px;
+    height:20px;
+    margin:0;
+    transform:translate(-50%,-50%);
+  }
+  .match-camera-menu{
+    width:278px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .match-camera-menu button{
+    min-height:38px;
+    padding:8px 7px;
+    border-bottom:0;
+    font-size:12px;
+    line-height:1.2;
+    text-align:center;
+    white-space:nowrap;
+  }
+  .match-camera-menu button:first-child{border-right:1px solid #363636}
   .match-detail-dialog{
       padding:21px 15px;
   }

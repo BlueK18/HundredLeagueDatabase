@@ -100,6 +100,7 @@ let pointProgressData = [];
 let pointProgressLoaded = false;
 let pointProgressLoadPromise = null;
 let html2CanvasLoadPromise = null;
+let activeMatchScreenshotContext = null;
 
 let playerAliasData = [];
 let currentPlayerId = "";
@@ -2479,6 +2480,26 @@ function attachFilterEvents() {
   }
 
 
+  const MATCH_RANK_COLORS = ["#d4af37", "#8fa8cf", "#67b63d", "#b070d1"];
+
+  function findProgressPlayerMatch(first, index, tableMatches) {
+    const id = String(first[`選手${index}ID`] || "").trim();
+    const names = [
+      String(first[`選手${index}公式名`] || "").trim(),
+      String(first[`選手${index}`] || "").trim()
+    ].filter(Boolean);
+
+    return tableMatches.find(match =>
+      (id && String(match["選手ID"] || "").trim() === id) ||
+      names.includes(String(match["選手名"] || "").trim())
+    ) || null;
+  }
+
+  function getMatchRank(match, fallbackRank = 4) {
+    const rank = toNumber(match?.["着順"] ?? match?.["順位"]);
+    return rank !== null && rank >= 1 && rank <= 4 ? rank : fallbackRank;
+  }
+
   function renderPointProgressGraph(rows, tableMatches) {
     if (!rows.length) return "";
 
@@ -2507,7 +2528,6 @@ function attachFilterEvents() {
         ])
         .filter(([name, points]) => name && points !== null)
     );
-    const colors = ["#d4af37", "#8fa8cf", "#67b63d", "#b070d1"];
     const series = [1, 2, 3, 4].map((index, seriesIndex) => {
       const id = String(first[`選手${index}ID`] || "").trim();
       const progressName = String(
@@ -2527,10 +2547,13 @@ function attachFilterEvents() {
       if (officialFinalPoints !== null && progressValues.length) {
         progressValues[progressValues.length - 1] = officialFinalPoints;
       }
+      const match = findProgressPlayerMatch(first, index, tableMatches);
+      const rank = getMatchRank(match, seriesIndex + 1);
       return {
         id,
         name,
-        color: colors[seriesIndex],
+        rank,
+        color: MATCH_RANK_COLORS[rank - 1],
         values: [
           toNumber(first[`開始点${index}`]) ?? 25000,
           ...progressValues
@@ -2544,9 +2567,10 @@ function attachFilterEvents() {
         Math.abs(value - startPoint)
       )
     );
+    const axisStep = 5000;
     const axisHalfRange = Math.max(
-      6000,
-      maxDeviation * 1.12
+      axisStep,
+      Math.ceil((maxDeviation * 1.05) / axisStep) * axisStep
     );
     const min = startPoint - axisHalfRange;
     const max = startPoint + axisHalfRange;
@@ -2684,6 +2708,213 @@ function attachFilterEvents() {
       ${renderPointProgressGraph(progressRows, tableMatches)}
     `;
   }
+
+  function getMatchScreenshotPlayers(tableMatches, progressRows) {
+    if (!progressRows.length) return [];
+    const first = progressRows[0];
+
+    return [1, 2, 3, 4].map((index, colorIndex) => {
+      const id = String(first[`選手${index}ID`] || "").trim();
+      const feedNames = [
+        String(first[`選手${index}公式名`] || "").trim(),
+        String(first[`選手${index}`] || "").trim()
+      ].filter(Boolean);
+      const match = findProgressPlayerMatch(first, index, tableMatches) ||
+        tableMatches[colorIndex] || {};
+      const rank = getMatchRank(match, colorIndex + 1);
+
+      return {
+        name: String(match["選手名"] || feedNames[0] || `選手${index}`).trim(),
+        team: String(match["チーム名"] || "―").trim(),
+        finalPoints: toNumber(match["得点"]),
+        rank,
+        color: MATCH_RANK_COLORS[rank - 1],
+        sourceIndex: colorIndex
+      };
+    }).sort((a, b) => {
+      if (a.rank !== null && b.rank !== null && a.rank !== b.rank) {
+        return a.rank - b.rank;
+      }
+      if (a.finalPoints !== null && b.finalPoints !== null && a.finalPoints !== b.finalPoints) {
+        return b.finalPoints - a.finalPoints;
+      }
+      return a.sourceIndex - b.sourceIndex;
+    });
+  }
+
+  function buildMatchScreenshot(selectedMatch, tableMatches, progressRows, type) {
+    const year = normalizeYear(selectedMatch["年度"]);
+    const matchNo = getMatchNo(selectedMatch);
+    const date = String(selectedMatch["日付"] || "").trim();
+    const time = String(selectedMatch["時間"] || "").trim();
+    const league = displayLeagueName(selectedMatch["リーグ"]);
+    const stage = displayStageName(selectedMatch["ステージ"]);
+    const drawCount = progressRows.filter(row =>
+      String(row["結果区分"] || "").includes("流局")
+    ).length;
+    const title = matchNo ? `${year}年 第${matchNo}試合` : `${year}年 対局結果`;
+    const root = document.createElement("div");
+    root.className = `match-share-card is-${type}`;
+    root.innerHTML = `
+      <div class="match-share-header">
+        <div class="match-share-titleline">
+          <span>ハンドレッドリーグ</span>
+          <strong>${escapeHtml(title)}</strong>
+        </div>
+        <div class="match-share-metaline">
+          <strong>${escapeHtml(league)}　${escapeHtml(stage)}</strong>
+          <time>${escapeHtml(date || "日付不明")}${time ? `　${escapeHtml(time)}` : ""}</time>
+        </div>
+      </div>
+      <div class="match-share-summary">
+        <strong>総局数 / ${progressRows.length}局</strong>
+        <span>（流局数 / ${drawCount}局）</span>
+      </div>
+      <main class="match-share-content"></main>
+    `;
+
+    const content = root.querySelector(".match-share-content");
+    if (type === "result") {
+      const rendered = document.createElement("div");
+      rendered.innerHTML = renderEnhancedMatchDetail(tableMatches, progressRows);
+      const results = rendered.querySelector(".match-broadcast-results");
+      if (results) content.appendChild(results);
+    } else {
+      const players = getMatchScreenshotPlayers(tableMatches, progressRows);
+      const playerCards = document.createElement("div");
+      playerCards.className = "match-share-progress-players";
+      playerCards.innerHTML = players.map(player => `
+        <article style="--series-color:${player.color}">
+          <em>${player.rank}着</em>
+          <i></i>
+          <div>
+            <strong>${escapeHtml(player.name)}</strong>
+            <span>${escapeHtml(player.team)}</span>
+            <b><small>最終</small> ${player.finalPoints !== null ? `${formatInteger(player.finalPoints)}点` : "―"}</b>
+          </div>
+        </article>
+      `).join("");
+      root.insertBefore(playerCards, root.querySelector(".match-share-summary"));
+
+      const rendered = document.createElement("div");
+      rendered.innerHTML = renderPointProgressGraph(progressRows, tableMatches);
+      const graph = rendered.querySelector(".match-progress-section");
+      if (graph) {
+        graph.querySelector(".match-progress-legend")?.remove();
+        content.appendChild(graph);
+      }
+    }
+
+    return root;
+  }
+
+  function showMatchScreenshotPreview(canvas, fileName) {
+    document.querySelector(".match-image-preview")?.remove();
+
+    const overlay = document.createElement("div");
+    overlay.className = "match-image-preview";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "作成画像の確認");
+    overlay.innerHTML = `
+      <div class="match-image-preview-dialog">
+        <div class="match-image-preview-head">
+          <strong>作成画像の確認</strong>
+          <button type="button" data-close-preview aria-label="確認画面を閉じる">×</button>
+        </div>
+        <div class="match-image-preview-canvas">
+          <img src="${canvas.toDataURL("image/png")}" alt="保存する対局画像の確認">
+        </div>
+        <div class="match-image-preview-actions">
+          <button type="button" class="is-save" data-save-preview>この画像を保存する</button>
+          <button type="button" class="is-back" data-close-preview>戻る</button>
+        </div>
+      </div>
+    `;
+
+    const closePreview = () => overlay.remove();
+    overlay.querySelectorAll("[data-close-preview]").forEach(button => {
+      button.addEventListener("click", closePreview);
+    });
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) closePreview();
+    });
+    overlay.querySelector("[data-save-preview]")?.addEventListener("click", async event => {
+      const saveButton = event.currentTarget;
+      saveButton.disabled = true;
+      saveButton.textContent = "保存準備中...";
+      try {
+        await HLDB.saveScreenshotCanvas({ canvas, fileName });
+        closePreview();
+      } catch (error) {
+        console.error("画像の保存に失敗しました。", error);
+        saveButton.disabled = false;
+        saveButton.textContent = "この画像を保存する";
+        alert("画像を保存できませんでした。もう一度お試しください。");
+      }
+    });
+
+    document.body.appendChild(overlay);
+  }
+
+  async function saveMatchScreenshot(type) {
+    const context = activeMatchScreenshotContext;
+    if (!context) return;
+    if (!context.progressRows.length) {
+      alert("この試合には画像作成用の局データがありません。");
+      return;
+    }
+
+    const button = document.getElementById("matchCameraButton");
+    const originalText = button?.innerHTML;
+    if (button) {
+      button.disabled = true;
+      button.textContent = "画像を作成中...";
+    }
+
+    let card = null;
+    try {
+      await ensureHtml2Canvas();
+      if (window.HLDB?.waitForScreenshotFonts) {
+        await HLDB.waitForScreenshotFonts();
+      }
+      card = buildMatchScreenshot(
+        context.selectedMatch,
+        context.tableMatches,
+        context.progressRows,
+        type
+      );
+      document.body.appendChild(card);
+      const canvas = await window.html2canvas(card, {
+        backgroundColor: "#101010",
+        scale: 2,
+        width: 1200,
+        height: 675,
+        useCORS: true,
+        logging: false
+      });
+      const date = String(context.selectedMatch["日付"] || "match")
+        .replace(/[^0-9]/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+      const matchNo = getMatchNo(context.selectedMatch) || "detail";
+      const suffix = type === "result" ? "対局結果" : "点数推移";
+      showMatchScreenshotPreview(
+        canvas,
+        `${date}_第${matchNo}試合_${suffix}.png`
+      );
+    } catch (error) {
+      console.error("試合画像の作成に失敗しました。", error);
+      alert("画像を作成できませんでした。通信状態を確認して、もう一度お試しください。");
+    } finally {
+      card?.remove();
+      if (button) {
+        button.disabled = false;
+        button.innerHTML = originalText;
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+  }
   
   
   function openMatchDetail(
@@ -2760,6 +2991,20 @@ function attachFilterEvents() {
         selectedMatch,
         tableMatches
       );
+
+      activeMatchScreenshotContext = {
+        selectedMatch,
+        tableMatches,
+        progressRows
+      };
+      const cameraTools = document.getElementById("matchCameraTools");
+      const cameraButton = document.getElementById("matchCameraButton");
+      const cameraMenu = document.getElementById("matchCameraMenu");
+      const progressButton = document.querySelector('[data-match-image="progress"]');
+      if (cameraTools) cameraTools.hidden = !progressRows.length;
+      if (cameraMenu) cameraMenu.hidden = true;
+      if (cameraButton) cameraButton.setAttribute("aria-expanded", "false");
+      if (progressButton) progressButton.hidden = !progressRows.length;
 
       body.innerHTML = progressRows.length
         ? `
@@ -2932,10 +3177,29 @@ function attachFilterEvents() {
     document.body.classList.remove(
       "modal-open"
     );
+    const cameraMenu = document.getElementById("matchCameraMenu");
+    const cameraButton = document.getElementById("matchCameraButton");
+    if (cameraMenu) cameraMenu.hidden = true;
+    if (cameraButton) cameraButton.setAttribute("aria-expanded", "false");
+    activeMatchScreenshotContext = null;
   }
   
   
   function initializeMatchDetailModal() {
+    const cameraButton = document.getElementById("matchCameraButton");
+    const cameraMenu = document.getElementById("matchCameraMenu");
+    cameraButton?.addEventListener("click", () => {
+      const willOpen = cameraMenu.hidden;
+      cameraMenu.hidden = !willOpen;
+      cameraButton.setAttribute("aria-expanded", String(willOpen));
+    });
+    cameraMenu?.querySelectorAll("[data-match-image]").forEach(button => {
+      button.addEventListener("click", () => {
+        cameraMenu.hidden = true;
+        cameraButton?.setAttribute("aria-expanded", "false");
+        saveMatchScreenshot(button.dataset.matchImage);
+      });
+    });
     document
       .querySelectorAll(
         "[data-close-match-modal]"
