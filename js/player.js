@@ -2769,6 +2769,13 @@ function attachFilterEvents() {
       }
     }
 
+    const watermark = document.createElement("img");
+    watermark.className = "match-share-watermark";
+    watermark.src = "apple-touch-icon.png";
+    watermark.alt = "";
+    watermark.setAttribute("aria-hidden", "true");
+    root.appendChild(watermark);
+
     return root;
   }
 
@@ -2849,6 +2856,10 @@ function attachFilterEvents() {
         type
       );
       document.body.appendChild(card);
+      const watermark = card.querySelector(".match-share-watermark");
+      if (watermark && typeof watermark.decode === "function") {
+        await watermark.decode().catch(() => {});
+      }
       const canvas = await window.html2canvas(card, {
         backgroundColor: "#101010",
         scale: 2,

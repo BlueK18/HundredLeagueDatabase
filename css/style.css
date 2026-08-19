@@ -652,6 +652,105 @@ tr:hover{
   color:inherit;
   opacity:.66;
 }
+
+.detailed-stats-section > h2{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+.detailed-stats-section > h2 > span{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.detailed-stats-image-button{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  min-height:40px;
+  padding:8px 16px;
+  border:1px solid #8b6e0b;
+  border-radius:20px;
+  background:#1f1c12;
+  color:#e2b92d;
+  font:inherit;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+.detailed-stats-image-button[hidden]{display:none!important}
+.detailed-stats-image-button svg{width:17px;height:17px}
+.detailed-stats-image-button:hover{background:#302815}
+.detailed-stats-image-button:disabled{opacity:.6;cursor:wait}
+.detailed-stats-share-card{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:-1;
+  isolation:isolate;
+  overflow:hidden;
+  box-sizing:border-box;
+  width:1200px;
+  padding:30px 34px 36px;
+  background:#0d0f10;
+  color:#eef1f6;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+}
+.detailed-stats-share-card .detailed-stats-section{
+  position:relative;
+  z-index:1;
+  width:100%;
+  max-width:none;
+  margin:0;
+}
+.detailed-stats-share-watermark{
+  position:absolute;
+  z-index:2;
+  top:390px;
+  left:50%;
+  width:650px;
+  height:650px;
+  transform:translateX(-50%);
+  object-fit:contain;
+  opacity:.04;
+  filter:grayscale(1) brightness(1.35);
+  pointer-events:none;
+  user-select:none;
+}
+.detailed-stats-share-card .detailed-stats-section > h2{
+  margin:0 0 18px;
+  padding:0 2px 14px;
+  border-bottom:1px solid #5a4a1e;
+}
+.detailed-stats-share-card .detailed-stats-section > h2 span{
+  color:#c9ced7;
+  font-size:17px;
+}
+.detailed-stats-share-card .detailed-stats-section > h2 strong{
+  color:#e1b820;
+  font-size:28px;
+}
+.detailed-stats-share-card .detailed-stats-section > h2 small{
+  margin-left:12px;
+  color:#aeb4bf;
+  font-size:18px;
+  font-weight:600;
+}
+.detailed-stats-share-card .detailed-stats-section > h2 b{
+  margin-left:auto;
+  color:#f0f1f3;
+  font-size:17px;
+}
+.detailed-stats-share-card .placement-grid{grid-template-columns:repeat(4,1fr)}
+.detailed-stats-share-card .summary-grid{grid-template-columns:repeat(5,1fr)}
+.detailed-stats-share-card .detailed-panels{grid-template-columns:repeat(4,1fr)}
+.detailed-stats-share-card .role-table{min-width:0}
+@media(max-width:600px){
+  .detailed-stats-section > h2{align-items:flex-start}
+  .detailed-stats-image-button{min-height:36px;padding:7px 11px;font-size:12px}
+  .detailed-stats-image-button svg{width:15px;height:15px}
+}
 .players-page{
   max-width:1250px;
   margin:0 auto;
@@ -1860,6 +1959,37 @@ transform:translateY(-1px);
   background:#101010;
   color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+}
+.match-share-watermark{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  top:50%;
+  width:540px;
+  height:540px;
+  transform:translate(-50%,-50%);
+  object-fit:contain;
+  opacity:.04;
+  filter:grayscale(1) brightness(1.35);
+  pointer-events:none;
+  user-select:none;
+}
+/*
+ * The two exported images use different visual centres.
+ * Result: centre of the four result rows.
+ * Progress: intersection of the chart centre and the 25,000-point baseline.
+ * Keeping the centre as a coordinate means the logo can be resized without
+ * drifting away from the intended position.
+ */
+.match-share-card.is-result .match-share-watermark{
+  top:397px;
+  width:500px;
+  height:500px;
+}
+.match-share-card.is-progress .match-share-watermark{
+  top:448px;
+  width:540px;
+  height:540px;
 }
 .match-share-header{display:flex!important;align-items:center!important;justify-content:space-between!important;height:31px!important;margin:0 2px 14px!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;color:#fff!important}
 .match-share-titleline,.match-share-metaline{display:flex;align-items:center;gap:20px;min-width:0;white-space:nowrap}

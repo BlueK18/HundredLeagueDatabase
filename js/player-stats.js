@@ -6,6 +6,10 @@
   const requestedPlayerId =
     new URLSearchParams(location.search)
       .get("id") || "";
+  const pageParams = new URLSearchParams(location.search);
+  const requestedYear = pageParams.get("year") || "";
+  const requestedLeague = pageParams.get("league") || "";
+  const requestedStage = pageParams.get("stage") || "";
 
   const isAdminUnlocked =
     sessionStorage.getItem(
@@ -35,9 +39,145 @@
 
   let summaryRows = [];
   let roleRows = [];
+  let profileRows = [];
   let selectedType = "全期間";
   let selectedYear = "";
   let selectedSeason = "";
+
+  function ensureHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("html2canvasを読み込めませんでした。"));
+      document.head.appendChild(script);
+    });
+  }
+
+  function statsPeriodText() {
+    if (selectedType === "年度") return `${selectedYear}年度`;
+    if (selectedType === "シーズン") return `${selectedYear}年度　${selectedSeason}`;
+    return "全期間";
+  }
+
+  function currentTeamName() {
+    const playerRows = profileRows.filter(row =>
+      String(row["選手ID"] || "").trim() === requestedPlayerId
+    );
+    const exact = playerRows.find(row =>
+      (!requestedYear || String(row["年度"] || "").trim() === requestedYear) &&
+      (!requestedLeague || String(row["リーグ"] || "").trim() === requestedLeague) &&
+      (!requestedStage || String(row["ステージ"] || "").trim() === requestedStage)
+    );
+    return String((exact || playerRows[0])?.["チーム名"] || "").trim();
+  }
+
+  function showStatsImagePreview(canvas, fileName) {
+    document.querySelector(".match-image-preview")?.remove();
+    const overlay = document.createElement("div");
+    overlay.className = "match-image-preview";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "作成画像の確認");
+    overlay.innerHTML = `
+      <div class="match-image-preview-dialog">
+        <div class="match-image-preview-head">
+          <strong>作成画像の確認</strong>
+          <button type="button" data-close-preview aria-label="確認画面を閉じる">×</button>
+        </div>
+        <div class="match-image-preview-canvas">
+          <img src="${canvas.toDataURL("image/png")}" alt="保存する詳細成績画像の確認">
+        </div>
+        <div class="match-image-preview-actions">
+          <button type="button" class="is-save" data-save-preview>この画像を保存する</button>
+          <button type="button" class="is-back" data-close-preview>戻る</button>
+        </div>
+      </div>`;
+
+    const close = () => overlay.remove();
+    overlay.querySelectorAll("[data-close-preview]").forEach(button => button.addEventListener("click", close));
+    overlay.addEventListener("click", event => { if (event.target === overlay) close(); });
+    overlay.querySelector("[data-save-preview]")?.addEventListener("click", async event => {
+      const button = event.currentTarget;
+      button.disabled = true;
+      button.textContent = "保存準備中...";
+      try {
+        await HLDB.saveScreenshotCanvas({ canvas, fileName });
+        close();
+      } catch (error) {
+        console.error("詳細成績画像を保存できませんでした。", error);
+        button.disabled = false;
+        button.textContent = "この画像を保存する";
+        alert("画像を保存できませんでした。もう一度お試しください。");
+      }
+    });
+    document.body.appendChild(overlay);
+  }
+
+  async function saveDetailedStatsImage() {
+    const source = document.querySelector(".detailed-stats-section");
+    const row = currentSummary();
+    if (!source || !row) return;
+
+    const button = document.getElementById("detailedStatsImageButton");
+    const original = button?.innerHTML;
+    let card;
+    try {
+      if (button) {
+        button.disabled = true;
+        button.textContent = "画像を作成中...";
+      }
+      await ensureHtml2Canvas();
+      await window.HLDB?.waitForScreenshotFonts?.();
+
+      card = document.createElement("div");
+      card.className = "detailed-stats-share-card";
+      const content = source.cloneNode(true);
+      content.querySelector(".detailed-stats-image-button")?.remove();
+      content.querySelector(".detailed-filter")?.remove();
+      content.querySelector("#detailedStatsTitle").innerHTML = `
+        <span>ハンドレッドリーグ データベース</span>
+        <strong>${HLDB.escapeHtml(String(row["選手名"] || "詳細成績"))}</strong>
+        ${currentTeamName() ? `<small>${HLDB.escapeHtml(currentTeamName())}</small>` : ""}
+        <b>${HLDB.escapeHtml(statsPeriodText())}</b>`;
+      card.appendChild(content);
+
+      const watermark = document.createElement("img");
+      watermark.className = "detailed-stats-share-watermark";
+      watermark.src = "apple-touch-icon.png";
+      watermark.alt = "";
+      watermark.setAttribute("aria-hidden", "true");
+      card.appendChild(watermark);
+      document.body.appendChild(card);
+
+      if (typeof watermark.decode === "function") {
+        await watermark.decode().catch(() => {});
+      }
+
+      const canvas = await window.html2canvas(card, {
+        backgroundColor: "#0d0f10",
+        scale: 2,
+        width: card.scrollWidth,
+        height: card.scrollHeight,
+        useCORS: true,
+        logging: false
+      });
+      const safeName = String(row["選手名"] || "player").replace(/[\\/:*?"<>|]/g, "_");
+      const safePeriod = statsPeriodText().replace(/[\\/:*?"<>|　 ]/g, "_");
+      showStatsImagePreview(canvas, `${safeName}_${safePeriod}_詳細成績.png`);
+    } catch (error) {
+      console.error("詳細成績画像を作成できませんでした。", error);
+      alert("画像を作成できませんでした。通信状態を確認して、もう一度お試しください。");
+    } finally {
+      card?.remove();
+      if (button) {
+        button.disabled = false;
+        button.innerHTML = original;
+        HLDB.initializeIcons();
+      }
+    }
+  }
 
   const value = (row, key, suffix = "") => {
     const raw = String(row?.[key] ?? "").trim();
@@ -189,20 +329,28 @@
     area.querySelectorAll("[data-stats-type]").forEach(button => button.addEventListener("click", () => { selectedType = button.dataset.statsType; render(); }));
     area.querySelector("#detailedYearSelect")?.addEventListener("change", event => { selectedYear = event.target.value; selectedSeason = ""; render(); });
     area.querySelector("#detailedSeasonSelect")?.addEventListener("change", event => { selectedSeason = event.target.value; render(); });
+    const imageButton = document.getElementById("detailedStatsImageButton");
+    if (imageButton) imageButton.hidden = !row;
     HLDB.initializeIcons();
   }
+
+  document.getElementById("detailedStatsImageButton")
+    ?.addEventListener("click", saveDetailedStatsImage);
 
   Promise.all([
     HLDB.loadData("detailedPlayersMain"),
     HLDB.loadData("detailedPlayersCurrent"),
     HLDB.loadData("detailedRolesMain"),
-    HLDB.loadData("detailedRolesCurrent")
+    HLDB.loadData("detailedRolesCurrent"),
+    HLDB.loadData("players")
   ]).then(([
     playersMain,
     playersCurrent,
     rolesMain,
-    rolesCurrent
+    rolesCurrent,
+    players
   ]) => {
+    profileRows = players;
     summaryRows = mergeUniqueRows(
       playersMain,
       playersCurrent,

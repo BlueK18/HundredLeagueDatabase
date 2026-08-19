@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="css/style.css?v=33">
+  <link rel="stylesheet" href="css/style.css?v=35">
 </head>
 <body>
   <nav class="site-nav">
@@ -35,8 +35,10 @@
   <main class="player-detail-page detailed-stats-page">
     <section id="playerDetailedStats" class="detailed-stats-section" aria-labelledby="detailedStatsTitle">
       <h2 id="detailedStatsTitle">
-        <i data-lucide="chart-no-axes-combined" class="ui-icon"></i>
-        個人成績
+        <span><i data-lucide="chart-no-axes-combined" class="ui-icon"></i>個人成績</span>
+        <button id="detailedStatsImageButton" class="detailed-stats-image-button" type="button" hidden>
+          <i data-lucide="camera"></i>画像を保存
+        </button>
       </h2>
       <div id="playerDetailedStatsBody">読み込み中...</div>
     </section>
@@ -52,6 +54,6 @@
     document.getElementById("playerStatsBackButton").href =
       `player.html?${window.location.search.slice(1)}`;
   </script>
-  <script src="js/player-stats.js?v=4"></script>
+  <script src="js/player-stats.js?v=6"></script>
 </body>
 </html>
