@@ -2483,6 +2483,14 @@ function attachFilterEvents() {
     if (!rows.length) return "";
 
     const first = rows[0];
+    const currentPlayerNameById = new Map(
+      tableMatches
+        .map(match => [
+          String(match["選手ID"] || "").trim(),
+          String(match["選手名"] || "").trim()
+        ])
+        .filter(([id, name]) => id && name)
+    );
     const officialFinalPointsById = new Map(
       tableMatches
         .map(match => [
@@ -2502,13 +2510,15 @@ function attachFilterEvents() {
     const colors = ["#d4af37", "#8fa8cf", "#67b63d", "#b070d1"];
     const series = [1, 2, 3, 4].map((index, seriesIndex) => {
       const id = String(first[`選手${index}ID`] || "").trim();
-      const name = String(
+      const progressName = String(
         first[`選手${index}公式名`] ||
         first[`選手${index}`] ||
         `選手${index}`
       ).trim();
+      const name = currentPlayerNameById.get(id) || progressName;
       const officialFinalPoints =
         officialFinalPointsById.get(id) ??
+        officialFinalPointsByName.get(progressName) ??
         officialFinalPointsByName.get(name) ??
         null;
       const progressValues = rows.map(row =>
