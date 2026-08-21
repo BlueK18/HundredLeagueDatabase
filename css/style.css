@@ -653,6 +653,25 @@ tr:hover{
   opacity:.66;
 }
 
+/* 詳細成績：選手間の10段階相対評価 */
+.detailed-radar-note{margin:0;padding:12px 16px 0;color:#aeb5c0;font-size:.85rem}
+.detailed-radar-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:14px}
+.detailed-radar-card{border:1px solid #3b4048;border-radius:8px;background:linear-gradient(145deg,#1b1e22,#121416);padding:12px}
+.detailed-radar-card h4{margin:0;text-align:center;color:#e0b510;font-size:1.08rem}
+.detailed-radar-chart{display:block;width:100%;max-width:440px;margin:0 auto;overflow:visible}
+.detailed-radar-ring{fill:none;stroke:#4b515a;stroke-width:1}
+.detailed-radar-axis{stroke:#6f681e;stroke-width:1}
+.detailed-radar-scale{fill:#8f97a3;font-size:10px}
+.detailed-radar-label{fill:#d7dce4;font-size:12px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+.detailed-radar-area{fill:rgba(224,181,16,.18);stroke:#e0b510;stroke-width:3;stroke-linejoin:round}
+.detailed-radar-dot{fill:#e0b510;stroke:#111;stroke-width:1.5}
+.detailed-radar-values{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:-8px}
+.detailed-radar-values span{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;padding:5px 3px;border:1px solid #333841;border-radius:5px;color:#aeb5c0;font-size:.68rem;white-space:nowrap}
+.detailed-radar-values b{color:#e0b510;font-size:.85rem}
+.detailed-stats-share-card .detailed-radar-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:900px){.detailed-radar-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.detailed-radar-grid{padding:10px}.detailed-radar-card{padding:8px}.detailed-radar-label{font-size:11px}.detailed-radar-values{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:-2px}}
+
 .detailed-stats-section > h2{
   display:flex;
   align-items:center;

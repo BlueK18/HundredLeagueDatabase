@@ -191,6 +191,44 @@
       : `${number.toLocaleString("ja-JP", { maximumFractionDigits: 2 })}${suffix}`;
   };
 
+  const rateWithCount = (row, countKey, rateKey = "") => {
+    const count = HLDB.toNumber(row?.[countKey]);
+    let rateText = rateKey ? String(row?.[rateKey] ?? "").trim() : "";
+
+    if (!rateText) {
+      const wins = HLDB.toNumber(row?.["和了数"]);
+      rateText = count !== null && wins !== null && wins > 0
+        ? `${((count / wins) * 100).toFixed(1)}%`
+        : "0.0%";
+    }
+
+    const countText = count === null
+      ? "0回"
+      : `${count.toLocaleString("ja-JP", { maximumFractionDigits: 0 })}回`;
+
+    return `${HLDB.escapeHtml(rateText)}（${countText}）`;
+  };
+
+  const dealInTotalText = row => {
+    const count = HLDB.toNumber(row?.["放銃数"]);
+    const average = HLDB.toNumber(row?.["平均放銃点"]);
+    if (count === null || average === null) return "―";
+    return `${Math.round(count * average).toLocaleString("ja-JP")}点`;
+  };
+
+  const childDealInRateWithCount = row => {
+    const totalRounds = HLDB.toNumber(row?.["総局数"]);
+    const parentRounds = HLDB.toNumber(row?.["親局数"]);
+    const totalDealIns = HLDB.toNumber(row?.["放銃数"]);
+    const parentDealIns = HLDB.toNumber(row?.["親番放銃数"]);
+    if ([totalRounds, parentRounds, totalDealIns, parentDealIns].some(number => number === null)) return "―";
+
+    const childRounds = totalRounds - parentRounds;
+    const childDealIns = totalDealIns - parentDealIns;
+    if (childRounds <= 0 || childDealIns < 0) return "―";
+    return `${((childDealIns / childRounds) * 100).toFixed(1)}%（${childDealIns.toLocaleString("ja-JP", { maximumFractionDigits: 0 })}回）`;
+  };
+
   const signed = (row, key, suffix = "") => {
     const number = HLDB.toNumber(row?.[key]);
     if (number === null) return "―";
@@ -198,13 +236,37 @@
     return `<span class="${number > 0 ? "is-positive" : number < 0 ? "is-negative" : ""}">${sign}${number.toLocaleString("ja-JP", { maximumFractionDigits: 2 })}${suffix}</span>`;
   };
 
-  function playerId() {
-    return new URLSearchParams(location.search).get("id") || "";
-  }
+function playerId() {
+  return new URLSearchParams(location.search).get("id") || "";
+}
 
-  function rowsForPlayer(rows) {
-    return rows.filter(row => String(row["選手ID"] || "").trim() === playerId());
-  }
+function authoritativePlayerNames() {
+  const id = playerId();
+
+  return new Set(
+    profileRows
+      .filter(row => String(row["選手ID"] || "").trim() === id)
+      .map(row => HLDB.normalizePlayerAliasExact(row["選手名"]))
+      .filter(Boolean)
+  );
+}
+
+function rowsForPlayer(rows) {
+  const id = playerId();
+  const allowedNames = authoritativePlayerNames();
+
+  return rows.filter(row => {
+    if (String(row["選手ID"] || "").trim() !== id) {
+      return false;
+    }
+
+    const rowName = HLDB.normalizePlayerAliasExact(row["選手名"]);
+
+    // 古いCSVなど選手名列を持たないデータは、従来どおりIDで判定する。
+    // 選手名がある場合は元データとの一致も確認し、別人の混入を防ぐ。
+    return !rowName || allowedNames.size === 0 || allowedNames.has(rowName);
+  });
+}
 
   function mergeUniqueRows(
     mainRows,
@@ -282,12 +344,135 @@
     return `<article class="detailed-panel"><h3><i data-lucide="${icon}"></i>${title}</h3><div class="detailed-panel-list">${metrics.join("")}</div></article>`;
   }
 
+  const RADAR_GROUPS = [
+    {
+      title: "総合力",
+      metrics: [
+        { label: "平均ポイント", key: "平均ポイント" },
+        { label: "トップ率", key: "トップ率" },
+        { label: "連対率", key: "連対率" },
+        { label: "ラス回避率", key: "ラス回避率" },
+        { label: "平均順位", key: "平均順位", lowerIsBetter: true },
+      ],
+    },
+    {
+      title: "攻撃力",
+      metrics: [
+        { label: "和了率", key: "和了率" },
+        { label: "平均和了点", key: "平均和了点" },
+        { label: "立直和了率", key: "立直和了率" },
+        { label: "副露和了率", key: "副露和了率" },
+        { label: "平均ドラ数", key: "平均ドラ数" },
+      ],
+    },
+    {
+      title: "守備力",
+      metrics: [
+        { label: "放銃回避率", key: "放銃回避率" },
+        { label: "放銃率", key: "放銃率", lowerIsBetter: true },
+        { label: "平均放銃点", key: "平均放銃点", lowerIsBetter: true },
+        { label: "最大放銃点", key: "最大放銃点", lowerIsBetter: true },
+        { label: "親番放銃率", key: "親番放銃率", lowerIsBetter: true },
+      ],
+    },
+    {
+      title: "局収支力",
+      metrics: [
+        { label: "平均局収支", key: "平均局収支" },
+        { label: "親平均収支", key: "親平均収支" },
+        { label: "子平均収支", key: "子平均収支" },
+        { label: "最大局収支", key: "最大局収支" },
+        { label: "最小局収支", key: "最小局収支" },
+      ],
+    },
+  ];
+
+  function numericMetric(row, key) {
+    const raw = String(row?.[key] ?? "").trim();
+    if (!raw || raw === "―" || raw === "-") return null;
+    const value = HLDB.toNumber(raw);
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function comparisonRows() {
+    return summaryRows.filter((row) => {
+      if (String(row["集計区分"] || "").trim() !== selectedType) return false;
+      if (selectedType === "年度" && String(row["年度"] || "").trim() !== selectedYear) return false;
+      if (
+        selectedType === "シーズン" &&
+        (String(row["年度"] || "").trim() !== selectedYear ||
+          String(row["シーズン"] || "").trim() !== selectedSeason)
+      ) {
+        return false;
+      }
+      return (numericMetric(row, "対局数") || 0) > 0;
+    });
+  }
+
+  function relativeGrade(rows, row, key, lowerIsBetter = false) {
+    const current = numericMetric(row, key);
+    if (current === null || !rows.length) return null;
+    const values = rows.map((candidate) => numericMetric(candidate, key)).filter((value) => value !== null);
+    if (!values.length) return null;
+    const betterCount = values.filter((value) => (lowerIsBetter ? value < current : value > current)).length;
+    return Math.max(1, Math.min(10, 10 - Math.floor((betterCount * 10) / values.length)));
+  }
+
+  function radarPoint(index, count, radius) {
+    const angle = -Math.PI / 2 + (Math.PI * 2 * index) / count;
+    return { x: 200 + Math.cos(angle) * radius, y: 155 + Math.sin(angle) * radius };
+  }
+
+  function radarChart(title, metrics, peers, row) {
+    const grades = metrics.map((item) => relativeGrade(peers, row, item.key, item.lowerIsBetter));
+    const points = grades.map((grade, index) => radarPoint(index, metrics.length, 11 * (grade || 0)));
+    const rings = [2, 4, 6, 8, 10]
+      .map((level) => {
+        const ringPoints = metrics.map((_, index) => radarPoint(index, metrics.length, 11 * level));
+        return `<polygon class="detailed-radar-ring" points="${ringPoints.map((point) => `${point.x},${point.y}`).join(" ")}"></polygon>`;
+      })
+      .join("");
+    const axes = metrics
+      .map((_, index) => {
+        const point = radarPoint(index, metrics.length, 110);
+        return `<line class="detailed-radar-axis" x1="200" y1="155" x2="${point.x}" y2="${point.y}"></line>`;
+      })
+      .join("");
+    const labels = metrics
+      .map((item, index) => {
+        const point = radarPoint(index, metrics.length, 134);
+        return `<text class="detailed-radar-label" x="${point.x}" y="${point.y}">${HLDB.escapeHtml(item.label)}</text>`;
+      })
+      .join("");
+    const dots = points
+      .map((point) => `<circle class="detailed-radar-dot" cx="${point.x}" cy="${point.y}" r="4"></circle>`)
+      .join("");
+
+    return `<article class="detailed-radar-card">
+      <h4>${HLDB.escapeHtml(title)}</h4>
+      <svg class="detailed-radar-chart" viewBox="0 0 400 310" role="img" aria-label="${HLDB.escapeHtml(title)}の10段階評価">
+        ${rings}${axes}
+        <text class="detailed-radar-scale" x="205" y="139">2</text>
+        <text class="detailed-radar-scale" x="205" y="117">4</text>
+        <text class="detailed-radar-scale" x="205" y="95">6</text>
+        <text class="detailed-radar-scale" x="205" y="73">8</text>
+        <text class="detailed-radar-scale" x="205" y="51">10</text>
+        <polygon class="detailed-radar-area" points="${points.map((point) => `${point.x},${point.y}`).join(" ")}"></polygon>
+        ${dots}${labels}
+      </svg>
+      <div class="detailed-radar-values">${metrics
+        .map((item, index) => `<span>${HLDB.escapeHtml(item.label)} <b>${grades[index] ?? "―"}</b></span>`)
+        .join("")}</div>
+    </article>`;
+  }
+
   function render() {
     const years = availableYears();
     if (!selectedYear) selectedYear = years[0] || "";
     const seasons = availableSeasons(selectedYear);
     if (!seasons.includes(selectedSeason)) selectedSeason = seasons[0] || "";
     const row = currentSummary();
+    const peers = comparisonRows();
 
     const title = document.getElementById(
       "playerDetailedTitle"
@@ -318,11 +503,16 @@
           </div>
         </div>
         <div class="detailed-block"><h3 class="detailed-block-title">局成績</h3><div class="detailed-panels">
-          ${panel("1. 和了", "hand", [metric("和了数", numberText(row,"和了数","回")),metric("和了率",value(row,"和了率")),metric("ツモ和了数",numberText(row,"ツモ和了数","回")),metric("ロン和了数",numberText(row,"ロン和了数","回")),metric("ツモ和了率",value(row,"ツモ和了率")),metric("平均和了点",numberText(row,"平均和了点","点")),metric("最高和了点",numberText(row,"最高和了点","点")),metric("平均翻",numberText(row,"平均翻","翻")),metric("平均符",numberText(row,"平均符","符"))])}
-          ${panel("2. 守備", "shield", [metric("放銃数",numberText(row,"放銃数","回")),metric("放銃率",value(row,"放銃率")),metric("平均放銃点",numberText(row,"平均放銃点","点")),metric("最大放銃点",numberText(row,"最大放銃点","点")),metric("放銃回避率",value(row,"放銃回避率"))])}
+          ${panel("1. 和了", "hand", [metric("和了数", numberText(row,"和了数","回")),metric("和了率",value(row,"和了率")),metric("ツモ和了率",rateWithCount(row,"ツモ和了数","ツモ和了率")),metric("ロン和了率",rateWithCount(row,"ロン和了数")),metric("平均ドラ数",numberText(row,"平均ドラ数","枚")),metric("平均赤ドラ数",numberText(row,"平均赤ドラ数","枚")),metric("平均裏ドラ数",numberText(row,"平均裏ドラ数","枚")),metric("平均和了点",numberText(row,"平均和了点","点")),metric("最高和了点",numberText(row,"最高和了点","点")),metric("平均翻",numberText(row,"平均翻","翻")),metric("平均符",numberText(row,"平均符","符"))])}
+          ${panel("2. 守備", "shield", [metric("放銃数",numberText(row,"放銃数","回")),metric("放銃率",value(row,"放銃率")),metric("平均放銃点",numberText(row,"平均放銃点","点")),metric("最大放銃点",numberText(row,"最大放銃点","点")),metric("放銃総失点",dealInTotalText(row)),metric("親番放銃率",rateWithCount(row,"親番放銃数","親番放銃率")),metric("子番放銃率",childDealInRateWithCount(row)),metric("放銃回避率",value(row,"放銃回避率"))])}
           ${panel("3. 立直・副露", "panel-top", [metric("立直数",numberText(row,"立直局数","回")),metric("立直率",value(row,"立直率")),metric("立直和了率",value(row,"立直和了率")),metric("副露数",numberText(row,"副露局数","回")),metric("副露率",value(row,"副露率")),metric("副露和了率",value(row,"副露和了率")),metric("ダマ和了率",value(row,"ダマ和了率"))])}
           ${panel("4. 親番・局収支", "circle-dot", [metric("親局数",numberText(row,"親局数","回")),metric("親番和了率",value(row,"親番和了率")),metric("親番放銃率",value(row,"親番放銃率")),metric("親平均収支",signed(row,"親平均収支","点")),metric("子平均収支",signed(row,"子平均収支","点")),metric("総局収支",signed(row,"総局収支","点")),metric("平均局収支",signed(row,"平均局収支","点")),metric("最大局収支",signed(row,"最大局収支","点")),metric("最小局収支",signed(row,"最小局収支","点")),metric("流局率",value(row,"流局率"))])}
         </div></div>
+        <div class="detailed-block detailed-radar-block">
+          <h3 class="detailed-block-title">個人成績チャート</h3>
+          <p class="detailed-radar-note">選択中の期間に出場した${peers.length}人を10段階で相対評価しています。同じ成績は同じ評価です。</p>
+          <div class="detailed-radar-grid">${RADAR_GROUPS.map((group) => radarChart(group.title, group.metrics, peers, row)).join("")}</div>
+        </div>
         <div class="detailed-block"><h3 class="detailed-block-title">役別成績</h3>${currentRoles().length ? `<div class="role-table-wrap"><table class="role-table"><thead><tr><th>役名</th><th>出現回数</th><th>和了時の出現率</th><th>和了時の平均翻</th><th>和了時の平均点</th></tr></thead><tbody>${currentRoles().map(role => `<tr><td>${value(role,"役名")}</td><td>${numberText(role,"出現回数","回")}</td><td>${value(role,"和了時出現率")}</td><td>${numberText(role,"和了時平均翻","翻")}</td><td>${numberText(role,"和了時平均点","点")}</td></tr>`).join("")}</tbody></table></div>` : `<p class="detailed-empty">この期間の役別成績はありません。</p>`}</div>
       ` : `<p class="detailed-empty">この選手の局解析データはまだありません。</p>`}`;
 

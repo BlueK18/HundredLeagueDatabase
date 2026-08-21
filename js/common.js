@@ -413,12 +413,22 @@ HLDB.normalizePlayerAliasName = function (value) {
     .toLowerCase();
 };
 
+// 名前に含まれる空白も識別情報として扱う厳密比較用。
+// 例: 「魔王」と「魔王　」は別IDのため、同一人物として統合しない。
+HLDB.normalizePlayerAliasExact = function (value) {
+  return String(value ?? "")
+    .normalize("NFKC")
+    .toLowerCase();
+};
+
 
 /* 参加名から選手IDを取得 */
 HLDB.getPlayerIdFromAlias = function (
   playerName,
   playerAliasData
 ) {
+  const exactName =
+    HLDB.normalizePlayerAliasExact(playerName);
   const normalizedName =
     HLDB.normalizePlayerAliasName(playerName);
 
@@ -426,18 +436,35 @@ HLDB.getPlayerIdFromAlias = function (
     return "";
   }
 
-  const matchedAlias =
-    playerAliasData.find(row => {
-      return (
-        HLDB.normalizePlayerAliasName(
-          row["検索名"]
-        ) === normalizedName
-      );
-    });
+  const uniqueIds = rows => [
+    ...new Set(
+      rows
+        .map(row => String(row["選手ID"] ?? "").trim())
+        .filter(Boolean)
+    )
+  ];
 
-  return String(
-    matchedAlias?.["選手ID"] ?? ""
-  ).trim();
+  const exactIds = uniqueIds(
+    playerAliasData.filter(row => (
+      HLDB.normalizePlayerAliasExact(row["検索名"]) === exactName
+    ))
+  );
+
+  if (exactIds.length === 1) {
+    return exactIds[0];
+  }
+
+  // 表記ゆれを吸収した比較は、候補IDが一意な場合だけ採用する。
+  // 複数IDに一致した場合は、別人への誤接続を避けるため空を返す。
+  const normalizedIds = uniqueIds(
+    playerAliasData.filter(row => (
+      HLDB.normalizePlayerAliasName(row["検索名"]) === normalizedName
+    ))
+  );
+
+  return normalizedIds.length === 1
+    ? normalizedIds[0]
+    : "";
 };
 
 
