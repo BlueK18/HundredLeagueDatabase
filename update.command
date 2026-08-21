@@ -285,18 +285,22 @@ fi
 
 if git diff --cached --quiet; then
   echo ""
-  echo "変更はありませんでした。"
-  echo ""
-  echo "========================================"
-  echo "✅ 処理が完了しました"
-  echo "========================================"
-  close_on_success
+  echo "新しい変更はありません。未送信のコミットがあれば続けて送信します。"
+else
+  COMMIT_MESSAGE="$COMMIT_PREFIX $(date '+%Y-%m-%d %H:%M')"
+  echo "GitHubへコミット中..."
+  if ! git commit -m "$COMMIT_MESSAGE"; then
+    echo "❌ git commit に失敗しました。"
+    pause_on_error
+  fi
 fi
 
-COMMIT_MESSAGE="$COMMIT_PREFIX $(date '+%Y-%m-%d %H:%M')"
-echo "GitHubへコミット中..."
-if ! git commit -m "$COMMIT_MESSAGE"; then
-  echo "❌ git commit に失敗しました。"
+echo ""
+echo "GitHub側の更新を確認中..."
+if ! git pull --rebase origin main; then
+  git rebase --abort >/dev/null 2>&1 || true
+  echo "❌ GitHub側の変更を自動で取り込めませんでした。"
+  echo "   ローカルの変更は削除していません。画面を残して確認してください。"
   pause_on_error
 fi
 
