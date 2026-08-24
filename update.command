@@ -174,12 +174,34 @@ download_or_record() {
     FAILED_FILES+=("$filename")
 }
 
+download_or_keep_existing() {
+  local number="$1"
+  local filename="$2"
+  local url="$3"
+  local output="$4"
+  local allow_header_only="$5"
+  local expected_header="$6"
+
+  if download_csv "$number" "$filename" "$url" "$output" "$allow_header_only" "$expected_header"; then
+    return 0
+  fi
+
+  if [ -s "$output" ]; then
+    echo "⚠️ $filename の取得に失敗したため、既存ファイルを保持して続行します。"
+    echo ""
+    return 0
+  fi
+
+  echo "❌ $filename は既存ファイルもないため続行できません。"
+  FAILED_FILES+=("$filename")
+}
+
 download_current_files() {
   download_or_record "1/6" "teams-current.csv" \
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2026080101&single=true&output=csv" \
     "data/teams-current.csv" "1" ""
 
-  download_or_record "2/6" "players-current.csv" \
+  download_or_keep_existing "2/6" "players-current.csv" \
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2026080102&single=true&output=csv" \
     "data/players-current.csv" "1" ""
 
@@ -222,7 +244,7 @@ download_full_files() {
   download_or_record "7/14" "teams-current.csv" \
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2026080101&single=true&output=csv" \
     "data/teams-current.csv" "1" ""
-  download_or_record "8/14" "players-current.csv" \
+  download_or_keep_existing "8/14" "players-current.csv" \
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2026080102&single=true&output=csv" \
     "data/players-current.csv" "1" ""
   download_or_record "9/14" "matches-current.csv" \
