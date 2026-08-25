@@ -336,6 +336,31 @@ function rowsForPlayer(rows) {
     }).sort((a, b) => (HLDB.toNumber(b["出現回数"]) || 0) - (HLDB.toNumber(a["出現回数"]) || 0));
   }
 
+  function roleHighlightType(roleName) {
+    const normalized = String(roleName || "").replace(/[\s　]/g, "");
+    const yakumanRoles = [
+      "国士無双", "国士無双十三面待ち", "四暗刻", "四暗刻単騎", "大三元",
+      "小四喜", "大四喜", "字一色", "緑一色", "清老頭", "九蓮宝燈",
+      "純正九蓮宝燈", "天和", "地和", "四槓子", "数え役満"
+    ];
+    const premiumRoles = ["清一色", "二盃口", "純全帯幺九", "混老頭", "小三元", "三色同刻", "三槓子"];
+
+    if (yakumanRoles.some(name => normalized.includes(name))) return "yakuman";
+    if (premiumRoles.some(name => normalized.includes(name))) return "premium";
+    return "";
+  }
+
+  function roleTableRow(role) {
+    const roleName = value(role, "役名");
+    const type = roleHighlightType(roleName);
+    const rowClass = type ? ` class="role-row-${type}"` : "";
+    const badge = type
+      ? `<span class="role-highlight-badge role-highlight-badge-${type}">${type === "yakuman" ? "役満" : "高打点"}</span>`
+      : "";
+
+    return `<tr${rowClass}><td><span class="role-name">${HLDB.escapeHtml(roleName)}</span>${badge}</td><td>${numberText(role,"出現回数","回")}</td><td>${value(role,"和了時出現率")}</td><td>${numberText(role,"和了時平均翻","翻")}</td><td>${numberText(role,"和了時平均点","点")}</td></tr>`;
+  }
+
   function metric(label, content) {
     return `<div class="detailed-metric"><span>${label}</span><strong>${content}</strong></div>`;
   }
@@ -513,7 +538,7 @@ function rowsForPlayer(rows) {
           <p class="detailed-radar-note">選択中の期間に出場した${peers.length}人を10段階で相対評価しています。同じ成績は同じ評価です。</p>
           <div class="detailed-radar-grid">${RADAR_GROUPS.map((group) => radarChart(group.title, group.metrics, peers, row)).join("")}</div>
         </div>
-        <div class="detailed-block"><h3 class="detailed-block-title">役別成績</h3>${currentRoles().length ? `<div class="role-table-wrap"><table class="role-table"><thead><tr><th>役名</th><th>出現回数</th><th>和了時の出現率</th><th>和了時の平均翻</th><th>和了時の平均点</th></tr></thead><tbody>${currentRoles().map(role => `<tr><td>${value(role,"役名")}</td><td>${numberText(role,"出現回数","回")}</td><td>${value(role,"和了時出現率")}</td><td>${numberText(role,"和了時平均翻","翻")}</td><td>${numberText(role,"和了時平均点","点")}</td></tr>`).join("")}</tbody></table></div>` : `<p class="detailed-empty">この期間の役別成績はありません。</p>`}</div>
+        <div class="detailed-block"><h3 class="detailed-block-title">役別成績</h3>${currentRoles().length ? `<div class="role-table-wrap"><table class="role-table"><thead><tr><th>役名</th><th>出現回数</th><th>和了時の出現率</th><th>和了時の平均翻</th><th>和了時の平均点</th></tr></thead><tbody>${currentRoles().map(roleTableRow).join("")}</tbody></table></div>` : `<p class="detailed-empty">この期間の役別成績はありません。</p>`}</div>
       ` : `<p class="detailed-empty">この選手の局解析データはまだありません。</p>`}`;
 
     area.querySelectorAll("[data-stats-type]").forEach(button => button.addEventListener("click", () => { selectedType = button.dataset.statsType; render(); }));
