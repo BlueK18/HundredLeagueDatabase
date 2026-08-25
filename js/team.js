@@ -830,9 +830,10 @@ function renderTeamPlayers(playersData) {
     <div class="player-list">
 
       ${selectedPlayers.map(player => {
-        const playerUrl = HLDB.createPlayerUrl({
-          id: player["選手ID"],
-          year: player["年度"],
+const playerUrl = HLDB.createPlayerUrl({
+  id: player["選手ID"],
+  player: player["選手名"],
+  year: player["年度"],
           league: player["リーグ"],
           stage: player["ステージ"]
         });
@@ -947,9 +948,10 @@ function renderTeamMatches(
             <tr
               class="${rowClasses.join(" ")}"
               data-match-date="${matchDate}"
-              data-url="${HLDB.createPlayerUrl({
-                id: match["選手ID"],
-                year,
+data-url="${HLDB.createPlayerUrl({
+  id: match["選手ID"],
+  player: match["選手名"],
+  year,
                 league,
                 stage
               })}"

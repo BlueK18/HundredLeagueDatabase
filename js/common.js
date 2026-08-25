@@ -804,17 +804,26 @@ HLDB.escapeHtml = function (value) {
 
 HLDB.createPlayerUrl = function ({
   id,
+  player,
+  name,
   year,
   league,
   stage
 }) {
-  const query =
-    new URLSearchParams({
-      id: id || "",
-      year: year || "",
-      league: league || "",
-      stage: stage || ""
-    });
+  const playerId = String(id || "").trim();
+  const playerName = String(player || name || "").trim();
+
+  if (!playerId && !playerName) {
+    return "players.html";
+  }
+
+  const query = new URLSearchParams();
+
+  if (playerId) query.set("id", playerId);
+  if (playerName) query.set("player", playerName);
+  if (year) query.set("year", year);
+  if (league) query.set("league", league);
+  if (stage) query.set("stage", stage);
 
   return `player.html?${query.toString()}`;
 };
@@ -1135,6 +1144,9 @@ HLDB.initializePlayerSearch =
               HLDB.createPlayerUrl({
                 id:
                   player["選手ID"],
+
+                player:
+                  player["選手名"],
 
                 year:
                   player["年度"],
@@ -1480,6 +1492,9 @@ HLDB.createPlayerSearchModal = function () {
             HLDB.createPlayerUrl({
               id:
                 player["選手ID"],
+
+              player:
+                player["選手名"],
 
               year:
                 player["年度"],

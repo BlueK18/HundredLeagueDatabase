@@ -901,6 +901,8 @@ async function renderFavoritePlayers() {
           HLDB.createPlayerUrl({
             id:
               player["選手ID"],
+            player:
+              player["選手名"],
             year:
               player["年度"],
             league:

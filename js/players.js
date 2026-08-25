@@ -204,9 +204,10 @@ rankingTitle.innerHTML = `
         <tbody>
 
           ${filtered.map(player => {
-            const playerUrl = HLDB.createPlayerUrl({
-              id: player["選手ID"],
-              year: player["年度"],
+const playerUrl = HLDB.createPlayerUrl({
+  id: player["選手ID"],
+  player: player["選手名"],
+  year: player["年度"],
               league: player["リーグ"],
               stage: player["ステージ"]
             });

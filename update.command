@@ -299,6 +299,14 @@ if [ ${#FAILED_FILES[@]} -gt 0 ]; then
 fi
 
 echo ""
+echo ""
+echo "選手IDの表記を補正中..."
+if ! python3 "$PROJECT_DIR/scripts/normalize-player-ids.py"; then
+  echo "❌ 選手ID補正に失敗しました。"
+  pause_on_error
+fi
+echo "✅ 選手IDの補正完了"
+
 echo "GitHubへ送信する準備中..."
 if ! git add .; then
   echo "❌ git add に失敗しました。"

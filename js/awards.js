@@ -265,9 +265,10 @@ function getAwardGameCount(row) {
 
 /* 選手ページURL */
 function createPlayerUrl(row) {
-  return HLDB.createPlayerUrl({
-    id: row["選手ID"] || "",
-    year: row["年度"] || "",
+return HLDB.createPlayerUrl({
+  id: row["選手ID"] || "",
+  player: row["選手名"] || "",
+  year: row["年度"] || "",
     league: row["リーグ"] || "",
     stage: "レギュラー"
   });
