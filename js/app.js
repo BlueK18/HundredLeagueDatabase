@@ -1040,9 +1040,6 @@ function initializeHome() {
 
   function updateQualifyingAdminCard() {
     const adminUnlocked =
-      localStorage.getItem(
-        "hldbAdminNavigationUnlocked"
-      ) === "1" ||
       sessionStorage.getItem(
         "hldbAdminUnlocked"
       ) === "1" ||
@@ -1065,17 +1062,40 @@ function initializeHome() {
 
   updateQualifyingAdminCard();
 
-  window.addEventListener(
-    "storage",
-    event => {
-      if (
-        event.key ===
-        "hldbAdminNavigationUnlocked"
-      ) {
-        updateQualifyingAdminCard();
-      }
-    }
+  localStorage.removeItem(
+    "hldbAdminNavigationUnlocked"
   );
+
+  if ("BroadcastChannel" in window) {
+    const adminChannel =
+      new BroadcastChannel(
+        "hldbAdminNavigation"
+      );
+
+    adminChannel.addEventListener(
+      "message",
+      event => {
+        if (
+          event.data?.type ===
+          "admin-status"
+        ) {
+          qualifyingAdminCard.hidden =
+            !event.data.unlocked;
+
+          qualifyingAdminCard
+            .closest(".home-navigation")
+            ?.classList.toggle(
+              "is-admin",
+              event.data.unlocked
+            );
+        }
+      }
+    );
+
+    adminChannel.postMessage({
+      type: "admin-status-request"
+    });
+  }
 
   const yearSelect =
     document.getElementById(

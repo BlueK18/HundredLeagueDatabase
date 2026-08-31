@@ -13,6 +13,11 @@
   const detailedStatsButton=document.getElementById("playerDetailedStatsButton");
   const requestedPlayerId=params.get("id")||"";
   const isUnlocked=sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1";
+  const adminChannel="BroadcastChannel" in window?new BroadcastChannel("hldbAdminNavigation"):null;
+
+  function publishAdminStatus(unlocked){adminChannel?.postMessage({type:"admin-status",unlocked})}
+
+  adminChannel?.addEventListener("message",event=>{if(event.data?.type==="admin-status-request"&&sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1")publishAdminStatus(true)});
 
   if(!button||!logoutButton||!dialog||!form||!password||!detailedStatsButton){return}
 
@@ -50,7 +55,7 @@
 
   logoutButton.addEventListener("click",()=>{
     sessionStorage.removeItem("hldbDetailedStatsUnlocked");
-    localStorage.removeItem("hldbAdminNavigationUnlocked");
+    publishAdminStatus(false);
     detailedStatsButton.hidden=true;
     logoutButton.hidden=true;
     button.hidden=requestedPlayerId!==ADMIN_PLAYER_ID;
@@ -62,7 +67,7 @@
     error.hidden=isCorrect;
     if(!isCorrect){password.select();return}
     sessionStorage.setItem("hldbDetailedStatsUnlocked","1");
-    localStorage.setItem("hldbAdminNavigationUnlocked","1");
+    publishAdminStatus(true);
     dialog.close();
     password.value="";
     showDetailedStatsButton();
