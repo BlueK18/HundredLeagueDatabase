@@ -5,6 +5,8 @@ PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 POINT_PROGRESS_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vS-ko9LDvGCpZNN-VBF8TC2VTSZLyu2vl4BE0BzOqZDSiT3DbTLHYvOL_LEpihVVVLtODHtGzJ5QADE/pub?gid=2026081012&single=true&output=csv"
 SCHEDULE_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=0&single=true&output=csv"
 SCORE_PLAYERS_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vR-ESV6MQe4qMfBjhaGVfzMxDOw_ACbqJjUQGbbeQWoItRN90nMv2BMHeRZgnO8_0WOgl24q_6iJeNq/pub?gid=1242200473&single=true&output=csv"
+QUALIFYING_MATCHES_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2027080101&single=true&output=csv"
+QUALIFYING_MATCHES_HEADER="年度,リーグ,ステージ,試合No,日付,時間,チーム名,選手名,スコア,着順,試合,得点,選手ID,総合集計対象"
 
 pause_on_error() {
   echo ""
@@ -196,6 +198,66 @@ download_or_keep_existing() {
   FAILED_FILES+=("$filename")
 }
 
+verify_qualifying_matches_csv() {
+  local temp_file
+  local first_line
+  local data_row_count
+
+  temp_file="$(mktemp "${TMPDIR:-/tmp}/hldb-qualifying-matches.XXXXXX")" || {
+    echo "❌ 予選結果CSVの確認用ファイルを作成できませんでした。"
+    return 1
+  }
+
+  echo "予選結果CSVの公開状態を確認中..."
+  if ! curl \
+    --http1.1 \
+    --fail \
+    --location \
+    --max-time 300 \
+    --silent \
+    --show-error \
+    --retry 3 \
+    --retry-all-errors \
+    --retry-delay 2 \
+    --user-agent "Mozilla/5.0" \
+    "$QUALIFYING_MATCHES_URL" \
+    --output "$temp_file"
+  then
+    rm -f "$temp_file"
+    echo "❌ 予選結果CSVへ接続できませんでした。"
+    return 1
+  fi
+
+  first_line="$(head -n 1 "$temp_file" | tr -d '\r')"
+  if [ "$first_line" != "$QUALIFYING_MATCHES_HEADER" ]; then
+    rm -f "$temp_file"
+    echo "❌ 予選結果CSVの見出しが想定と違います。"
+    echo "   取得した見出し：$first_line"
+    return 1
+  fi
+
+  if grep -q '#N/A' "$temp_file"; then
+    rm -f "$temp_file"
+    echo "❌ 予選結果CSVに #N/A が含まれています。"
+    return 1
+  fi
+
+  data_row_count="$(awk '
+    NR > 1 && $0 !~ /^[[:space:]]*$/ { count += 1 }
+    END { print count + 0 }
+  ' "$temp_file")"
+  rm -f "$temp_file"
+
+  if [ "$data_row_count" -eq 0 ]; then
+    echo "ℹ️ 予選結果CSVは現在データなし（見出しのみ）です。"
+  else
+    echo "✅ 予選結果CSVを確認しました（${data_row_count}行）。"
+  fi
+  echo "   Webはこの公開CSVを直接読み込みます。"
+  echo ""
+  return 0
+}
+
 download_current_files() {
   download_or_record "1/6" "teams-current.csv" \
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=2026080101&single=true&output=csv" \
@@ -277,9 +339,15 @@ download_score_entry_files() {
 }
 
 case "$UPDATE_MODE" in
-  1) download_current_files ;;
+  1)
+    download_current_files
+    verify_qualifying_matches_csv || FAILED_FILES+=("予選結果CSV")
+    ;;
   2) download_score_entry_files ;;
-  3) download_full_files ;;
+  3)
+    download_full_files
+    verify_qualifying_matches_csv || FAILED_FILES+=("予選結果CSV")
+    ;;
   4) echo "CSV更新を省略し、Web変更だけを送信します。" ;;
 esac
 
