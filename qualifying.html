@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予選結果｜ハンドレッドリーグ データベース</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/qualifying.css?v=1">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="site-brand">
+      <img src="apple-touch-icon.png" class="site-brand-logo" alt="" aria-hidden="true">
+      ハンドレッドリーグ データベース
+    </a>
+    <div class="site-search">
+      <input id="siteSearchInput" type="search" placeholder="選手名を検索" autocomplete="off">
+      <div id="siteSearchResults" class="site-search-results"></div>
+    </div>
+  </nav>
+
+  <header class="qualifying-hero">
+    <h1><i data-lucide="list-checks" class="ui-icon"></i>予選結果</h1>
+    <p>予選の試合結果（本戦の総合集計には含まれません）</p>
+  </header>
+
+  <main class="qualifying-page">
+    <section class="qualifying-controls" aria-labelledby="qualifyingFilterTitle">
+      <h2 id="qualifyingFilterTitle"><i data-lucide="sliders-horizontal"></i>表示条件</h2>
+      <div class="qualifying-filter-grid">
+        <label>年度<select id="qualifyingYear"></select></label>
+        <label>リーグ<select id="qualifyingLeague"><option value="">すべて</option></select></label>
+        <label class="qualifying-search-field">チーム・選手検索<input id="qualifyingSearch" type="search" placeholder="名前を入力" autocomplete="off"></label>
+      </div>
+    </section>
+
+    <section class="qualifying-summary" aria-live="polite">
+      <div><span>試合数</span><strong id="qualifyingMatchCount">0</strong></div>
+      <div><span>出場記録</span><strong id="qualifyingEntryCount">0</strong></div>
+    </section>
+
+    <section class="qualifying-results" aria-labelledby="qualifyingResultsTitle">
+      <h2 id="qualifyingResultsTitle">試合結果</h2>
+      <div id="qualifyingResults" class="qualifying-result-list" aria-live="polite">読み込み中...</div>
+    </section>
+
+    <a href="index.html" class="back-button"><i data-lucide="arrow-left"></i>ホームへ戻る</a>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/common.js?v=15"></script>
+  <script src="js/qualifying.js?v=1"></script>
+</body>
+</html>
