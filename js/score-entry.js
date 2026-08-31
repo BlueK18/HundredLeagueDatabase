@@ -123,7 +123,7 @@
   function handleKey(key){let value=normalizeScore(activeScoreInput.value);if(key==="⌫")value=value.slice(0,-1);else if(key==="−"){if(!value)value="-"}else if(key==="."){if(/\d/.test(value)&&!value.includes("."))value+="."}else if(value.length<7)value+=key;activeScoreInput.value=value;renderKeypad()}
 
   function setupInputPreferences(){const prefs=savedPrefs();if(["Aリーグ","Bリーグ"].includes(prefs.league))$("leagueInput").value=prefs.league;refreshInputSelectors();if(prefs.table&&[...$("tableInput").options].some(o=>o.value===prefs.table)){$("tableInput").value=prefs.table;refreshInputSelectors()}}
-  function scheduledDates(){return unique(schedule.map(row=>row["対局日"])).sort()}
+  function scheduledDates(){return unique([...schedule.map(row=>row["対局日"]),...Object.values(readStore()).map(item=>item.date)]).sort()}
   function previousCalendarDate(date){const value=new Date(`${date}T12:00:00`);value.setDate(value.getDate()-1);return value.toLocaleDateString("sv-SE")}
   function adjacentSection(direction){const dates=scheduledDates(),current=$("listDate").value||today();return direction<0?[...dates].reverse().find(date=>date<current):dates.find(date=>date>current)}
   function updateSectionNavigation(){$("previousDate").disabled=!adjacentSection(-1);$("nextDate").disabled=!adjacentSection(1)}
