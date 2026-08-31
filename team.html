@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   
-  <link rel="stylesheet" href="css/style.css?v=12">
+  <link rel="stylesheet" href="css/style.css?v=13">
 </head>
 
 <body>
@@ -68,6 +68,8 @@
   </header>
 
   <main>
+
+    <nav id="teamViewSwitch" class="team-view-switch" data-current-view="main" aria-label="チーム成績の切り替え" hidden></nav>
 
     <section id="teamInfo">
       読み込み中...
@@ -126,6 +128,7 @@
 </script>
 <script src="js/common.js?v=15"></script>
 <script src="js/team.js?v=3"></script>
+<script src="js/team-view-switch.js?v=1"></script>
 
 <button
   type="button"

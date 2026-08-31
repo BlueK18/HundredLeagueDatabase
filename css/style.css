@@ -1072,6 +1072,41 @@ tr:hover{
   display:none;
 }
 
+.team-view-switch{
+  display:flex;
+  width:min(460px,100%);
+  margin:0 auto 20px;
+  padding:4px;
+  border:1px solid var(--hldb-border,#3a3a3a);
+  border-radius:12px;
+  background:var(--hldb-surface,#17191c);
+}
+
+.team-view-switch[hidden]{
+  display:none;
+}
+
+.team-view-switch a,
+.team-view-switch span{
+  flex:1;
+  padding:11px 16px;
+  border-radius:8px;
+  color:#bdbdbd;
+  font-weight:800;
+  text-align:center;
+  text-decoration:none;
+}
+
+.team-view-switch a:hover{
+  color:#e0b510;
+  background:#25200f;
+}
+
+.team-view-switch .is-active{
+  color:#111;
+  background:#e0b510;
+}
+
 .home-navigation.is-admin{
   grid-template-columns:repeat(
       4,
