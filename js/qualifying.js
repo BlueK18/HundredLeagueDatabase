@@ -6,8 +6,6 @@
   const searchInput = document.getElementById("qualifyingSearch");
   const standingsArea = document.getElementById("qualifyingStandings");
   const resultsArea = document.getElementById("qualifyingResults");
-  const matchCount = document.getElementById("qualifyingMatchCount");
-  const entryCount = document.getElementById("qualifyingEntryCount");
   const initialParams = new URLSearchParams(window.location.search);
   let qualifyingRows = [];
 
@@ -77,8 +75,6 @@
       groups.get(key).push(row);
     });
     const matches = [...groups.values()].sort((a, b) => `${text(b[0]["日付"])} ${text(b[0]["時間"])} ${text(b[0]["試合No"])}`.localeCompare(`${text(a[0]["日付"])} ${text(a[0]["時間"])} ${text(a[0]["試合No"])}`, "ja", { numeric: true }));
-    matchCount.textContent = String(matches.length);
-    entryCount.textContent = String(filtered.length);
     if (!matches.length) {
       resultsArea.innerHTML = `<div class="qualifying-empty">${qualifyingRows.length ? "条件に一致する予選結果はありません。" : "予選結果はまだ登録されていません。"}</div>`;
       return;
