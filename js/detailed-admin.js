@@ -50,6 +50,7 @@
 
   logoutButton.addEventListener("click",()=>{
     sessionStorage.removeItem("hldbDetailedStatsUnlocked");
+    localStorage.removeItem("hldbAdminNavigationUnlocked");
     detailedStatsButton.hidden=true;
     logoutButton.hidden=true;
     button.hidden=requestedPlayerId!==ADMIN_PLAYER_ID;
@@ -61,6 +62,7 @@
     error.hidden=isCorrect;
     if(!isCorrect){password.select();return}
     sessionStorage.setItem("hldbDetailedStatsUnlocked","1");
+    localStorage.setItem("hldbAdminNavigationUnlocked","1");
     dialog.close();
     password.value="";
     showDetailedStatsButton();

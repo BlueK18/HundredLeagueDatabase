@@ -34,6 +34,7 @@
     error.hidden=isCorrect;
     if(!isCorrect){password.select();return}
     sessionStorage.setItem("hldbAdminUnlocked","1");
+    localStorage.setItem("hldbAdminNavigationUnlocked","1");
     window.location.href="score-entry.html";
   });
 })();

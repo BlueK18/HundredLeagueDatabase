@@ -1038,25 +1038,44 @@ function initializeHome() {
       "qualifyingAdminCard"
     );
 
-  const adminUnlocked =
-    sessionStorage.getItem(
-      "hldbAdminUnlocked"
-    ) === "1" ||
-    sessionStorage.getItem(
-      "hldbDetailedStatsUnlocked"
-    ) === "1";
+  function updateQualifyingAdminCard() {
+    const adminUnlocked =
+      localStorage.getItem(
+        "hldbAdminNavigationUnlocked"
+      ) === "1" ||
+      sessionStorage.getItem(
+        "hldbAdminUnlocked"
+      ) === "1" ||
+      sessionStorage.getItem(
+        "hldbDetailedStatsUnlocked"
+      ) === "1";
 
-  if (qualifyingAdminCard) {
-    qualifyingAdminCard.hidden =
-      !adminUnlocked;
+    if (qualifyingAdminCard) {
+      qualifyingAdminCard.hidden =
+        !adminUnlocked;
 
-    qualifyingAdminCard
-      .closest(".home-navigation")
-      ?.classList.toggle(
-        "is-admin",
-        adminUnlocked
-      );
+      qualifyingAdminCard
+        .closest(".home-navigation")
+        ?.classList.toggle(
+          "is-admin",
+          adminUnlocked
+        );
+    }
   }
+
+  updateQualifyingAdminCard();
+
+  window.addEventListener(
+    "storage",
+    event => {
+      if (
+        event.key ===
+        "hldbAdminNavigationUnlocked"
+      ) {
+        updateQualifyingAdminCard();
+      }
+    }
+  );
 
   const yearSelect =
     document.getElementById(
