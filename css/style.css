@@ -460,6 +460,74 @@ tr:hover{
   gap:24px;
 }
 
+.all-time-ranking-note{
+  width:min(760px,100%);
+  margin:0 auto 24px;
+  padding:14px 18px;
+  border:1px solid rgba(212,175,55,.38);
+  border-radius:14px;
+  background:rgba(212,175,55,.08);
+  color:#e7d38a;
+  text-align:center;
+  line-height:1.7;
+}
+
+.all-time-awards-grid{
+  max-width:1100px;
+  margin:0 auto;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.all-time-player-row{
+  grid-template-columns:46px minmax(0,1fr);
+  align-items:center;
+  gap:8px 14px;
+}
+
+.all-time-player-row .award-player-info{
+  min-width:0;
+}
+
+.all-time-player-row .award-player-info strong{
+  overflow-wrap:anywhere;
+}
+
+.all-time-player-row .award-result{
+  grid-column:2;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  gap:6px 14px;
+  margin-top:2px;
+}
+
+.all-time-player-row .award-record-date{
+  padding-left:12px;
+  border-left:1px solid #555;
+}
+
+.all-time-player-row[hidden]{
+  display:none;
+}
+
+.all-time-ranking-toggle{
+  width:100%;
+  margin-top:10px;
+  padding:13px 16px;
+  border:1px solid rgba(212,175,55,.5);
+  border-radius:12px;
+  background:rgba(212,175,55,.08);
+  color:#e7c94d;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.all-time-ranking-toggle:hover{
+  background:rgba(212,175,55,.16);
+  border-color:#d4af37;
+}
+
 .award-category-card{
   background:#181818;
   border:1px solid #3a3a3a;
@@ -608,6 +676,12 @@ tr:hover{
       grid-column:2;
       margin-top:4px;
       justify-content:flex-start;
+  }
+}
+
+@media(max-width:900px){
+  .all-time-awards-grid{
+    grid-template-columns:1fr;
   }
 }
 

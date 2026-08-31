@@ -15,6 +15,7 @@ HLDB.DATA_URLS = {
   players: "data/players.csv",
   matches: "data/matches.csv",
   awards: "data/awards.csv",
+  yakuman: "data/yakuman.csv",
   playerAlias: "data/playerAlias.csv",
 
   detailedPlayersMain:

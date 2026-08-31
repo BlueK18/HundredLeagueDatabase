@@ -20,6 +20,7 @@ const playerName = params.get("player") || "";
 let displayPlayerName = playerName;
 const urlYear = params.get("year") || "";
 const urlLeague = params.get("league") || "";
+const urlMatchNo = params.get("match") || "";
 
 const playerTitle =
   document.getElementById("playerTitle");
@@ -3128,6 +3129,27 @@ function attachFilterEvents() {
       });
     }
   }
+
+
+  function openRequestedMatchDetail() {
+    if (!urlMatchNo) return;
+
+    const requestedMatch = matchesData.find(match => {
+      const samePlayer = currentPlayerId
+        ? String(match["選手ID"] || "").trim() === currentPlayerId
+        : String(match["選手名"] || "").trim() === displayPlayerName;
+
+      return (
+        samePlayer &&
+        getMatchNo(match) === String(urlMatchNo).trim() &&
+        (!urlYear || normalizeYear(match["年度"]) === normalizeYear(urlYear))
+      );
+    });
+
+    if (requestedMatch) {
+      requestAnimationFrame(() => openMatchDetail(requestedMatch));
+    }
+  }
   
   
   function closeMatchDetail() {
@@ -3388,20 +3410,26 @@ displayPlayerName =
       }
   
       const normalizedUrlYear =
-        normalizeYear(urlYear);
+        urlYear === "ALL"
+          ? "ALL"
+          : normalizeYear(urlYear);
   
       activeYear =
+        normalizedUrlYear === "ALL" ||
         years.includes(normalizedUrlYear)
           ? normalizedUrlYear
           : years[0];
   
       activeLeague =
-        getLeagueForYear(activeYear);
+        activeYear === "ALL"
+          ? "ALL"
+          : getLeagueForYear(activeYear);
   
         activeStage = "ALL";
 
         renderPlayerPage();
         updateFavoriteButton();
+        openRequestedMatchDetail();
         
         } catch (error) {
       console.error(
