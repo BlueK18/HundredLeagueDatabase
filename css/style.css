@@ -1068,6 +1068,17 @@ tr:hover{
       background .2s;
 }
 
+.home-menu-card[hidden]{
+  display:none;
+}
+
+.home-navigation.is-admin{
+  grid-template-columns:repeat(
+      4,
+      minmax(0,1fr)
+  );
+}
+
 .home-menu-card:hover{
   transform:translateY(-4px);
   border-color:#d4af37;
@@ -1102,6 +1113,12 @@ html{
 
   .home-menu-card{
       min-height:120px;
+  }
+}
+
+@media(min-width:701px) and (max-width:1000px){
+  .home-navigation.is-admin{
+      grid-template-columns:repeat(2,minmax(0,1fr));
   }
 }
 .site-nav{

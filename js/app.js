@@ -1033,6 +1033,31 @@ function initializeYearSelect() {
 ======================================== */
 
 function initializeHome() {
+  const qualifyingAdminCard =
+    document.getElementById(
+      "qualifyingAdminCard"
+    );
+
+  const adminUnlocked =
+    sessionStorage.getItem(
+      "hldbAdminUnlocked"
+    ) === "1" ||
+    sessionStorage.getItem(
+      "hldbDetailedStatsUnlocked"
+    ) === "1";
+
+  if (qualifyingAdminCard) {
+    qualifyingAdminCard.hidden =
+      !adminUnlocked;
+
+    qualifyingAdminCard
+      .closest(".home-navigation")
+      ?.classList.toggle(
+        "is-admin",
+        adminUnlocked
+      );
+  }
+
   const yearSelect =
     document.getElementById(
       "yearSelect"
