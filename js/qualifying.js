@@ -5,6 +5,7 @@
   const leagueSelect = document.getElementById("qualifyingLeague");
   const searchInput = document.getElementById("qualifyingSearch");
   const standingsArea = document.getElementById("qualifyingStandings");
+  const playersArea = document.getElementById("qualifyingPlayers");
   const resultsArea = document.getElementById("qualifyingResults");
   const initialParams = new URLSearchParams(window.location.search);
   let qualifyingRows = [];
@@ -25,6 +26,15 @@
     const params = new URLSearchParams({ team, year });
     if (league) params.set("league", league);
     return `qualifying-team.html?${params.toString()}`;
+  }
+
+  function playerUrl(row, year, league) {
+    const playerParams = new URLSearchParams({ year });
+    const playerId = text(row["選手ID"]);
+    if (playerId) playerParams.set("id", playerId);
+    else playerParams.set("player", text(row["選手名"]));
+    if (league) playerParams.set("league", league);
+    return `qualifying-player.html?${playerParams.toString()}`;
   }
 
   function populateFilters() {
@@ -58,6 +68,28 @@
     }).join("")}</tbody></table>`;
   }
 
+  function renderPlayers(rows, year, selectedLeague) {
+    const players = new Map();
+    rows.forEach(row => {
+      const playerId = text(row["選手ID"]);
+      const player = text(row["選手名"]);
+      if (!playerId && !player) return;
+      const key = playerId || `name:${player}`;
+      const item = players.get(key) || { playerId, player, row, entries: 0, score: 0, places: [0, 0, 0, 0] };
+      item.entries += 1;
+      item.score += number(row["スコア"]);
+      const place = number(row["着順"]);
+      if (place >= 1 && place <= 4) item.places[place - 1] += 1;
+      players.set(key, item);
+    });
+    const ranking = [...players.values()].sort((a, b) => b.score - a.score || b.entries - a.entries || b.places[0] - a.places[0] || a.player.localeCompare(b.player, "ja"));
+    if (!ranking.length) {
+      playersArea.innerHTML = `<div class="qualifying-empty">${qualifyingRows.length ? "この条件の個人成績はありません。" : "予選結果が登録されると個人成績が表示されます。"}</div>`;
+      return;
+    }
+    playersArea.innerHTML = `<table class="qualifying-standings-table"><thead><tr><th>順位</th><th>選手</th><th>チーム</th><th>出場</th><th>ポイント</th><th>1着</th><th>2着</th><th>3着</th><th>4着</th></tr></thead><tbody>${ranking.map((item, index) => `<tr><td class="qualifying-rank">${index + 1}</td><td><a class="qualifying-team-link" href="${escapeHtml(playerUrl(item.row, year, selectedLeague))}">${escapeHtml(item.player)}</a></td><td>${escapeHtml(item.row["チーム名"])}</td><td>${item.entries}</td><td class="${item.score < 0 ? "qualifying-score-negative" : "qualifying-score-positive"}">${formatScore(item.score)}</td>${item.places.map(count => `<td>${count}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+  }
+
   function render() {
     const year = yearSelect.value;
     const league = leagueSelect.value;
@@ -68,6 +100,7 @@
       return !query || names.includes(query);
     });
     renderStandings(baseRows, year, league);
+    renderPlayers(baseRows, year, league);
     const groups = new Map();
     filtered.forEach(row => {
       const key = matchKey(row);
@@ -85,7 +118,7 @@
       return `<article class="qualifying-match-card"><header class="qualifying-match-head"><strong>${escapeHtml(displayDate(first["日付"]))}　${escapeHtml(first["リーグ"] || "予選")}</strong><small>${escapeHtml(first["試合"] || `試合No ${first["試合No"] || "-"}`)}${first["時間"] ? `｜${escapeHtml(first["時間"])}` : ""}</small></header><table class="qualifying-match-table"><thead><tr><th>着順</th><th>チーム</th><th>選手</th><th>スコア</th><th>得点</th></tr></thead><tbody>${sortedRows.map(row => {
         const score = number(row["スコア"]);
         const scoreClass = score < 0 ? "qualifying-score-negative" : "qualifying-score-positive";
-        return `<tr><td class="qualifying-rank">${escapeHtml(row["着順"] || "-")}</td><td><a class="qualifying-team-link" href="${escapeHtml(teamUrl(text(row["チーム名"]), year, text(row["リーグ"]))) }">${escapeHtml(row["チーム名"])}</a></td><td>${escapeHtml(row["選手名"])}</td><td class="${scoreClass}">${formatScore(score)}</td><td>${number(row["得点"]).toLocaleString("ja-JP")}</td></tr>`;
+        return `<tr><td class="qualifying-rank">${escapeHtml(row["着順"] || "-")}</td><td><a class="qualifying-team-link" href="${escapeHtml(teamUrl(text(row["チーム名"]), year, text(row["リーグ"]))) }">${escapeHtml(row["チーム名"])}</a></td><td><a class="qualifying-team-link" href="${escapeHtml(playerUrl(row, year, text(row["リーグ"]))) }">${escapeHtml(row["選手名"])}</a></td><td class="${scoreClass}">${formatScore(score)}</td><td>${number(row["得点"]).toLocaleString("ja-JP")}</td></tr>`;
       }).join("")}</tbody></table></article>`;
     }).join("");
   }
@@ -99,6 +132,7 @@
       console.error("予選結果CSVの読み込みに失敗しました", error);
       yearSelect.innerHTML = '<option value="2027">2027</option>';
       standingsArea.innerHTML = '<div class="qualifying-error">予選順位を読み込めませんでした。</div>';
+      playersArea.innerHTML = '<div class="qualifying-error">予選個人成績を読み込めませんでした。</div>';
       resultsArea.innerHTML = '<div class="qualifying-error">予選結果を読み込めませんでした。時間をおいて再読み込みしてください。</div>';
     }
     if (window.lucide) window.lucide.createIcons();

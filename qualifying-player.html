@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予選個人成績｜ハンドレッドリーグ データベース</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="stylesheet" href="css/style.css?v=13">
+  <link rel="stylesheet" href="css/qualifying.css?v=2">
+  <link rel="stylesheet" href="css/qualifying-team.css?v=1">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="site-brand"><img src="apple-touch-icon.png" class="site-brand-logo" alt="" aria-hidden="true">ハンドレッドリーグ データベース</a>
+  </nav>
+
+  <header class="qualifying-hero qualifying-team-hero">
+    <p id="qualifyingPlayerContext">予選個人成績</p>
+    <h1 id="qualifyingPlayerName">読み込み中...</h1>
+    <p>本戦の総合成績には反映しません</p>
+  </header>
+
+  <main class="qualifying-page">
+    <nav id="playerViewSwitch" class="team-view-switch" data-current-view="qualifying" aria-label="個人成績の切り替え" hidden></nav>
+    <section id="qualifyingPlayerSummary" class="qualifying-team-summary" aria-live="polite"></section>
+    <section class="qualifying-results" aria-labelledby="qualifyingPlayerTeamsTitle">
+      <h2 id="qualifyingPlayerTeamsTitle">出場チーム</h2>
+      <div id="qualifyingPlayerTeams" class="qualifying-table-wrap">読み込み中...</div>
+    </section>
+    <section class="qualifying-results qualifying-team-history" aria-labelledby="qualifyingPlayerHistoryTitle">
+      <h2 id="qualifyingPlayerHistoryTitle">試合履歴</h2>
+      <div id="qualifyingPlayerHistory" class="qualifying-table-wrap">読み込み中...</div>
+    </section>
+    <a id="qualifyingPlayerBackLink" href="qualifying.html" class="back-button"><i data-lucide="arrow-left"></i>予選結果へ戻る</a>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/common.js?v=15"></script>
+  <script src="js/qualifying-player.js?v=1"></script>
+  <script src="js/player-view-switch.js?v=1"></script>
+</body>
+</html>
