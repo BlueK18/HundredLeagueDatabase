@@ -11,7 +11,7 @@
   let qualifyingRows = [];
 
   const text = value => String(value ?? "").trim();
-  const number = value => Number(text(value).replace(/,/g, "")) || 0;
+  const number = value => Number(text(value).replace(/,/g, "").replace(/[^0-9.+-]/g, "")) || 0;
   const escapeHtml = value => text(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   const matchKey = row => ["年度", "リーグ", "ステージ", "試合No", "日付", "時間", "試合"].map(header => text(row[header])).join("|");
   const formatScore = value => `${value > 0 ? "+" : ""}${value.toFixed(1)}`;

@@ -14,7 +14,7 @@
   const backLink = document.getElementById("qualifyingPlayerBackLink");
 
   const text = value => String(value ?? "").trim();
-  const number = value => Number(text(value).replace(/,/g, "")) || 0;
+  const number = value => Number(text(value).replace(/,/g, "").replace(/[^0-9.+-]/g, "")) || 0;
   const escapeHtml = value => text(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
   const formatScore = value => `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
 
