@@ -1,0 +1,50 @@
+name: 携帯・手動データ更新
+
+on:
+  workflow_dispatch:
+    inputs:
+      update_mode:
+        description: 更新方法
+        required: true
+        default: 日々のデータ更新
+        type: choice
+        options:
+          - 日々のデータ更新
+          - 予定表・選手登録更新
+          - 全データ更新
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hundred-league-data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: データを更新してGitHubへ反映
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: 最新コードを取得
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitの更新者情報を設定
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 選択したデータ更新を実行
+        env:
+          SELECTED_MODE: ${{ inputs.update_mode }}
+        run: |
+          case "$SELECTED_MODE" in
+            "日々のデータ更新") update_mode=1 ;;
+            "予定表・選手登録更新") update_mode=2 ;;
+            "全データ更新") update_mode=3 ;;
+            *) echo "不明な更新方法です: $SELECTED_MODE"; exit 1 ;;
+          esac
+          printf '%s\n' "$update_mode" | bash ./update.command
