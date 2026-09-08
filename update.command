@@ -303,6 +303,16 @@ fi
 
 echo ""
 echo ""
+if [ "$UPDATE_MODE" = "1" ] || [ "$UPDATE_MODE" = "3" ]; then
+  echo "解析局データから役満記録を更新中..."
+  if ! python3 "$PROJECT_DIR/scripts/update-yakuman.py"; then
+    echo "❌ 役満記録の更新に失敗しました。"
+    pause_on_error
+  fi
+  echo "✅ 役満記録の更新完了"
+  echo ""
+fi
+
 echo "選手IDの表記を補正中..."
 if ! python3 "$PROJECT_DIR/scripts/normalize-player-ids.py"; then
   echo "❌ 選手ID補正に失敗しました。"
