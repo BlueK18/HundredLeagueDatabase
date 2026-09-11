@@ -13,12 +13,12 @@
   const detailedStatsButton=document.getElementById("playerDetailedStatsButton");
   const requestedPlayerId=params.get("id")||"";
   const detailedStatsPublic=true;
-  const isUnlocked=detailedStatsPublic||sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1";
   const adminChannel="BroadcastChannel" in window?new BroadcastChannel("hldbAdminNavigation"):null;
 
+  function isAdminUnlocked(){return sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1"}
   function publishAdminStatus(unlocked){adminChannel?.postMessage({type:"admin-status",unlocked})}
 
-  adminChannel?.addEventListener("message",event=>{if(event.data?.type==="admin-status-request"&&sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1")publishAdminStatus(true)});
+  adminChannel?.addEventListener("message",event=>{if(event.data?.type==="admin-status-request"&&isAdminUnlocked())publishAdminStatus(true)});
 
   if(!button||!logoutButton||!dialog||!form||!password||!detailedStatsButton){return}
 
@@ -28,11 +28,11 @@
     detailParams.set("id",requestedPlayerId);
     detailedStatsButton.href=`player-stats.html?${detailParams.toString()}`;
     detailedStatsButton.hidden=false;
-    button.hidden=true;
-    logoutButton.hidden=detailedStatsPublic||requestedPlayerId!==ADMIN_PLAYER_ID;
+    button.hidden=requestedPlayerId!==ADMIN_PLAYER_ID||isAdminUnlocked();
+    logoutButton.hidden=requestedPlayerId!==ADMIN_PLAYER_ID||!isAdminUnlocked();
   }
 
-  if(isUnlocked&&requestedPlayerId){
+  if((detailedStatsPublic||isAdminUnlocked())&&requestedPlayerId){
     showDetailedStatsButton();
   }else{
     detailedStatsButton.hidden=true;
@@ -57,9 +57,7 @@
   logoutButton.addEventListener("click",()=>{
     sessionStorage.removeItem("hldbDetailedStatsUnlocked");
     publishAdminStatus(false);
-    detailedStatsButton.hidden=true;
-    logoutButton.hidden=true;
-    button.hidden=requestedPlayerId!==ADMIN_PLAYER_ID;
+    showDetailedStatsButton();
   });
 
   form.addEventListener("submit",async event=>{
