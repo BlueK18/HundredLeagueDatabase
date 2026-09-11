@@ -55,8 +55,9 @@ echo "1：日々のデータ更新（普段はこちら）"
 echo "2：予定表・選手登録更新"
 echo "3：全データ更新（シーズン切替時）"
 echo "4：Web変更のみ送信（CSV更新なし）"
+echo "5：NEWSのみ更新"
 echo ""
-read -r -p "更新方法を選択してください [1/2/3/4]：" UPDATE_MODE
+read -r -p "更新方法を選択してください [1/2/3/4/5]：" UPDATE_MODE
 echo ""
 
 case "$UPDATE_MODE" in
@@ -76,8 +77,12 @@ case "$UPDATE_MODE" in
     MODE_NAME="Web変更のみ送信"
     COMMIT_PREFIX="Web更新"
     ;;
+  5)
+    MODE_NAME="NEWSのみ更新"
+    COMMIT_PREFIX="NEWS更新"
+    ;;
   *)
-    echo "❌ 1〜4のいずれかを入力してください。"
+    echo "❌ 1〜5のいずれかを入力してください。"
     pause_on_error
     ;;
 esac
@@ -275,6 +280,12 @@ download_score_entry_files() {
     "リーグ,チーム,選手,参照元"
 }
 
+download_news_file() {
+  download_or_record "1/1" "news.csv" \
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQOdocYk8ObQRgGJj3FCgHlECXxOJ1v0JC5etquS1xGs-j5XU__lfCW5jFOWtQXvLRKQglX_2kYPmHO/pub?gid=1687688944&single=true&output=csv" \
+    "data/news.csv" "0" ""
+}
+
 case "$UPDATE_MODE" in
   1)
     download_current_files
@@ -284,6 +295,7 @@ case "$UPDATE_MODE" in
     download_full_files
     ;;
   4) echo "CSV更新を省略し、Web変更だけを送信します。" ;;
+  5) download_news_file ;;
 esac
 
 if [ ${#FAILED_FILES[@]} -gt 0 ]; then
@@ -313,12 +325,14 @@ if [ "$UPDATE_MODE" = "1" ] || [ "$UPDATE_MODE" = "3" ]; then
   echo ""
 fi
 
-echo "選手IDの表記を補正中..."
-if ! python3 "$PROJECT_DIR/scripts/normalize-player-ids.py"; then
-  echo "❌ 選手ID補正に失敗しました。"
-  pause_on_error
+if [ "$UPDATE_MODE" != "5" ]; then
+  echo "選手IDの表記を補正中..."
+  if ! python3 "$PROJECT_DIR/scripts/normalize-player-ids.py"; then
+    echo "❌ 選手ID補正に失敗しました。"
+    pause_on_error
+  fi
+  echo "✅ 選手IDの補正完了"
 fi
-echo "✅ 選手IDの補正完了"
 
 echo "GitHubへ送信する準備中..."
 if ! git add .; then

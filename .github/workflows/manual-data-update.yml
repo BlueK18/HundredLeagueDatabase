@@ -10,6 +10,7 @@ on:
         type: choice
         options:
           - 日々のデータ更新
+          - NEWSのみ更新
           - 予定表・選手登録更新
           - 全データ更新
 
@@ -43,6 +44,7 @@ jobs:
         run: |
           case "$SELECTED_MODE" in
             "日々のデータ更新") update_mode=1 ;;
+            "NEWSのみ更新") update_mode=5 ;;
             "予定表・選手登録更新") update_mode=2 ;;
             "全データ更新") update_mode=3 ;;
             *) echo "不明な更新方法です: $SELECTED_MODE"; exit 1 ;;
