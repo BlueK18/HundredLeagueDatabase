@@ -24,8 +24,10 @@
 
   function showDetailedStatsButton(){
     if(!requestedPlayerId){return}
-    const detailParams=new URLSearchParams(params);
+    const detailParams=new URLSearchParams();
     detailParams.set("id",requestedPlayerId);
+    const playerName=params.get("player");
+    if(playerName){detailParams.set("player",playerName)}
     detailedStatsButton.href=`player-stats.html?${detailParams.toString()}`;
     detailedStatsButton.hidden=false;
     button.hidden=requestedPlayerId!==ADMIN_PLAYER_ID||isAdminUnlocked();
