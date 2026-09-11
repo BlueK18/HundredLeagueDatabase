@@ -288,6 +288,25 @@ function rowsForPlayer(rows) {
     addRows(mainRows);
     addRows(currentRows);
 
+    /* 開催年度が1年だけの間は、最新の年度集計がそのまま全期間集計になる。
+       currentには全期間行が出力されないため、古いmainの全期間行を上書きする。 */
+    const currentYears = new Set(
+      currentRows
+        .filter(row => String(row["集計区分"] || "").trim() === "年度")
+        .map(row => String(row["年度"] || "").trim())
+        .filter(Boolean)
+    );
+    if (currentYears.size === 1) {
+      addRows(currentRows
+        .filter(row => String(row["集計区分"] || "").trim() === "年度")
+        .map(row => ({
+          ...row,
+          "集計区分": "全期間",
+          "年度": "",
+          "シーズン": ""
+        })));
+    }
+
     return [...merged.values()];
   }
 
