@@ -77,8 +77,7 @@ let yakumanData = [];
 
 const ALL_TIME_VALUE = "ALL";
 const ALL_TIME_MIN_GAMES = 20;
-const allTimeRankingUnlocked =
-  sessionStorage.getItem("hldbDetailedStatsUnlocked") === "1";
+const allTimeRankingUnlocked = true;
 
 
 /* 順位を数値化 */

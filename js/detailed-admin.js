@@ -12,7 +12,8 @@
   const error=document.getElementById("detailedAdminError");
   const detailedStatsButton=document.getElementById("playerDetailedStatsButton");
   const requestedPlayerId=params.get("id")||"";
-  const isUnlocked=sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1";
+  const detailedStatsPublic=true;
+  const isUnlocked=detailedStatsPublic||sessionStorage.getItem("hldbDetailedStatsUnlocked")==="1";
   const adminChannel="BroadcastChannel" in window?new BroadcastChannel("hldbAdminNavigation"):null;
 
   function publishAdminStatus(unlocked){adminChannel?.postMessage({type:"admin-status",unlocked})}
@@ -28,7 +29,7 @@
     detailedStatsButton.href=`player-stats.html?${detailParams.toString()}`;
     detailedStatsButton.hidden=false;
     button.hidden=true;
-    logoutButton.hidden=requestedPlayerId!==ADMIN_PLAYER_ID;
+    logoutButton.hidden=detailedStatsPublic||requestedPlayerId!==ADMIN_PLAYER_ID;
   }
 
   if(isUnlocked&&requestedPlayerId){

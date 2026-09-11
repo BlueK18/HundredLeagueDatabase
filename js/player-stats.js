@@ -11,15 +11,7 @@
   const requestedLeague = pageParams.get("league") || "";
   const requestedStage = pageParams.get("stage") || "";
 
-  const isAdminUnlocked =
-    sessionStorage.getItem(
-      "hldbDetailedStatsUnlocked"
-    ) === "1";
-
-  if (
-    !requestedPlayerId ||
-    !isAdminUnlocked
-  ) {
+  if (!requestedPlayerId) {
     const title = document.getElementById(
       "playerDetailedTitle"
     );
@@ -30,7 +22,7 @@
 
     area.innerHTML = `
       <p class="detailed-empty">
-        この詳細成績は管理者専用です。
+        選手を指定してください。
       </p>
     `;
 
