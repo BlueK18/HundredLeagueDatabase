@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081f43">
+  <title>ハンドレッドリーグ2027｜チームエントリー</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="stylesheet" href="css/team-entry.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="brand-mark">100</span><span><b>HUNDRED LEAGUE</b><small>2027 ENTRY</small></span></div>
+    <span id="draftStatus" class="draft-status"><i></i>下書き自動保存</span>
+  </header>
+
+  <main>
+    <section id="startView" class="start-wrap">
+      <div class="start-heading"><p class="eyebrow">TEAM REGISTRATION</p><h1>エントリー方法を選択</h1><p>新規チームは空白から、継続チームは前年度データを引き継いで編集できます。</p></div>
+      <div class="start-grid">
+        <button id="startNew" class="mode-card new" type="button"><span class="mode-icon">＋</span><small>NEW TEAM</small><h2>新規チーム</h2><p>すべての項目を空白から入力します。</p><b>新規登録をはじめる <span>›</span></b></button>
+        <section class="mode-card legacy"><span class="mode-icon">↻</span><small>RETURNING TEAM</small><h2>過去チームから引き継ぐ</h2><p>前年度の情報を一括転記し、脱退・加入や名称変更を編集できます。</p><label class="sr-only" for="legacyTeam">チームを選択</label><select id="legacyTeam"><option value="">チームを選択してください</option></select><button id="importTeam" class="primary-button" type="button" disabled>データを引き継ぐ <span>›</span></button></section>
+      </div>
+      <p class="source-note">前年度登録：全 <span id="legacyCount">0</span> チーム</p>
+    </section>
+
+    <section id="entryView" class="entry-layout" hidden>
+      <aside class="intro-panel">
+        <button id="changeMode" class="back-link" type="button">‹ 登録方法を変更</button>
+        <p class="eyebrow">TEAM REGISTRATION</p><h1>来年度<br>エントリー</h1>
+        <p>選手は6名必須、最大10名まで登録できます。</p>
+        <div class="season-badge"><small>SEASON</small><strong>2027</strong></div>
+      </aside>
+
+      <section class="form-card">
+        <nav id="stepper" class="stepper" aria-label="入力ステップ"></nav>
+        <div class="progress-track"><span id="progressBar"></span></div>
+        <form id="entryForm" novalidate>
+          <div id="formBody" class="form-body"></div>
+          <p id="formError" class="error-message" role="alert" hidden></p>
+          <footer class="form-footer"><button id="backStep" class="secondary-button" type="button">‹ 戻る</button><button id="nextStep" class="primary-button" type="button">次へ ›</button></footer>
+        </form>
+      </section>
+    </section>
+
+    <section id="successView" class="success-wrap" hidden>
+      <div class="success-card"><div class="success-mark">✓</div><p class="eyebrow">ENTRY COMPLETE</p><h1>エントリーを受け付けました</h1><p>ご登録ありがとうございます。内容を確認後、運営から必要に応じてご連絡します。</p><button id="restartEntry" class="primary-button" type="button">別のチームを登録</button></div>
+    </section>
+  </main>
+
+  <script src="js/team-entry-data.js?v=1"></script>
+  <script src="js/team-entry.js?v=1"></script>
+</body>
+</html>

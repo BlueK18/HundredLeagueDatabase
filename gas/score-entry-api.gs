@@ -1,6 +1,8 @@
 const SCORE_API = Object.freeze({
   webSpreadsheetId: '1L2c0E5HqsbNhjN-5P81iZVXETtQ4Jwt-CmqslPCLtuk',
   webSheet: '成績入力',
+  teamEntrySpreadsheetId: '1L2c0E5HqsbNhjN-5P81iZVXETtQ4Jwt-CmqslPCLtuk',
+  teamEntrySheet: 'Webエントリー2027',
   adminPassword: 's214b318'
 });
 
@@ -16,6 +18,7 @@ function doPost(e) {
   try {
     const body = JSON.parse(e.postData.contents || '{}');
     if (body.action === 'submit') return json_({ok: true, entry: upsertWebEntry_(body.id, body.data)});
+    if (body.action === 'teamEntry') return json_({ok: true, entry: saveTeamEntry_(body.data)});
     if (body.action === 'url') return json_({ok: true, entry: saveUrl_(body.id, body.url)});
     if (body.action === 'edit') {
       requireAdmin_(body.password);
@@ -30,6 +33,33 @@ function doPost(e) {
   } catch (error) {
     return json_({ok: false, error: String(error && error.message || error)});
   }
+}
+
+function saveTeamEntry_(data) {
+  if (!data || !data.teamName || !Array.isArray(data.players)) throw new Error('チーム情報が正しくありません。');
+  const players = data.players.filter(player => player && String(player.mjName || '').trim());
+  if (players.length < 6 || players.length > 10) throw new Error('選手は6名以上10名以下で登録してください。');
+  if (!data.director || !data.message) throw new Error('監督と意気込みは必須です。');
+  const book = SpreadsheetApp.openById(SCORE_API.teamEntrySpreadsheetId);
+  let sheet = book.getSheetByName(SCORE_API.teamEntrySheet);
+  const headers = ['受付日時','引継ぎ元チーム','チーム名','チームXアカウント','チームX ID'];
+  for (let i = 1; i <= 10; i++) headers.push('選手' + i + ' MJ','選手' + i + ' Xアカウント','選手' + i + ' X ID');
+  headers.push('監督','副監督','意気込み');
+  if (!sheet) {
+    sheet = book.insertSheet(SCORE_API.teamEntrySheet);
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.setFrozenRows(1);
+  }
+  const padded = players.slice(0, 10);
+  while (padded.length < 10) padded.push({mjName: '', xName: '', xId: ''});
+  const values = [
+    Utilities.formatDate(new Date(), 'Asia/Tokyo', 'yyyy-MM-dd HH:mm:ss'),
+    text_(data.sourceTeam), text_(data.teamName), text_(data.teamXName), text_(data.teamXId),
+    ...padded.flatMap(player => [text_(player.mjName), text_(player.xName), text_(player.xId)]),
+    text_(data.director), text_(data.deputy), text_(data.message)
+  ];
+  sheet.appendRow(values);
+  return {teamName: text_(data.teamName), acceptedAt: values[0]};
 }
 
 function readWebEntries_() {
