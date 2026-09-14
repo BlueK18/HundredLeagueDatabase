@@ -70,7 +70,7 @@ async function submit(){
   localStorage.removeItem(DRAFT_KEY);$("entryView").hidden=true;$("successView").hidden=false;window.scrollTo(0,0)
  }catch(e){error(e.message||"送信できませんでした。入力内容は保存されています。")}finally{button.disabled=false;button.textContent="この内容で送信"}
 }
-$("startNew").onclick=beginNew;$("changeMode").onclick=showStart;$("restartEntry").onclick=()=>{entry=blankEntry();showStart()};
+$("startNew").onclick=beginNew;$("changeMode").onclick=showStart;
 $("legacyTeam").innerHTML+=[...window.LEGACY_TEAMS].sort((a,b)=>a.teamName.localeCompare(b.teamName,"ja")).map(team=>`<option value="${esc(team.teamName)}">${esc(team.teamName)}</option>`).join("");
 $("legacyCount").textContent=window.LEGACY_TEAMS.length;$("legacyTeam").onchange=()=>$("importTeam").disabled=!$("legacyTeam").value;$("importTeam").onclick=importSelected;
 $("backStep").onclick=()=>{capture();if(step>0){step--;render();window.scrollTo(0,0)}};
